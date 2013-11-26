@@ -1,14 +1,13 @@
 !Intro
 
-Dans cet article je vais vous présenter une facette de Pharo qu'on a pas l'habitude de voir, un domaine pour lequel il peut surprendre. Ce domaine c'est la synthèse sonore.
-Dès qu'on a besoin de sonoriser un peu notre tout nouveau programme on pense soit à du mp3 pour la musique ou des sons digitalisés pour les bruitages.
-Dans Pharo on dispose d'outils et bibliothèques permettant créer de toute pièce du son synthétisé pour nos production. Nous allons vous montrer comment on fait cela en quelques ligne de code seulement.
+Dans cet article je vais vous présenter une facette de Pharo qu'on a pas l'habitude de voir, un domaine pour lequel il peut surprendre. Ce domaine c'est la synthèse sonore. Dès qu'on a besoin de sonoriser un peu notre tout nouveau programme on pense soit à du mp3 pour la musique ou des sons digitalisés pour les bruitages. Dans Pharo on dispose d'outils et bibliothèques permettant créer de toute pièce du son synthétisé pour nos production. Nous allons vous montrer comment on fait cela en quelques ligne de code seulement.
+
 Tout d'abord récupérer et installer la version XXX de Pharo à l'adresse: http://www.pharo.org/YYY
+@@note rajouter l'adresse de téléchargement
 
 !Bases de la synthèse FM par l'exemple
 
-Avant de se familiariser avec les différentes méthodes utiles on va s'assurer que notre environnement puisse jouer un son convenablement.
-Pour cela on va ouvrir un workspace (depuis le menu Tools) et évaluer la ligne de code suivante. Nous vous expliquerons par la suite ce dont il s'agit.
+Avant de se familiariser avec les différentes méthodes utiles on va s'assurer que notre environnement puisse jouer un son convenablement. Pour cela on va ouvrir un workspace (depuis le menu Tools) et évaluer la ligne de code suivante. Nous vous expliquerons par la suite ce dont il s'agit.
 
 [[[
 FMSound organ1 play.
@@ -37,7 +36,7 @@ FMSound class>>organ1
 	| sound |
 	sound := self new.
 	sound addEnvelope: (VolumeEnvelope 
-                              points: { 0@0 .  60@1.0 .  110@0.8 .  200@1.0 .  250@0.0} 
+                              points: { 0@0 . 60@1.0 . 110@0.8 . 200@1.0 . 250@0.0} 
                               loopStart: 2 loopEnd: 4).
 	sound setPitch: 440.0 dur: 1.0 loudness: 0.5.
         ^ snd
@@ -65,7 +64,7 @@ L'enveloppe est définie d'après un ensemble de points et d'une boucle. Elle pe
 snd addEnvelope: (VolumeEnvelope points: p loopStart: 2 loopEnd: 4).
 ]]]
 
-La méthode retourne le son avec comme paramètre la note (ici exprimée en Hz ->voir tableau), la durée en seconde et un volume global de la note. Ce volume sera ensuite modulé grâce à l'enveloppe qui est définie.
+	La méthode retourne le son avec comme paramètre la note (ici exprimée en Hz ->voir tableau), la durée en seconde et un volume global de la note. Ce volume sera ensuite modulé grâce à l'enveloppe qui est définie.
 
 [[[
 ^ snd setPitch: 440.0 dur: 1.0 loudness: 0.5
@@ -119,17 +118,17 @@ Le code va changer un peu
 
 [[[
 |seq snd1 snd2 snd3 points|
-"Déclaration des sons"
+"Declaration des sons"
 seq := SequentialSound new.
 snd1 := FMSound new.
 snd2 := FMSound new.
 snd3 := FMSound new.
 points := OrderedCollection new.
 
-"Création du volume pour les instruments"
+"Creation du volume pour les instruments"
 points add: 0@1;add: 400@0.4;add: 500@0.
 
-"Génération des notes"
+"Generation des notes"
 snd1 setPitch: 'g#4' dur:0.5 loudness: 1.
 snd2 setPitch: 'a3' dur:0.5 loudness: 1.
 snd3 setPitch: 'g#4' dur:0.5 loudness: 1.
@@ -139,7 +138,7 @@ snd1 addEnvelope: (VolumeEnvelope points: points loopStart: 3  loopEnd:3 ).
 snd2 addEnvelope: (VolumeEnvelope points: points loopStart: 3  loopEnd:3 ).
 snd3 addEnvelope: (VolumeEnvelope points: points loopStart: 3  loopEnd:3 ).
 
-"Les sons les uns à la suite des autres"
+"Les sons les uns a la suite des autres"
 seq add: snd1.
 seq add: snd2.
 seq add: snd3.
@@ -154,8 +153,7 @@ Avec un peu créativité on va pouvoir faire quelque chose de ce son.
 
 !Jouer plusieurs sons simultanément
 
-Jouer des sons en séquence c'est bien mais pas encore suffisant pour donner une âme à notre production.
-Si on veut avoir quelque chose qui sonne correctement à nos oreilles il va falloir maintenant rajouter ce qu'on va appeler des pistes. La classe ""MixedSound"" va nous aider à cela.
+Jouer des sons en séquence c'est bien mais pas encore suffisant pour donner une âme à notre production. Si on veut avoir quelque chose qui sonne correctement à nos oreilles il va falloir maintenant rajouter ce qu'on va appeler des pistes. La classe ""MixedSound"" va nous aider à cela.
 
 [[[
 |mix snd1 snd2 points|
@@ -165,10 +163,10 @@ snd2 := FMSound new.
 
 points := OrderedCollection new.
 
-"Création du volume pour les instruments"
+"Creation du volume pour les instruments"
 points add: 0@1;add: 400@0.4;add: 500@0.
 
-"Génération des notes"
+"Generation des notes"
 snd1 setPitch: 'a4' dur:1 loudness: 1.
 snd2 setPitch: 'a3' dur:1 loudness: 1.
 
@@ -181,8 +179,7 @@ mix add: snd1 pan: 0; add: snd2 pan: 1.
 mix play.
 ]]]
 
-Le son généré ressemble un peu aux ceux qu'on pouvait entendre sur les jouets pour enfants. Modifiez un peu les valeurs ""setPitch"" pour obtenir des notes différentes et vous familiariser avec les méthodes.
-Les enveloppes de volume modifiant la courbe du son au cours du temps peuvent être également modifiées pour obtenir des effets particuliers.
+Le son généré ressemble un peu aux ceux qu'on pouvait entendre sur les jouets pour enfants. Modifiez un peu les valeurs ""setPitch"" pour obtenir des notes différentes et vous familiariser avec les méthodes. Les enveloppes de volume modifiant la courbe du son au cours du temps peuvent être également modifiées pour obtenir des effets particuliers.
 
 Remplacez les valeurs des points par
 
@@ -209,14 +206,13 @@ Si vous regardez bien un paramètre s'est glissé lors de l'appel à ""add:"". L
 
 !Les enveloppes
 
-L'enveloppe modifie le son au cours du temps. On a vu qu'on pouvait changer le volume, mais on peut également faire varier la note pendant qu'elle est jouée, c'est ce qu'on appel le pitch.
-De la même manière que pour le volume on va définir un ensemble de points qui vont indiquer quand changer la fréquence du son.
-Plus la valeur est haute, plus la note sera haute. Si on indique un chiffre négatif, la note descendra en dessous de la note de départ.
+L'enveloppe modifie le son au cours du temps. On a vu qu'on pouvait changer le volume, mais on peut également faire varier la note pendant qu'elle est jouée, c'est ce qu'on appel le pitch. De la même manière que pour le volume on va définir un ensemble de points qui vont indiquer quand changer la fréquence du son. Plus la valeur est haute, plus la note sera haute. Si on indique un chiffre négatif, la note descendra en dessous de la note de départ.
 
 [[[
 |snd p|
 p := OrderedCollection new.
-p add: 0@0;add: 100@0.1;add: 200@0.2;add: 300@(-0.5);add:400@0.7;add: 800@0.8;add: 1000@1.
+p add: 0@0; add: 100@0.1; add: 200@0.2; add: 300@(-0.5);
+  add: 400@0.7; add: 800@0.8; add: 1000@1.
 snd := FMSound new.
 snd addEnvelope: (PitchEnvelope points: p loopStart:7  loopEnd:7 ).
 (snd setPitch: 'a4' dur: 2 loudness: 0.5)play.
@@ -228,8 +224,10 @@ La variation se fait en douceur, sans cassures. En couplant cela à une envelopp
 |snd p p2|
 p := OrderedCollection new.
 p2 := OrderedCollection new.
-p add: 0@0;add: 100@0.1;add: 200@0.2;add: 300@(-0.5);add:400@0.7;add: 800@0.8;add: 1000@1.
-p2 add: 0@0;add: 100@0.1;add: 200@0.2;add: 300@(-0.5);add:400@0.7;add: 800@0.8;add: 1000@0.
+p add: 0@0; add: 100@0.1; add: 200@0.2; add: 300@(-0.5);
+  add: 400@0.7; add: 800@0.8; add: 1000@1.
+p2 add: 0@0; add: 100@0.1; add: 200@0.2; add: 300@(-0.5);
+   add: 400@0.7; add: 800@0.8; add: 1000@0.
 snd := FMSound new.
 snd addEnvelope: (PitchEnvelope points: p loopStart:7  loopEnd:7 ).
 snd addEnvelope: (VolumeEnvelope points: p2 loopStart:7  loopEnd:7 ).
@@ -274,7 +272,7 @@ La musique est une séquence de notes. Nous savons maintenant comment écrire un
 Nous allons décrire l'ensemble des notes dans un tableau. Le format est le suivant
 
 [[[
-(note durée volume)
+(note duree volume)
 ]]]
 
 La note peut être écrite sous sa forme littérale ou en hertz. La durée s'exprime en millisecondes. Le volume quant à lui est une valeur entre 0 et 1000. Au delà de 1000 le son peut saturer mais cela peut se révéler utile dans certain cas pour donner un effet.
@@ -305,12 +303,14 @@ FMSound class>>pacmanV1On: aSound
 
 	|notes|
 	notes := #(
-        (b4 0.144 150) (b5 0.144 150) ('f#5' 0.144 150) ('d#5' 0.144 150) (b5 0.072 150)
-        ('f#5' 0.144 150) ('d#5' 0.288 150) (c5 0.144 150) (c6 0.144 150) (g5 0.144 150)
-        (e5 0.144 150) (c6 0.072 150) (g5 0.216 150) (e5 0.288 150) (b4 0.144 150) (b5 0.144 150)
-        ('f#5' 0.144 150) ('d#5' 0.144 150) (b5 0.072 150) ('f#5' 0.216 150) ('d#5' 0.288 150)
-        ('d#5' 0.072 150) (e5 0.072 150) (f5 0.144 150) (f5 0.072 150) ('f#5' 0.072 150) (g5 0.144 150)
-        (g5 0.072 150) ('g#5' 0.072 150) (a5 0.144 150) (b5 0.216 150)).
+        (b4 0.144 150) (b5 0.144 150) ('f#5' 0.144 150) ('d#5' 0.144 150)
+        (b5 0.072 150) ('f#5' 0.144 150) ('d#5' 0.288 150) (c5 0.144 150)
+        (c6 0.144 150) (g5 0.144 150) (e5 0.144 150) (c6 0.072 150)
+        (g5 0.216 150) (e5 0.288 150) (b4 0.144 150) (b5 0.144 150)
+        ('f#5' 0.144 150) ('d#5' 0.144 150) (b5 0.072 150) ('f#5' 0.216 150)
+        ('d#5' 0.288 150) ('d#5' 0.072 150) (e5 0.072 150) (f5 0.144 150)
+        (f5 0.072 150) ('f#5' 0.072 150) (g5 0.144 150) (g5 0.072 150)
+        ('g#5' 0.072 150) (a5 0.144 150) (b5 0.216 150)).
 
         ^self noteSequenceOn: aSound from: notes.
 ]]]
@@ -321,9 +321,10 @@ Lorsqu'un son sinusoïdal possède une fréquence trop basse, celui ci est diffi
 FMSound class>>pacmanV2On: aSound
 	|notes|
 	notes := #(
-        (b1 0.432 500) (b2 0.144 500) (b1 0.432 500) (b2 0.144 500) (c2 0.432 500) (c3 0.144 500)
-        (c2 0.432 500) (c3 0.144 500) (b1 0.432 500) (b2 0.144 500) (b1 0.432 500) (b2 0.144 500)
-        ('f#2' 0.288 500) ('g#2' 0.288 500) ('a#2' 0.288 500) (b2 0.288 500)).
+        (b1 0.432 500) (b2 0.144 500) (b1 0.432 500) (b2 0.144 500) (c2 0.432 500)
+        (c3 0.144 500) (c2 0.432 500) (c3 0.144 500) (b1 0.432 500) (b2 0.144 500)
+        (b1 0.432 500) (b2 0.144 500) ('f#2' 0.288 500) ('g#2' 0.288 500)
+        ('a#2' 0.288 500) (b2 0.288 500)).
 
         ^self noteSequenceOn: aSound from: notes.
 ]]]
@@ -381,10 +382,12 @@ Pour cela on va le rajouter à notre librairie de sons
 [[[
 |spl spl2|
 
-"Chargement du son à partir d'un fichier"
+"Chargement du son a partir d'un fichier"
 spl := SampledSound fromWaveFileNamed: '/home/messner/guitar.wav'.
 "Ajout du son dans la librairie pour le jouer plus tard"
-SampledSound addLibrarySoundNamed: 'guitar' samples: spl samples  samplingRate: spl originalSamplingRate.
+SampledSound addLibrarySoundNamed: 'guitar'
+             samples: spl samples
+             samplingRate: spl originalSamplingRate.
 ]]]
 
 @@note le "à" n'est pas correctement interprété dans un bloc. Pkoi ???
@@ -414,9 +417,15 @@ spl1 := SampledSound fromWaveFileNamed: '/home/messner/mouette.wav'.
 spl2 := SampledSound fromWaveFileNamed: '/home/messner/bateau.wav'.
 
 "Ajout des sons dans la librairie pour les jouer plus tard"
-SampledSound addLibrarySoundNamed: 'ocean' samples: spl samples  samplingRate: spl originalSamplingRate.
-SampledSound addLibrarySoundNamed: 'mouette' samples: spl1 samples  samplingRate: spl1 originalSamplingRate.
-SampledSound addLibrarySoundNamed: 'bateau' samples: spl2 samples  samplingRate: spl2 originalSamplingRate.
+SampledSound addLibrarySoundNamed: 'ocean'
+             samples: spl samples
+             samplingRate: spl originalSamplingRate.
+SampledSound addLibrarySoundNamed: 'mouette'
+             samples: spl1 samples
+             samplingRate: spl1 originalSamplingRate.
+SampledSound addLibrarySoundNamed: 'bateau'
+             samples: spl2 samples
+             samplingRate: spl2 originalSamplingRate.
 ]]]
 
 Maintenant que tout nos sons sont chargés nous allons les jouer en séquence grâce à la méthode ""QueueSound"".
@@ -427,15 +436,20 @@ Maintenant que tout nos sons sont chargés nous allons les jouer en séquence gr
 q1 := QueueSound new.
 q2 := QueueSound new.
 mix := MixedSound new.
-spl1 := (SampledSound samples: (SampledSound soundNamed: 'ocean') samples samplingRate: 22000).
+spl1 := (SampledSound samples: (SampledSound soundNamed: 'ocean')
+                      samples samplingRate: 22000).
 spl1 duration: 20.
-spl2 := (SampledSound samples: (SampledSound soundNamed: 'mouette') samples samplingRate: 22000).
+spl2 := (SampledSound samples: (SampledSound soundNamed: 'mouette')
+                      samples samplingRate: 22000).
 spl2 duration: 10.
-spl3 := (SampledSound samples: (SampledSound soundNamed: 'bateau') samples samplingRate: 22000).
+spl3 := (SampledSound samples: (SampledSound soundNamed: 'bateau')
+                      samples samplingRate: 22000).
 spl3 duration: 5.
 
 q1 add:spl2;add:spl2.
 q2 add:spl3;add:spl3.
-mix add: q1 pan: 0 volume: 0.100;add: q2 pan: 1 volume: 0.5;add: spl1 pan: 0.5 volume: 1.
+mix add: q1 pan: 0 volume: 0.100;
+    add: q2 pan: 1 volume: 0.5;
+    add: spl1 pan: 0.5 volume: 1.
 mix play.
 ]]]
