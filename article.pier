@@ -80,7 +80,10 @@ Nous pouvons jouer un LA comme suit:
 
 Le son est joué à une fréquence de 440 Hz pendant 1 seconde.
 
-La classe ""FMSound"" permet la génération de sons sinusoïdaux (voir schéma). Ça donne un son assez doux et régulier.
+La classe ""FMSound"" permet la génération de sons sinusoïdaux. Ça donne un son assez doux et régulier. La figure *sinusoide* ci dessous montre à quoi ressemble la courbe.
+@@note Pouquoi la figure n'est pas juste en dessous du paragraphe ???
+
++Sinusoïde produite>file://figures/sine.png|width=50|label=sinusoide+
 
 Dans ces exemples on a défini une note avec sa fréquence. Si on veut jouer une seule note l'écriture est simple, mais cela peut rapidement devenir long, fastidieux et les erreurs difficiles à détecter si on doit écrire tout une mélodie de cette manière.
 
