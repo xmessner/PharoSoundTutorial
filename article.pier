@@ -87,7 +87,7 @@ La classe ""FMSound"" permet la génération de sons sinusoïdaux. Ça donne un 
 
 Dans ces exemples on a défini une note avec sa fréquence. Si on veut jouer une seule note l'écriture est simple, mais cela peut rapidement devenir long, fastidieux et les erreurs difficiles à détecter si on doit écrire tout une mélodie de cette manière.
 
-Une chose à savoir est qu'au lieu d'écrire une note définie par sa fréquence on peut l'écrire dans sa notation anglaise. -> Voir tableau.
+Une chose à savoir est qu'au lieu d'écrire une note définie par sa fréquence on peut l'écrire dans sa notation anglaise. Le tableau ""*notation*"" va nous indiquer les correspondances.
 
 Le LA de tout à l'heure peut s'écrire maintenant comme cela
 
@@ -476,3 +476,9 @@ mix play.
 |!|A||27.5||55.0||110||220||440||880||1760||3520||7040
 |!|A#||29.1||58.0||117||233||466||932||1865||3729||7458
 |!|B||30.8||62.0||123||247||494||988||1975||3951||7902
+
+!!Notation anglaise
+
+@notation
+|!|Anglais|C|C#|D|D#|E|F|F#|G|G#|A|A#|H
+|!|Français|Do|Do#|Re|Re#|Mi|Fa|Fa#|Sol|Sol#|La|La#|Si
