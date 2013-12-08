@@ -175,9 +175,7 @@ mix add: snd1 pan: 0; add: snd2 pan: 1.
 mix play.
 ]]]
 
-@@note Revue en cours
-
-Le son généré ressemble un peu aux ceux qu'on pouvait entendre sur les jouets pour enfants. Modifiez un peu les valeurs ""setPitch"" pour obtenir des notes différentes et vous familiariser avec les méthodes. Les enveloppes de volume modifiant la courbe du son au cours du temps peuvent être également modifiées pour obtenir des effets particuliers.
+Le son généré est quelque peu old school. Modifions un peu les valeurs ""setPitch"" pour obtenir des notes différentes et nous familiariser avec les méthodes. Les enveloppes de volume modifient la courbe du son au cours du temps et peuvent être utilisées pour obtenir des effets particuliers.
 
 Remplacez les valeurs des points par
 
@@ -192,19 +190,19 @@ snd1 addEnvelope: (VolumeEnvelope points: points loopStart: 6  loopEnd:6 ).
 snd2 addEnvelope: (VolumeEnvelope points: points loopStart: 6  loopEnd:6 ).
 ]]]
 
-Le son est comme doublé. Le premier étant plus fort que l second. La variation entre les est douce et continue. Un calcul est fait entre 2 valeurs de volume pour éviter les cassures pas jolies à l'oreille. On peut cependant le faire en ayant un temps très court entre 2 valeurs.
+Le son produit comme un écho. La variation entre les valeurs est douce et continue. Un calcul est fait entre chacune d'entre elles pour éviter les cassures disgracieuse à l'oreille. Vous pouvez vous avec les nouvelles valeurs ci dessous.
 
 [[[
 points add: 0@1;add: 100@0.6; add: 200@0; add: 201@0.6;add: 400@0.2;add: 500@0.
 ]]]
 
-La cassure est ici nette.
+La cassure est nettement plus audible.
 
-Si vous regardez bien un paramètre s'est glissé lors de l'appel à ""add:"". Le paramètre ""pan:"" va positionner le son sur le canal stéréo. ""0"" pour gauche, ""1"" pour droite. Une valeur entre les 2 limites va déplacer le son vers le milieu. ""0.5"" étant le centre. Jouez un peu avec les valeurs pour séparer les 2 sons.
+Nous allons également utiliser le message ""pan:"" qui va positionner le son en stéréo. Une valeur de ""0"" pour gauche et ""1"" pour droite. Une valeur de ""0.5"" place le son au milieu.
 
 !Les enveloppes
 
-L'enveloppe modifie le son au cours du temps. On a vu qu'on pouvait changer le volume, mais on peut également faire varier la note pendant qu'elle est jouée, c'est ce qu'on appel le pitch. De la même manière que pour le volume on va définir un ensemble de points qui vont indiquer quand changer la fréquence du son. Plus la valeur est haute, plus la note sera haute. Si on indique un chiffre négatif, la note descendra en dessous de la note de départ.
+L'enveloppe modifie le son au cours du temps. Nous venons de le voir avec le volume, mais il est également possible de faire varier la note pendant qu'elle est jouée, c'est ce qu'on appel le pitch. De la même manière que pour le volume nous allons définir un ensemble de points qui indiqueront le moment du changement de la fréquence du son. Plus la valeur est haute, plus la note le sera. Si on indique un chiffre négatif, la note descendra en dessous de la note de départ.
 
 [[[
 |snd p|
@@ -213,7 +211,7 @@ p add: 0@0; add: 100@0.1; add: 200@0.2; add: 300@(-0.5);
   add: 400@0.7; add: 800@0.8; add: 1000@1.
 snd := FMSound new.
 snd addEnvelope: (PitchEnvelope points: p loopStart:7  loopEnd:7 ).
-(snd setPitch: 'a4' dur: 2 loudness: 0.5)play.
+(snd setPitch: 'a4' dur: 2 loudness: 0.5) play.
 ]]]
 
 La variation se fait en douceur, sans cassures. En couplant cela à une enveloppe de volume on peut commencer à produire un son intéressant.
@@ -232,7 +230,7 @@ snd addEnvelope: (VolumeEnvelope points: p2 loopStart:7  loopEnd:7 ).
 (snd setPitch: 'a4' dur: 2 loudness: 0.5)play.
 ]]]
 
-La définitions des points pour les enveloppes peuvent utiliser une méthode appelée ""exponentialDecay:"" de la classe ""VolumeEnvelope"" pour le volume ou ""PitchEnvelope"" pour le pitch. La courbe va être de type exponentielle partant du volume le plus haut pour arriver en douceur à 0.
+Au lieu de définir l'enveloppe points par points nous allons utiliser une méthode appelée ""exponentialDecay:"" de la classe ""VolumeEnvelope"" pour le volume ou ""PitchEnvelope"" pour le pitch. La courbe sera de type exponentielle partant du volume le plus haut pour arriver en douceur à 0.
 
 La définition du volume devient alors ceci
 
@@ -240,7 +238,7 @@ La définition du volume devient alors ceci
 snd addEnvelope: (VolumeEnvelope exponentialDecay: 0.9).
 ]]]
 
-La valeur doit être plus grande que 0 et plus petite que 1.
+La valeur doit être impérativelement plus grande que 0 et plus petite que 1.
 Pour connaître l'ensemble des points générés il suffit de faire un ""clic droit/Print it"" sur la ligne de code suivante
 
 [[[
@@ -253,9 +251,11 @@ Le résultat est le suivant
 {(0@0.0). (10@1.0). (20@0.2). (30@0.04000000000000001). (50@0.0)}
 ]]]
 
-Nous avons donc vu comment sonorisé un peu nos productions. Pour le moment ça se limite à un son, plusieurs sons joués les uns après les autres ou encore un plusieurs sons joués en même temps.
+Les enveloppes viennent compléter nos connaissances sur la génération du son. Nous savons donc jouer un son, plusieurs sons les uns après les autres ou encore plusieurs sons joués en même temps.
 
-On a entre nos mains pratiquement tous les outils dont on a besoin pour écrire notre première mélodie, que dis-je, notre première super production !
+On a entre nos mains pratiquement tous les outils pour écrire notre première mélodie, que dis-je, notre première super production !
+
+@@note revue en cours
 
 !Jouer une mélodie
 
