@@ -255,8 +255,6 @@ Les enveloppes viennent compléter nos connaissances sur la génération du son.
 
 On a entre nos mains pratiquement tous les outils pour écrire notre première mélodie, que dis-je, notre première super production !
 
-@@note revue en cours
-
 !Jouer une mélodie
 
 A quoi peut bien ressembler de la musique produite dans Pharo ? Evaluons la ligne de code suivante dans un workspace et écoutons.
@@ -275,15 +273,15 @@ Nous allons décrire l'ensemble des notes dans un tableau. Le format est le suiv
 
 La note peut être écrite sous sa forme littérale ou en hertz. La durée s'exprime en millisecondes. Le volume quant à lui est une valeur entre 0 et 1000. Au delà de 1000 le son peut saturer mais cela peut se révéler utile dans certain cas pour donner un effet.
 
-Par exemple
+Voici un exemple de déclaration
 
 [[[
 notes := #((a3 200 150) (a4 100 150) (g3 150 150))
 ]]]
 
-Je vais vous aider à écrire notre premier morceau avec un air qui devrait rappeler des bons souvenirs à tout ceux qui ont connu le début des jeux vidéos
+Nous allons écrire notre premier morceau avec un air qui devrait rappeler des bons souvenirs à tout ceux qui ont connu le début des jeux vidéos.
 
-Nous allons dans un premier temps déclarer la classe permettant de mixer l'ensemble des pistes.
+Déclarerons la classe permettant de mixer l'ensemble des pistes.
 
 [[[
 FMSound class>>pacman
@@ -294,7 +292,7 @@ FMSound class>>pacman
 		add: (self pacmanV2On: self fm2) pan: 0.5.
 ]]]
 
-Les 2 pistes suivantes contiennent l'ensemble des notes à jouer avec la note, la durée et le volume.
+Les 2 méthodes suivantes contiennent l'ensemble des notes à jouer avec le triplet note, durée et volume.
 
 [[[
 FMSound class>>pacmanV1On: aSound
@@ -313,7 +311,7 @@ FMSound class>>pacmanV1On: aSound
         ^self noteSequenceOn: aSound from: notes.
 ]]]
 
-Lorsqu'un son sinusoïdal possède une fréquence trop basse, celui ci est difficilement audible. Le volume va être remonté sur cette piste pour une meilleure écoute.
+La méthode suivante va produire une mélodie avec des notes assez basse. Lorsqu'un son sinusoïdale possède une fréquence basse, le volume de celui ci semble faible. Pour que cette piste soit audible on va augmenter le son de chacune des notes.
 
 [[[
 FMSound class>>pacmanV2On: aSound
@@ -327,7 +325,7 @@ FMSound class>>pacmanV2On: aSound
         ^self noteSequenceOn: aSound from: notes.
 ]]]
 
-Et maintenant nos 2 instruments que l'on va utiliser
+Les 2 méthodes suivantes décrivent les instruments qu'on va utiliser pour jouer la mélodie.
 
 [[[
 FMSound class>>fm1
@@ -360,6 +358,8 @@ FMSound class>>fm2
 	
 	^snd
 ]]]
+
+@@note revue de code en cours
 
 Les 2 classes définissant les instruments sont rigoureusement les mêmes, mais je vous invite une fois de plus à modifier les valeurs de l'enveloppe ou de la modulation et d'écouter le résultat.
 
