@@ -1,4 +1,4 @@
-!Une introduction aux sons en Pharo
+! Une introduction aux sons en Pharo
 
 Dans cet article nous allons vous présenter une facette de Pharo qu'on n'a pas l'habitude de voir, un domaine pour lequel il peut surprendre. Ce domaine c'est la synthèse sonore. Dès qu'on a besoin de sonoriser un peu notre tout nouveau programme on pense soit à du mp3 pour la musique ou des sons digitalisés pour les bruitages. Dans Pharo on dispose d'outils et bibliothèques permettant créer de toute pièce du son synthétisé pour nos productions. Nous allons vous montrer comment on fait cela en quelques ligne de code seulement.
 
@@ -25,7 +25,7 @@ Gofer new
 ]]]
 
 
-!Bases de la synthèse FM par l'exemple
+!!Bases de la synthèse FM par l'exemple
 
 Avant de se familiariser avec les différentes méthodes utiles nous allons nous assurer que notre environnement puisse jouer un son convenablement. Pour cela on va ouvrir un workspace (depuis le menu Tools) et évaluer la ligne de code suivante. Nous vous expliquerons par la suite ce dont il s'agit.
 
@@ -46,7 +46,7 @@ SoundPlayer stopPlayerProcess.
 SoundPlayer startUp
 ]]]
 
-Maintenant que le son est restauré nous allons découvrir comment celui-ci est généré. Prenons le code de la méthode qui définit l'instrument ""organ1"":
+Maintenant que le son est restauré nous allons découvrir comment celui-ci est généré. Prenons le code de la méthode qui définit l'instrument ==organ1==:
 
 [[[
 FMSound class>>organ1
@@ -64,7 +64,7 @@ FMSound class>>organ1
 
 
 Etudions cette méthode:
-Tout d'abord, elle crée une nouvelle instance de la classe ""FMSound""
+Tout d'abord, elle crée une nouvelle instance de la classe ==FMSound==.
 
 [[[
 sound := self new.
@@ -95,7 +95,7 @@ La définition de l'envelopper permet ainsi de jouer avec le volume d'un son pou
 @@note Montrer un exemple serait bien.
 
 
-!Comment faire pour jouer notre propre son ?
+!!Comment faire pour jouer notre propre son ?
 Nous allons vous montrer comment nous allons créer notre propre son. 
 Commençons par jouer un ==LA== de cette manière:
 
@@ -104,12 +104,12 @@ Commençons par jouer un ==LA== de cette manière:
 ]]]
 
 Le son est joué à une fréquence de 440 Hz pendant 1 seconde.
-@@ un jour on devra changer l'interface car je hais cette method setPitch:duration:loudness: aurait deja ete 10 fois mieux.
+@@note un jour on devra changer l'interface car je hais cette method setPitch:duration:loudness: aurait deja ete 10 fois mieux.
 
 
-La classe ""FMSound"" permet la génération de sons sinusoïdaux. Ça donne un son assez doux et régulier. La figure *sinusoide* ci dessous montre à quoi ressemble la courbe.
+La classe ==FMSound== permet la génération de sons sinusoïdaux. Ça donne un son assez doux et régulier. La figure *sinusoide* ci dessous montre à quoi ressemble la courbe.
 
-@@note Pouquoi la figure n'est pas juste en dessous du paragraphe ??? Ca c'est latex qui controle le placement pour le moment c'est pas grave.:)
+@@note cela serait sympa d'utiliser plotMorph pour montrer la sinusode.
 
 +Sinusoïde produite>file://figures/sine.png|width=50|label=sinusoide+
 
@@ -131,12 +131,12 @@ Le ==SOL#==  par exemple s'écrit
 (FMSound new setPitch: 'g#4' dur:1.0 loudness: 1) play
 ]]]
 
-@@ encore une fois passer une chaine ou un nombre est horrible. cela serait bien de faire le menage dans ce code.
+@@note encore une fois passer une chaine ou un nombre est horrible. cela serait bien de faire le menage dans ce code.
 
 
-!Jouer plusieurs sons en séquence
+!!Jouer plusieurs sons en séquence
 
-Jouer un son c'est bien, mais en jouer deux c'est mieux. Pour cela nous avons à notre disposition une classe nommée ""SequentialSound"". Comme son nom l'indique nous allons pouvoir jouer les sons qu'on souhaite de manière séquentielle.
+Jouer un son c'est bien, mais en jouer deux c'est mieux. Pour cela nous avons à notre disposition une classe nommée ==SequentialSound==. Comme son nom l'indique nous allons pouvoir jouer les sons qu'on souhaite de manière séquentielle.
 
 [[[
 | seq |
@@ -147,8 +147,8 @@ seq add: (FMSound new setPitch: 'g#4' dur:0.5 loudness: 1).
 seq play.
 ]]]
 
-Si nous écoutons les sons générés, nous pouvons percevoir un petit clap entre chaques notes. Afin d'éviter cela il faut rajouter à chaque note une enveloppe de volume.
-@@ enveloppe qui fait quoi?@@
+Si nous écoutons les sons générés, nous pouvons percevoir un petit clap entre chaques notes. Afin d'éviter cela il faut rajouter à chaque note une enveloppe de volume qui va diminuer le volume du son. Ceci est fait en faisant passer le volume de 1, à 0.4 puis 0 comme suit: ==points := { 0@1 . 400@0.4 . 500@0}. ==.
+@@note enveloppe qui fait quoi? est ce correct ce que j'ai ecrit et pourquoi 0 pour le premier?
 
 Changeons un peu le code
 
@@ -159,10 +159,9 @@ seq := SequentialSound new.
 snd1 := FMSound new.
 snd2 := FMSound new.
 snd3 := FMSound new.
-points := OrderedCollection new.
 
 "Creation du volume pour les instruments"
-points add: 0@1; add: 400@0.4; add: 500@0.
+points := { 0@1 . 400@0.4 . 500@0}.
 
 "Generation des notes"
 snd1 setPitch: 'g#4' dur:0.5 loudness: 1.
@@ -183,94 +182,87 @@ seq add: snd3.
 seq play.
 ]]]
 
-@@il faut expliquer ce que l'on a fait. Pas eu le temps doit courrir ailleurs.
-
 La séquence est plus agréable à écouter et les claps de fin ne sont plus audibles. Avec un peu créativité nous allons pouvoir faire quelque chose de ce son.
 
-!Jouer plusieurs sons simultanément
+!!Jouer plusieurs sons simultanément
 
-Jouer des sons en séquence c'est bien mais pas encore suffisant pour donner une âme à notre production. Si nous voulons avoir quelque chose qui sonne correctement à nos oreilles il va falloir maintenant rajouter ce que nous appellerons des pistes. La classe ""MixedSound"" va nous aider à cela.
+Jouer des sons en séquence c'est bien mais pas encore suffisant pour donner une âme à notre production. Si nous voulons avoir quelque chose qui sonne correctement à nos oreilles il va falloir maintenant rajouter ce que nous appellerons des pistes. La classe ==MixedSound== va nous aider à cela.
 
 [[[
-|mix snd1 snd2 points|
+| mix snd1 snd2 points |
 mix := MixedSound new.
 snd1 := FMSound new.
 snd2 := FMSound new.
 
-points := OrderedCollection new.
-
 "Creation du volume pour les instruments"
-points add: 0@1;add: 400@0.4;add: 500@0.
+points := { 0@1;add: 400@0.4 . 500@0 }.
 
 "Generation des notes"
 snd1 setPitch: 'a4' dur:1 loudness: 1.
 snd2 setPitch: 'a3' dur:1 loudness: 1.
 
 "Application de l'enveloppe aux sons"
-snd1 addEnvelope: (VolumeEnvelope points: points loopStart: 3  loopEnd:3 ).
-snd2 addEnvelope: (VolumeEnvelope points: points loopStart: 3  loopEnd:3 ).
+snd1 addEnvelope: (VolumeEnvelope points: points loopStart: 3  loopEnd: 3).
+snd2 addEnvelope: (VolumeEnvelope points: points loopStart: 3  loopEnd: 3).
 
 mix add: snd1 pan: 0; add: snd2 pan: 1.
 
 mix play.
 ]]]
+@@note c'est bien la methode add:pan:?
 
-Le son généré est quelque peu old school. Modifions un peu les valeurs ""setPitch"" pour obtenir des notes différentes et nous familiariser avec les méthodes. Les enveloppes de volume modifient la courbe du son au cours du temps et peuvent être utilisées pour obtenir des effets particuliers.
+Le son généré est quelque peu old school. Modifions un peu les valeurs de l'attaque à l'aide de la méthode==setPitch:dur:loudness:== pour obtenir des notes différentes et nous familiariser avec les méthodes. Les enveloppes de volume modifient la courbe du son au cours du temps et peuvent être utilisées pour obtenir des effets particuliers.
 
 Remplacez les valeurs des points par
 
 [[[
-points add: 0@1;add: 100@0.6; add: 200@0; add: 300@0.6;add: 400@0.2;add: 500@0.
+points := { 0@1 . 100@0.6  . 200@0 . 300@0.6 . 400@0.2 . 500@0 }.
 ]]]
 
 et la déclaration des enveloppes par
 
 [[[
-snd1 addEnvelope: (VolumeEnvelope points: points loopStart: 6  loopEnd:6 ).
-snd2 addEnvelope: (VolumeEnvelope points: points loopStart: 6  loopEnd:6 ).
+snd1 addEnvelope: (VolumeEnvelope points: points loopStart: 6  loopEnd: 6).
+snd2 addEnvelope: (VolumeEnvelope points: points loopStart: 6  loopEnd: 6).
 ]]]
 
 Le son produit comme un écho. La variation entre les valeurs est douce et continue. Un calcul est fait entre chacune d'entre elles pour éviter les cassures disgracieuse à l'oreille. Vous pouvez vous avec les nouvelles valeurs ci dessous.
 
 [[[
-points add: 0@1;add: 100@0.6; add: 200@0; add: 201@0.6;add: 400@0.2;add: 500@0.
+points := { 0@1 . 100@0.6 . 200@0 . 201@0.6 . 400@0.2 . 500@0 }.
 ]]]
 
 La cassure est nettement plus audible.
 
-Nous allons également utiliser le message ""pan:"" qui va positionner le son en stéréo. Une valeur de ""0"" pour gauche et ""1"" pour droite. Une valeur de ""0.5"" place le son au milieu.
+Nous avons également utiliser le message ==pan:== qui va positionner le son en stéréo. Une valeur de ==0 pour gauche et ==1== pour droite. Une valeur de ==0.5== place le son au milieu.
 
-!Les enveloppes
 
-L'enveloppe modifie le son au cours du temps. Nous venons de le voir avec le volume, mais il est également possible de faire varier la note pendant qu'elle est jouée, c'est ce qu'on appel le pitch. De la même manière que pour le volume nous allons définir un ensemble de points qui indiqueront le moment du changement de la fréquence du son. Plus la valeur est haute, plus la note le sera. Si on indique un chiffre négatif, la note descendra en dessous de la note de départ.
+!!Les enveloppes
+
+L'enveloppe modifie le son au cours du temps. Nous venons de le voir avec le volume, mais il est également possible de faire varier la note pendant qu'elle est jouée, c'est ce qu'on appelle l'attque de la note, le pitch en anglais. De la même manière que pour le volume nous allons définir un ensemble de points qui indiqueront le moment du changement de la fréquence du son. Plus la valeur est haute, plus la note le sera. Si on indique un chiffre négatif, la note descendra en dessous de la note de départ. Nous définissons donc une enveloppe mais cette fois-ci une enveloppe d'attaque en utilisant la classe ==PitchEnvelope==.
 
 [[[
-|snd p|
-p := OrderedCollection new.
-p add: 0@0; add: 100@0.1; add: 200@0.2; add: 300@(-0.5);
-  add: 400@0.7; add: 800@0.8; add: 1000@1.
+| snd p |
+p := { 0@0 . 100@0.1 . 200@0.2 . 300@(-0.5) . 400@0.7 . 800@0.8 . 1000@1 }.
 snd := FMSound new.
-snd addEnvelope: (PitchEnvelope points: p loopStart:7  loopEnd:7 ).
+snd addEnvelope: (PitchEnvelope points: p loopStart: 7  loopEnd:7).
 (snd setPitch: 'a4' dur: 2 loudness: 0.5) play.
 ]]]
 
-La variation se fait en douceur, sans cassures. En couplant cela à une enveloppe de volume on peut commencer à produire un son intéressant.
+La variation se fait en douceur et sans cassures. En couplant cela à une enveloppe de volume on peut commencer à produire un son intéressant.
 
 [[[
 |snd p p2|
 p := OrderedCollection new.
-p2 := OrderedCollection new.
-p add: 0@0; add: 100@0.1; add: 200@0.2; add: 300@(-0.5);
-  add: 400@0.7; add: 800@0.8; add: 1000@1.
-p2 add: 0@0; add: 100@0.1; add: 200@0.2; add: 300@(-0.5);
-   add: 400@0.7; add: 800@0.8; add: 1000@0.
+p2 := { 0@0 . 100@0.1 . 200@0.2 . 300@(-0.5) . 400@0.7 . 800@0.8 . 1000@1 . 0@0 . 100@0.1 . 200@0.2 . 300@(-0.5)
+   . 400@0.7 . 800@0.8 . 1000@0}.
 snd := FMSound new.
-snd addEnvelope: (PitchEnvelope points: p loopStart:7  loopEnd:7 ).
-snd addEnvelope: (VolumeEnvelope points: p2 loopStart:7  loopEnd:7 ).
-(snd setPitch: 'a4' dur: 2 loudness: 0.5)play.
+snd addEnvelope: (PitchEnvelope points: p loopStart: 7  loopEnd: 7).
+snd addEnvelope: (VolumeEnvelope points: p2 loopStart: 7  loopEnd: 7).
+(snd setPitch: 'a4' dur: 2 loudness: 0.5) play.
 ]]]
 
-Au lieu de définir l'enveloppe points par points nous allons utiliser une méthode appelée ""exponentialDecay:"" de la classe ""VolumeEnvelope"" pour le volume ou ""PitchEnvelope"" pour le pitch. La courbe sera de type exponentielle partant du volume le plus haut pour arriver en douceur à 0.
+Au lieu de définir l'enveloppe points par points nous allons utiliser une méthode appelée ""exponentialDecay:"" de la classe ""VolumeEnvelope"" pour le volume oe la classe ""PitchEnvelope"" pour le pitch. La courbe sera de type exponentielle partant du volume le plus haut pour arriver en douceur à 0.
 
 La définition du volume devient alors ceci
 
@@ -295,7 +287,7 @@ Les enveloppes viennent compléter nos connaissances sur la génération du son.
 
 On a entre nos mains pratiquement tous les outils pour écrire notre première mélodie, que dis-je, notre première super production !
 
-!Jouer une mélodie
+!!Jouer une mélodie
 
 A quoi peut bien ressembler de la musique produite dans Pharo ? Evaluons la ligne de code suivante dans un workspace et écoutons.
 
@@ -385,25 +377,22 @@ FMSound class>>fm1
 
 [[[
 FMSound class>>fm2
-	|snd|
-	
+	| snd |
 	snd := self new.
-
 	snd addEnvelope: (VolumeEnvelope
-			points: {  0@1 . 300@0 }
+			points: { 0@1 . 300@0 }
 			loopStart: 2
 			loopEnd: 2
 			).
 	snd modulation: 1 ratio: 2.
-	
 	^snd
 ]]]
 
 @@note revue de code en cours
 
-Les 2 classes définissant les instruments sont rigoureusement les mêmes, mais je vous invite une fois de plus à modifier les valeurs de l'enveloppe ou de la modulation et d'écouter le résultat.
+Les deux classes définissant les instruments sont rigoureusement les mêmes, mais je vous invite une fois de plus à modifier les valeurs de l'enveloppe ou de la modulation et d'écouter le résultat.
 
-!Jouer un sample à partir d'un fichier ou directement depuis la mémoire
+!!Jouer un sample à partir d'un fichier ou directement depuis la mémoire
 
 La sonorisation d'une production ne passe pas essentiellement par de la synthèse sonore, parfois il est nécessaire de faire appel à des bruitages ou des voix enregistrées.
 
@@ -440,7 +429,7 @@ spl2 duration: 0.1.
 spl2 play.
 ]]]
 
-!Un dernier petit effort
+!!Un dernier petit effort
 
 Nous allons clore cet article sur une dernière méthode permettant de jouer plusieurs sons digitalisés en séquence.
 
@@ -469,7 +458,7 @@ SampledSound addLibrarySoundNamed: 'bateau'
 Maintenant que tout nos sons sont chargés nous allons les jouer en séquence grâce à la méthode ""QueueSound"".
 
 [[[
-|mix q1 q2 spl1 spl2 spl3|
+| mix q1 q2 spl1 spl2 spl3 |
 
 q1 := QueueSound new.
 q2 := QueueSound new.
@@ -492,11 +481,14 @@ mix add: q1 pan: 0 volume: 0.100;
 mix play.
 ]]]
 
-!Annexes
+!!Annexes
 
-!!Tableau des fréquences
+!!!Tableau des fréquences
 
+@@note to debug 
+[[[
 @frequence
+
 |!|Note|!|Octave
 || |!|-1|!|0|!|1|!|2|!|3|!|4|!|5|!|6|!|7
 |!|C||16.3||32.7||65||131||262||523||1046.5||2093||4186
@@ -511,8 +503,9 @@ mix play.
 |!|A||27.5||55.0||110||220||440||880||1760||3520||7040
 |!|A#||29.1||58.0||117||233||466||932||1865||3729||7458
 |!|B||30.8||62.0||123||247||494||988||1975||3951||7902
+]]]
 
-!!Notation anglaise
+!!!Notation anglaise
 
 @notation
 |!|Anglais|C|C#|D|D#|E|F|F#|G|G#|A|A#|H
