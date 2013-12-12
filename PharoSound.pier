@@ -81,7 +81,7 @@ sound addEnvelope: (VolumeEnvelope
 @@note la phrase ne va pas du tout, a reformuler - SD: oui Je pense que le truc a faire est finir l'explication simple et dans un second temps expliquer.
 
 
-Une enveloppe est définie d'après un ensemble de points et d'une boucle. Elle peut aussi bien reprendre l'ensemble des points ou seulement boucler sur 1 seul point. Ici on ajoute cette enveloppe au son avec une boucle sur allant des indices 2 et 4: donc on rejoue la séquence: ==60@1.0 . 110@0.8 . 200@1.0 ==.Si on regarde les valeurs on voit qu'elles oscillent entre 0.8 et 1.
+Une enveloppe est définie d'après un ensemble de points et d'une boucle. Elle peut aussi bien reprendre l'ensemble des points ou seulement boucler sur 1 seul point. Ici on ajoute cette enveloppe au son avec une boucle sur allant des indices 2 et 4: donc on rejoue la séquence: ==60@1.0 . 110@0.8 . 200@1.0 ==. Si on regarde les valeurs on voit qu'elles oscillent entre 0.8 et 1.
 
 
 Finalement, la méthode retourne le son avec comme paramètre la note (ici exprimée en Hz, voir tableau ""*frequence*""), la durée en seconde et un volume global de la note. Ce volume sera ensuite modulé grâce à l'enveloppe qui est définie.
@@ -92,25 +92,30 @@ Finalement, la méthode retourne le son avec comme paramètre la note (ici expri
 
 
 La définition de l'envelopper permet ainsi de jouer avec le volume d'un son pour qu'il s'atténue, ou pour donner un effet d'écho par exemple. 
-@@ Montrer un exemple serait bien.
+@@note Montrer un exemple serait bien.
 
 
 !Comment faire pour jouer notre propre son ?
-
-Nous pouvons jouer un ==LA== de cette manière
+Nous allons vous montrer comment nous allons créer notre propre son. 
+Commençons par jouer un ==LA== de cette manière:
 
 [[[
 (FMSound new setPitch: 440 dur: 1.0 loudness: 1) play
 ]]]
 
 Le son est joué à une fréquence de 440 Hz pendant 1 seconde.
+@@ un jour on devra changer l'interface car je hais cette method setPitch:duration:loudness: aurait deja ete 10 fois mieux.
+
 
 La classe ""FMSound"" permet la génération de sons sinusoïdaux. Ça donne un son assez doux et régulier. La figure *sinusoide* ci dessous montre à quoi ressemble la courbe.
-@@note Pouquoi la figure n'est pas juste en dessous du paragraphe ???
+
+@@note Pouquoi la figure n'est pas juste en dessous du paragraphe ??? Ca c'est latex qui controle le placement pour le moment c'est pas grave.:)
 
 +Sinusoïde produite>file://figures/sine.png|width=50|label=sinusoide+
 
-Si on veut jouer une seule note l'écriture est simple, mais cela peut rapidement devenir long, fastidieux et les erreurs difficiles à détecter si on doit écrire tout une mélodie de cette manière.
+
+Si on veut jouer une seule note l'écriture est simple, mais cela peut rapidement devenir long, fastidieux et les erreurs difficiles à détecter 
+si on doit écrire tout une mélodie de cette manière.
 
 Une chose à savoir, est qu'au lieu de définir une note par sa fréquence nous pouvons l'écrire dans sa notation anglaise. Le tableau ""*notation*"" va nous indiquer les correspondances.
 
@@ -126,25 +131,29 @@ Le ==SOL#==  par exemple s'écrit
 (FMSound new setPitch: 'g#4' dur:1.0 loudness: 1) play
 ]]]
 
+@@ encore une fois passer une chaine ou un nombre est horrible. cela serait bien de faire le menage dans ce code.
+
+
 !Jouer plusieurs sons en séquence
 
-Jouer un son c'est bien, mais en jouer deux c'est mieux. Pour cela nous avons à notre disposition une méthode nommée ""SequentialSound"". Comme son nom l'indique nous allons pouvoir jouer les sons qu'on souhaite de manière séquentielle.
+Jouer un son c'est bien, mais en jouer deux c'est mieux. Pour cela nous avons à notre disposition une classe nommée ""SequentialSound"". Comme son nom l'indique nous allons pouvoir jouer les sons qu'on souhaite de manière séquentielle.
 
 [[[
-|seq|
+| seq |
 seq := SequentialSound new.
-seq add: ((FMSound new) setPitch: 'g#4' dur:0.5 loudness: 1).
-seq add: ((FMSound new) setPitch: 'a3' dur:0.5 loudness: 1).
-seq add: ((FMSound new) setPitch: 'g#4' dur:0.5 loudness: 1).
+seq add: (FMSound new setPitch: 'g#4' dur:0.5 loudness: 1).
+seq add: (FMSound new setPitch: 'a3' dur:0.5 loudness: 1).
+seq add: (FMSound new setPitch: 'g#4' dur:0.5 loudness: 1).
 seq play.
 ]]]
 
 Si nous écoutons les sons générés, nous pouvons percevoir un petit clap entre chaques notes. Afin d'éviter cela il faut rajouter à chaque note une enveloppe de volume.
+@@ enveloppe qui fait quoi?@@
 
 Changeons un peu le code
 
 [[[
-|seq snd1 snd2 snd3 points|
+| seq snd1 snd2 snd3 points |
 "Declaration des sons"
 seq := SequentialSound new.
 snd1 := FMSound new.
@@ -153,7 +162,7 @@ snd3 := FMSound new.
 points := OrderedCollection new.
 
 "Creation du volume pour les instruments"
-points add: 0@1;add: 400@0.4;add: 500@0.
+points add: 0@1; add: 400@0.4; add: 500@0.
 
 "Generation des notes"
 snd1 setPitch: 'g#4' dur:0.5 loudness: 1.
@@ -161,18 +170,20 @@ snd2 setPitch: 'a3' dur:0.5 loudness: 1.
 snd3 setPitch: 'g#4' dur:0.5 loudness: 1.
 
 "Application de l'enveloppe aux sons"
-snd1 addEnvelope: (VolumeEnvelope points: points loopStart: 3  loopEnd:3 ).
-snd2 addEnvelope: (VolumeEnvelope points: points loopStart: 3  loopEnd:3 ).
-snd3 addEnvelope: (VolumeEnvelope points: points loopStart: 3  loopEnd:3 ).
+snd1 addEnvelope: (VolumeEnvelope points: points loopStart: 3  loopEnd: 3).
+snd2 addEnvelope: (VolumeEnvelope points: points loopStart: 3  loopEnd: 3).
+snd3 addEnvelope: (VolumeEnvelope points: points loopStart: 3  loopEnd: 3).
 
 "Les sons les uns a la suite des autres"
 seq add: snd1.
 seq add: snd2.
 seq add: snd3.
 
-"On joute le tout"
+"On joue le tout"
 seq play.
 ]]]
+
+@@il faut expliquer ce que l'on a fait. Pas eu le temps doit courrir ailleurs.
 
 La séquence est plus agréable à écouter et les claps de fin ne sont plus audibles. Avec un peu créativité nous allons pouvoir faire quelque chose de ce son.
 
@@ -354,7 +365,7 @@ FMSound class>>pacmanV2On: aSound
         ^self noteSequenceOn: aSound from: notes.
 ]]]
 
-Les 2 méthodes suivantes décrivent les instruments qu'on va utiliser pour jouer la mélodie.
+Les deux méthodes suivantes décrivent les instruments qu'on va utiliser pour jouer la mélodie.
 
 [[[
 FMSound class>>fm1
