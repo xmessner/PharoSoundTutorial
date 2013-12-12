@@ -1,13 +1,33 @@
-!Intro
+!Une introduction aux sons en Pharo
 
-Dans cet article je vais vous présenter une facette de Pharo qu'on a pas l'habitude de voir, un domaine pour lequel il peut surprendre. Ce domaine c'est la synthèse sonore. Dès qu'on a besoin de sonoriser un peu notre tout nouveau programme on pense soit à du mp3 pour la musique ou des sons digitalisés pour les bruitages. Dans Pharo on dispose d'outils et bibliothèques permettant créer de toute pièce du son synthétisé pour nos production. Nous allons vous montrer comment on fait cela en quelques ligne de code seulement.
+Dans cet article nous allons vous présenter une facette de Pharo qu'on n'a pas l'habitude de voir, un domaine pour lequel il peut surprendre. Ce domaine c'est la synthèse sonore. Dès qu'on a besoin de sonoriser un peu notre tout nouveau programme on pense soit à du mp3 pour la musique ou des sons digitalisés pour les bruitages. Dans Pharo on dispose d'outils et bibliothèques permettant créer de toute pièce du son synthétisé pour nos productions. Nous allons vous montrer comment on fait cela en quelques ligne de code seulement.
 
-Tout d'abord récupérer et installer la version XXX de Pharo à l'adresse: http://www.pharo.org/YYY
-@@note rajouter l'adresse de téléchargement
+
+Tout d'abord récupérer et installer la dernière version 30 de Pharo à l'adresse: http://www.pharo.org/.
+Le plus simple restant d'utiliser un script de téléchargement comme ceux disponible à http://get.pharo.org
+
+[[[
+curl get.pharo.org/30+vmLatest | bash 
+
+or if curl is not available: 
+
+wget -O- get.pharo.org/30+vmLatest | bash
+]]]
+
+Une fois obtenue vous devez charger le package PharoSound en utilisant Gofer le gestionnaire de packages
+
+[[[
+Gofer new
+	smalltalkhubUser: 'PharoExtras' project:'Sound'
+	configuration;
+	load.
+(ConfigurationOfPharoSound project version: #stable) load
+]]]
+
 
 !Bases de la synthèse FM par l'exemple
 
-Avant de se familiariser avec les différentes méthodes utiles on va s'assurer que notre environnement puisse jouer un son convenablement. Pour cela on va ouvrir un workspace (depuis le menu Tools) et évaluer la ligne de code suivante. Nous vous expliquerons par la suite ce dont il s'agit.
+Avant de se familiariser avec les différentes méthodes utiles nous allons nous assurer que notre environnement puisse jouer un son convenablement. Pour cela on va ouvrir un workspace (depuis le menu Tools) et évaluer la ligne de code suivante. Nous vous expliquerons par la suite ce dont il s'agit.
 
 [[[
 FMSound organ1 play.
@@ -22,11 +42,11 @@ Si aucun son n'est produit vous pouvez vérifier ces premiers points
 -Le process sonore ne fonctionne plus. Il faut l'arrêter puis le relancer en évaluant 
 
 [[[
-SoundPlayer stopPlayerProcess
+SoundPlayer stopPlayerProcess.
 SoundPlayer startUp
 ]]]
 
-Maintenant que le son est restauré nous allons découvrir comment celui ci est généré. Prenons le code de la méthode qui définit l'instrument ""organ1"":
+Maintenant que le son est restauré nous allons découvrir comment celui-ci est généré. Prenons le code de la méthode qui définit l'instrument ""organ1"":
 
 [[[
 FMSound class>>organ1
@@ -42,13 +62,15 @@ FMSound class>>organ1
         ^ snd
 ]]]
 
-Tout d'abord, créons une nouvelle instance de la classe ""FMSound""
+
+Etudions cette méthode:
+Tout d'abord, elle crée une nouvelle instance de la classe ""FMSound""
 
 [[[
 sound := self new.
 ]]]
 
-Nous définissons ensuite un ensemble de points afin de créer une enveloppe de volume. Pour chaque point la première donnée est un nombre en milliseconde, la seconde est le volume exprimé de 0 à 1 (1 étant égal à 100% du volume). Notez qu'utiliser un point est un abus et que le programmeur aurait du utiliser une paire.
+Elle définit ensuite un ensemble de points afin de créer une enveloppe de volume. Pour chaque point la première donnée exprime une durée en milliseconde, la seconde un volume exprimé de 0 à 1 (1 étant égal à 100% du volume). Notez qu'utiliser un point est un abus et que le programmeur aurait du utiliser une paire.
  
 [[[
 sound addEnvelope: (VolumeEnvelope
@@ -56,15 +78,22 @@ sound addEnvelope: (VolumeEnvelope
                       loopStart: 2 loopEnd: 4).
 ]]]
 
-@@note la phrase ne va pas du tout, a reformuler
+@@note la phrase ne va pas du tout, a reformuler - SD: oui Je pense que le truc a faire est finir l'explication simple et dans un second temps expliquer.
 
-L'enveloppe est définie d'après un ensemble de points et d'une boucle. Elle peut aussi bien reprendre l'ensemble des points ou seulement boucler sur 1 seul point. On peut ainsi jouer avec le volume d'un son pour qu'il s'atténue, ou pour donner un effet d'écho par exemple. On ajoute cette enveloppe au son avec une boucle sur l'indice 2 et 4. Si on regarde les valeurs on voit que ça oscille entre 0.8 et 1.
 
-La méthode retourne le son avec comme paramètre la note (ici exprimée en Hz, voir tableau ""*frequence*""), la durée en seconde et un volume global de la note. Ce volume sera ensuite modulé grâce à l'enveloppe qui est définie.
+Une enveloppe est définie d'après un ensemble de points et d'une boucle. Elle peut aussi bien reprendre l'ensemble des points ou seulement boucler sur 1 seul point. Ici on ajoute cette enveloppe au son avec une boucle sur allant des indices 2 et 4: donc on rejoue la séquence: ==60@1.0 . 110@0.8 . 200@1.0 ==.Si on regarde les valeurs on voit qu'elles oscillent entre 0.8 et 1.
+
+
+Finalement, la méthode retourne le son avec comme paramètre la note (ici exprimée en Hz, voir tableau ""*frequence*""), la durée en seconde et un volume global de la note. Ce volume sera ensuite modulé grâce à l'enveloppe qui est définie.
 
 [[[
 ^ sound setPitch: 440.0 dur: 1.0 loudness: 0.5
 ]]]
+
+
+La définition de l'envelopper permet ainsi de jouer avec le volume d'un son pour qu'il s'atténue, ou pour donner un effet d'écho par exemple. 
+@@ Montrer un exemple serait bien.
+
 
 !Comment faire pour jouer notre propre son ?
 
