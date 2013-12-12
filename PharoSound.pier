@@ -234,7 +234,7 @@ points := { 0@1 . 100@0.6 . 200@0 . 201@0.6 . 400@0.2 . 500@0 }.
 
 La cassure est nettement plus audible.
 
-Nous avons également utiliser le message ==pan:== qui va positionner le son en stéréo. Une valeur de ==0 pour gauche et ==1== pour droite. Une valeur de ==0.5== place le son au milieu.
+Nous avons également utiliser le message ==pan:== qui va positionner le son en stéréo. Une valeur de ==0== pour gauche et ==1== pour droite. Une valeur de ==0.5== place le son au milieu.
 
 
 !!Les enveloppes
@@ -252,7 +252,7 @@ snd addEnvelope: (PitchEnvelope points: p loopStart: 7  loopEnd:7).
 La variation se fait en douceur et sans cassures. En couplant cela à une enveloppe de volume on peut commencer à produire un son intéressant.
 
 [[[
-|snd p p2|
+| snd p p2 |
 p := OrderedCollection new.
 p2 := { 0@0 . 100@0.1 . 200@0.2 . 300@(-0.5) . 400@0.7 . 800@0.8 . 1000@1 . 0@0 . 100@0.1 . 200@0.2 . 300@(-0.5)
    . 400@0.7 . 800@0.8 . 1000@0}.
@@ -262,16 +262,17 @@ snd addEnvelope: (VolumeEnvelope points: p2 loopStart: 7  loopEnd: 7).
 (snd setPitch: 'a4' dur: 2 loudness: 0.5) play.
 ]]]
 
-Au lieu de définir l'enveloppe points par points nous allons utiliser une méthode appelée ""exponentialDecay:"" de la classe ""VolumeEnvelope"" pour le volume oe la classe ""PitchEnvelope"" pour le pitch. La courbe sera de type exponentielle partant du volume le plus haut pour arriver en douceur à 0.
+@@note why p est vide
 
-La définition du volume devient alors ceci
+Au lieu de définir l'enveloppe points par points nous allons utiliser une méthode appelée ==exponentialDecay:== de la classe ==VolumeEnvelope== pour le volume oe la classe ==PitchEnvelope== pour le pitch. La courbe sera de type exponentielle partant du volume le plus haut pour arriver en douceur à 0.
+
+La définition du volume devient alors ceci:
 
 [[[
 snd addEnvelope: (VolumeEnvelope exponentialDecay: 0.9).
 ]]]
 
-La valeur doit être impérativelement plus grande que 0 et plus petite que 1.
-Pour connaître l'ensemble des points générés il suffit de faire un ""clic droit/Print it"" sur la ligne de code suivante
+La valeur doit être impérativement plus grande que 0 et plus petite que 1. Pour connaître l'ensemble des points générés il suffit de faire un ""clic droit/Print it"" sur la ligne de code suivante
 
 [[[
 (VolumeEnvelope exponentialDecay: 0.2) points.
@@ -285,7 +286,7 @@ Le résultat est le suivant
 
 Les enveloppes viennent compléter nos connaissances sur la génération du son. Nous savons donc jouer un son, plusieurs sons les uns après les autres ou encore plusieurs sons joués en même temps.
 
-On a entre nos mains pratiquement tous les outils pour écrire notre première mélodie, que dis-je, notre première super production !
+On a entre nos mains pratiquement tous les outils pour écrire notre première mélodie, que disons-nous, notre première super production !
 
 !!Jouer une mélodie
 
@@ -313,7 +314,9 @@ notes := #((a3 200 150) (a4 100 150) (g3 150 150))
 
 Nous allons écrire notre premier morceau avec un air qui devrait rappeler des bons souvenirs à tout ceux qui ont connu le début des jeux vidéos.
 
-Déclarerons la classe permettant de mixer l'ensemble des pistes.
+@@note pourquoi ne pas creer une classe separee et pas modifier FMSound. Je trouverais cela plus propre
+
+Déclarons la classe permettant de mixer l'ensemble des pistes.
 
 [[[
 FMSound class>>pacman
@@ -324,7 +327,7 @@ FMSound class>>pacman
 		add: (self pacmanV2On: self fm2) pan: 0.5.
 ]]]
 
-Les 2 méthodes suivantes contiennent l'ensemble des notes à jouer avec le triplet note, durée et volume.
+Les deux méthodes suivantes contiennent l'ensemble des notes à jouer avec le triplet note, durée et volume.
 
 [[[
 FMSound class>>pacmanV1On: aSound
@@ -342,6 +345,7 @@ FMSound class>>pacmanV1On: aSound
 
         ^self noteSequenceOn: aSound from: notes.
 ]]]
+@@note on doit expliquer noteSequenceOn: 
 
 La méthode suivante va produire une mélodie avec des notes assez basse. Lorsqu'un son sinusoïdale possède une fréquence basse, le volume de celui ci semble faible. Pour que cette piste soit audible on va augmenter le son de chacune des notes.
 
@@ -362,17 +366,12 @@ Les deux méthodes suivantes décrivent les instruments qu'on va utiliser pour j
 [[[
 FMSound class>>fm1
 	|snd|
-
 	snd := self new.
-	
-	snd addEnvelope: (VolumeEnvelope
-			points: { 0@1 . 300@0 }
-			loopStart: 2
-			loopEnd: 2
-			).
+	snd addEnvelope: (VolumeEnvelope points: { 0@1 . 300@0 }
+					 				 loopStart: 2
+									 loopEnd: 2).
 	snd modulation: 1 ratio: 2.
-	
-	^snd
+	^ snd
 ]]]
 
 [[[
@@ -382,21 +381,20 @@ FMSound class>>fm2
 	snd addEnvelope: (VolumeEnvelope
 			points: { 0@1 . 300@0 }
 			loopStart: 2
-			loopEnd: 2
-			).
+			loopEnd: 2).
 	snd modulation: 1 ratio: 2.
 	^snd
 ]]]
 
 @@note revue de code en cours
 
-Les deux classes définissant les instruments sont rigoureusement les mêmes, mais je vous invite une fois de plus à modifier les valeurs de l'enveloppe ou de la modulation et d'écouter le résultat.
+Les deux méthodes définissant les instruments sont rigoureusement les mêmes, mais je vous invite une fois de plus à modifier les valeurs de l'enveloppe ou de la modulation et d'écouter le résultat.
 
-!!Jouer un sample à partir d'un fichier ou directement depuis la mémoire
+!!Jouer un sample 
 
-La sonorisation d'une production ne passe pas essentiellement par de la synthèse sonore, parfois il est nécessaire de faire appel à des bruitages ou des voix enregistrées.
+La sonorisation d'une production ne passe pas essentiellement par de la synthèse sonore, parfois il est nécessaire de faire appel à des bruitages ou des voix enregistrées. Nous allons vous montrer comment à partir d'un fichier ou directement depuis la mémoire nous pouvons jouer un sample..
 
-Essayons dans un premier temps de jouer un son à partir d'un fichier au format wav
+Essayons dans un premier temps de jouer un son à partir d'un fichier au format wav.
 
 [[[
 (SampledSound fromWaveFileNamed: '/home/messner/sound.wav') play
@@ -404,40 +402,43 @@ Essayons dans un premier temps de jouer un son à partir d'un fichier au format 
 
 Le son est joué directement depuis le fichier, cependant si nous faisions un jeu, les chargements risqueraient de saccader les animations et rendre le jeu injouable. Afin d'éviter ces petits désagréments les sons seront chargés en mémoire et joués lorsque ce sera nécessaire.
 
-Pour cela on va le rajouter à notre librairie de sons
+Pour cela on va le rajouter à notre librairie de sons en utilisant le message ==addLibrarySoundNamed:samples:samplingRate:==. 
+@@note on devrait ajouter une methode ==addLibrarySoundNamed:== qui appelle addLibrary avec samples et originalSamplingRate
 
 [[[
-|spl spl2|
-
+| spl spl2 |
 "Chargement du son a partir d'un fichier"
 spl := SampledSound fromWaveFileNamed: '/home/messner/guitar.wav'.
+
 "Ajout du son dans la librairie pour le jouer plus tard"
 SampledSound addLibrarySoundNamed: 'guitar'
              samples: spl samples
              samplingRate: spl originalSamplingRate.
 ]]]
 
-@@note le "à" n'est pas correctement interprété dans un bloc. Pkoi ???
+@@note le "à" n'est pas correctement interprété dans un bloc. Pkoi ??? surement un probleme de police
 
 Il nous reste plus qu'à le jouer à la fréquence et à la durée souhaitée
 
 [[[
-|spl spl2|
+| spl spl2 |
 spl := SampledSound soundNamed: 'guitar'.
 spl2 := (SampledSound samples: spl samples samplingRate: 2000).
 spl2 duration: 0.1.
 spl2 play.
 ]]]
 
+@@note estil possible de le jouer a la vitesse ou il a ete enregistre?
+
 !!Un dernier petit effort
 
 Nous allons clore cet article sur une dernière méthode permettant de jouer plusieurs sons digitalisés en séquence.
 
 Dans un premier temps nous allons charger en mémoire les différents samples qui seront utilisés.
+@@note on doit mettre les fichiers wav accessibles de facon a ce que le gars puissent reproduire le code. pourrais-tu mettre les fichiers dans git deaj?
 
 [[[
-|spl spl1 spl2|
-
+| spl spl1 spl2 |
 "Chargement des sons"
 spl := SampledSound fromWaveFileNamed: '/home/messner/ocean.wav'.
 spl1 := SampledSound fromWaveFileNamed: '/home/messner/mouette.wav'.
@@ -455,7 +456,10 @@ SampledSound addLibrarySoundNamed: 'bateau'
              samplingRate: spl2 originalSamplingRate.
 ]]]
 
-Maintenant que tout nos sons sont chargés nous allons les jouer en séquence grâce à la méthode ""QueueSound"".
+@@note on doit ameliorer fromWaveFileNamed: pour lui passer un fileSystem FileSystem disc workingDirectory / 'ocean.wav'
+
+Maintenant que tous nos sons sont chargés nous allons les jouer en séquence grâce à la classe ==QueueSound==.
+@@note ==QueueSound== elle fait quoi?
 
 [[[
 | mix q1 q2 spl1 spl2 spl3 |
@@ -481,11 +485,15 @@ mix add: q1 pan: 0 volume: 0.100;
 mix play.
 ]]]
 
+!! Conclusion
+
+Nous vous avons montré une petite partie des possibilités que Pharo offre pour la création et manipulations des sons. Nous espérons vous avoir donner envie d'experimenter. 
+
 !!Annexes
 
 !!!Tableau des fréquences
 
-@@note to debug 
+@@note to debug je ne comprends pas pourquoi le tableu bug. 
 [[[
 @frequence
 
