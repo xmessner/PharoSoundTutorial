@@ -84,12 +84,11 @@ sound addEnvelope: (VolumeEnvelope
 Une enveloppe est définie d'après un ensemble de points et d'une boucle. Elle peut aussi bien reprendre l'ensemble des points ou seulement boucler sur 1 seul point. Ici on ajoute cette enveloppe au son avec une boucle sur allant des indices 2 et 4: donc on rejoue la séquence: ==60@1.0 . 110@0.8 . 200@1.0 ==. Si on regarde les valeurs on voit qu'elles oscillent entre 0.8 et 1.
 
 
-Finalement, la méthode retourne le son avec comme paramètre la note (ici exprimée en Hz, voir tableau ""frequence""), la durée en seconde et un volume global de la note. Ce volume sera ensuite modulé grâce à l'enveloppe qui est définie.
+Finalement, la méthode retourne le son avec comme paramètre la note (ici exprimée en Hz, voir tableau ""*frequence*""), la durée en seconde et un volume global de la note. Ce volume sera ensuite modulé grâce à l'enveloppe qui est définie.
 
 [[[
 ^ sound setPitch: 440.0 dur: 1.0 loudness: 0.5
 ]]]
-
 
 La définition de l'envelopper permet ainsi de jouer avec le volume d'un son pour qu'il s'atténue, ou pour donner un effet d'écho par exemple. 
 @@note Montrer un exemple serait bien.
@@ -117,7 +116,7 @@ La classe ==FMSound== permet la génération de sons sinusoïdaux. Ça donne un 
 Si on veut jouer une seule note l'écriture est simple, mais cela peut rapidement devenir long, fastidieux et les erreurs difficiles à détecter 
 si on doit écrire tout une mélodie de cette manière.
 
-Une chose à savoir, est qu'au lieu de définir une note par sa fréquence nous pouvons l'écrire dans sa notation anglaise. Le tableau ""notation"" va nous indiquer les correspondances.
+Une chose à savoir, est qu'au lieu de définir une note par sa fréquence nous pouvons l'écrire dans sa notation anglaise. Le tableau ""*notation*"" va nous indiquer les correspondances.
 
 Le ==LA== de tout à l'heure peut s'écrire maintenant comme cela
 
