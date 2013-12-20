@@ -15,7 +15,7 @@ wget -O- get.pharo.org/30+vmLatest | bash
 ]]]
 
 Une fois obtenue vous devez charger le package PharoSound en utilisant Gofer le gestionnaire de packages
-
+@@note cela ne fonctionne pas, il y a une erreur lors de l'exécution
 [[[
 Gofer new
 	smalltalkhubUser: 'PharoExtras' project:'Sound'
@@ -37,16 +37,23 @@ Si aucun son n'est produit vous pouvez vérifier ces premiers points
 
 @@note Indiquer la marche à suivre ou une page internet l'indiquant ?
 
--Le volume sonore
--Le plugin sonore n'est pas installé.
--Le process sonore ne fonctionne plus. Il faut l'arrêter puis le relancer en évaluant 
+-Le volume sonore de votre OS n'est pas correctement ajusté ou en mode muet
+-Le plugin sonore n'est pas installé (Linux).
+
+#Télécharger la dernière version de *Squeak 4.4>http://ftp.squeak.org/4.4/Squeak-4.4-All-in-One.zip*
+#Décompresser l'archive dans le répertoire de votre choix.
+#Copier le fichier se trouvant dans ==Contents/Linux-i686/lib/squeak/4.4.7-2357/so.vm-sound-pulse== dans ==bin/vm-sound-pulse==.
+#Changer les droits du plugins avec ==chmod +x bin/vm-sound-pulse==.
+
+@note est-ce que sous les autres OS le son est actif d'origine ?
+-Le process sonore interne ne fonctionne plus. Il faut l'arrêter puis le relancer en évaluant 
 
 [[[
 SoundPlayer stopPlayerProcess.
 SoundPlayer startUp
 ]]]
 
-Maintenant que le son est restauré nous allons découvrir comment celui-ci est généré. Prenons le code de la méthode qui définit l'instrument ==organ1==:
+Maintenant que nous nous sommes assuré que le son est fonctionnel,  nous allons découvrir comment celui-ci est généré. Prenons le code de la méthode qui définit l'instrument ==organ1==:
 
 [[[
 FMSound class>>organ1
@@ -70,7 +77,8 @@ Tout d'abord, elle crée une nouvelle instance de la classe ==FMSound==.
 sound := self new.
 ]]]
 
-Elle définit ensuite un ensemble de points afin de créer une enveloppe de volume. Pour chaque point la première donnée exprime une durée en milliseconde, la seconde un volume exprimé de 0 à 1 (1 étant égal à 100% du volume). Notez qu'utiliser un point est un abus et que le programmeur aurait du utiliser une paire.
+Elle définit ensuite un ensemble de points afin de créer une enveloppe de volume. Pour chaque point la première donnée exprime une durée en milliseconde, la seconde un volume exprimé de 0 à 1 (1 étant égal à 100% du volume).
+@@note "Notez qu'utiliser un point est un abus et que le programmeur aurait du utiliser une paire." <- Est ce qu'on le précise dans ce contexte ? A garder plutot pour faire évoluer le système sonore.
  
 [[[
 sound addEnvelope: (VolumeEnvelope
@@ -78,11 +86,16 @@ sound addEnvelope: (VolumeEnvelope
                       loopStart: 2 loopEnd: 4).
 ]]]
 
-@@note la phrase ne va pas du tout, a reformuler - SD: oui Je pense que le truc a faire est finir l'explication simple et dans un second temps expliquer.
+Nous remarquons qu'une enveloppe se caractérise d'après un ensemble de points et d'une boucle. La méthode associée est ==points:loopStart:loopEnd:==. Une boucle peut aussi bien utiliser l'ensemble des points définis ou 1 seul.
 
+Par exemple ici on ajoute au son une enveloppe avec une boucle allant des indices 2 et 4. La séquence suivante est jouée ==60@1.0 . 110@0.8 . 200@1.0 == pour des valeurs oscillant entre 0.8 et 1. Le volume du son semble vibrer.
+Si nous avions voulu maintenir le volume à un certain niveau, nous aurions écris l'enveloppe comme ceci
 
-Une enveloppe est définie d'après un ensemble de points et d'une boucle. Elle peut aussi bien reprendre l'ensemble des points ou seulement boucler sur 1 seul point. Ici on ajoute cette enveloppe au son avec une boucle sur allant des indices 2 et 4: donc on rejoue la séquence: ==60@1.0 . 110@0.8 . 200@1.0 ==. Si on regarde les valeurs on voit qu'elles oscillent entre 0.8 et 1.
-
+[[[
+sound addEnvelope: (VolumeEnvelope
+                      points: { 0@0 . 60@1.0 . 110@0.8 . 200@1.0 . 250@0.0}
+                      loopStart: 5 loopEnd: 5).
+]]]
 
 Finalement, la méthode retourne le son avec comme paramètre la note (ici exprimée en Hz, voir tableau ""*frequence*""), la durée en seconde et un volume global de la note. Ce volume sera ensuite modulé grâce à l'enveloppe qui est définie.
 
@@ -90,11 +103,8 @@ Finalement, la méthode retourne le son avec comme paramètre la note (ici expri
 ^ sound setPitch: 440.0 dur: 1.0 loudness: 0.5
 ]]]
 
-La définition de l'envelopper permet ainsi de jouer avec le volume d'un son pour qu'il s'atténue, ou pour donner un effet d'écho par exemple. 
-@@note Montrer un exemple serait bien.
-
-
 !!Comment faire pour jouer notre propre son ?
+
 Nous allons vous montrer comment nous allons créer notre propre son. 
 Commençons par jouer un ==LA== de cette manière:
 
@@ -105,20 +115,17 @@ Commençons par jouer un ==LA== de cette manière:
 Le son est joué à une fréquence de 440 Hz pendant 1 seconde.
 @@note un jour on devra changer l'interface car je hais cette method setPitch:duration:loudness: aurait deja ete 10 fois mieux.
 
-
 La classe ==FMSound== permet la génération de sons sinusoïdaux. Ça donne un son assez doux et régulier. La figure *sinusoide* ci dessous montre à quoi ressemble la courbe.
 
 @@note cela serait sympa d'utiliser plotMorph pour montrer la sinusode. - XM: Effectivement, autant utiliser ce qui existe. A creuser.
 
 +Sinusoïde produite>file://figures/sine.png|width=50|label=sinusoide+
 
+L'écriture pour une seule note est simple, mais cela peut rapidement devenir long, fastidieux et les erreurs difficiles à détecter si nous devons écrire tout une mélodie de cette manière.
 
-Si on veut jouer une seule note l'écriture est simple, mais cela peut rapidement devenir long, fastidieux et les erreurs difficiles à détecter 
-si on doit écrire tout une mélodie de cette manière.
+Une chose à savoir, est qu'au lieu de définir une note par sa fréquence nous pouvons l'écrire dans sa notation anglaise. Le tableau ""*notation*"" va nous indiquer les correspondances pour plus de facilité.
 
-Une chose à savoir, est qu'au lieu de définir une note par sa fréquence nous pouvons l'écrire dans sa notation anglaise. Le tableau ""*notation*"" va nous indiquer les correspondances.
-
-Le ==LA== de tout à l'heure peut s'écrire maintenant comme cela
+Le ==LA== de tout à l'heure peut s'écrire maintenant sous cette forme
 
 [[[
 (FMSound new setPitch: 'a4' dur: 1.0 loudness: 1) play
@@ -131,7 +138,6 @@ Le ==SOL#==  par exemple s'écrit
 ]]]
 
 @@note encore une fois passer une chaine ou un nombre est horrible. cela serait bien de faire le menage dans ce code. - XM: Tu verrais quoi à la place ?
-
 
 !!Jouer plusieurs sons en séquence
 
@@ -146,7 +152,8 @@ seq add: (FMSound new setPitch: 'g#4' dur:0.5 loudness: 1).
 seq play.
 ]]]
 
-Si nous écoutons les sons générés, nous pouvons percevoir un petit clap entre chaques notes. Afin d'éviter cela il faut rajouter à chaque note une enveloppe de volume qui va diminuer le volume du son. Ceci est fait en faisant passer le volume de 1, à 0.4 puis 0 comme suit: ==points := { 0@1 . 400@0.4 . 500@0}. ==.
+Si nous écoutons les sons générés, nous pouvons percevoir un petit clap entre chaques transitions de notes. Afin d'éviter cela nous allons rajouter une enveloppe de volume pour chaque notes. Ceci est fait en faisant passer le volume de 1, à 0.4 puis 0 comme suit: ==points := { 0@1 . 400@0.4 . 500@0}. ==. La note jouée est à son maximum au début puis progressivement au cour du temps son volume diminue pour passer à 0 au bout de 500ms. Celle ci étant défini sur une durée égale on a la transition se fait plus naturellement et sonne mieux à l'oreille.
+
 @@note enveloppe qui fait quoi? est ce correct ce que j'ai ecrit et pourquoi 0 pour le premier? Oui ca me paraît correcte. Le zéro correspond au début du son. On est alors au maximum du volume. Par contre je n'ai jamais fais le test de ne pas définir le 0. Peut être est on déjà à 1 ? a creuser.
 
 Changeons un peu le code
@@ -181,11 +188,11 @@ seq add: snd3.
 seq play.
 ]]]
 
-La séquence est plus agréable à écouter et les claps de fin ne sont plus audibles. Avec un peu créativité nous allons pouvoir faire quelque chose de ce son.
+La note jouée est voit le volume à son maximum au début puis progressivement au cour du temps celui-ci diminue pour passer à 0 au bout de 500ms. La durée étant également de 500ms, la transition vers la note suivante est plus douce. La séquence est plus agréable à écouter.
 
 !!Jouer plusieurs sons simultanément
 
-Jouer des sons en séquence c'est bien mais pas encore suffisant pour donner une âme à notre production. Si nous voulons avoir quelque chose qui sonne correctement à nos oreilles il va falloir maintenant rajouter ce que nous appellerons des pistes. La classe ==MixedSound== va nous aider à cela.
+Jouer des sons en séquence c'est bien mais pas encore suffisant pour donner une âme à notre production. Si nous voulons avoir quelque chose qui sonne correctement à nos oreilles il va falloir maintenant rajouter ce que nous appellerons des pistes. La classe ==MixedSound== va nous aider à cela. Elle va litéralement mixer plusieurs sons en même temps.
 
 [[[
 | mix snd1 snd2 points |
