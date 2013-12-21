@@ -152,11 +152,11 @@ seq add: (FMSound new setPitch: 'g#4' dur:0.5 loudness: 1).
 seq play.
 ]]]
 
-Si nous écoutons les sons générés, nous pouvons percevoir un petit clap entre chaques transitions de notes. Afin d'éviter cela nous allons rajouter une enveloppe de volume pour chaque notes. Ceci est fait en faisant passer le volume de 1, à 0.4 puis 0 comme suit: ==points := { 0@1 . 400@0.4 . 500@0}. ==. La note jouée est à son maximum au début puis progressivement au cour du temps son volume diminue pour passer à 0 au bout de 500ms. Celle ci étant défini sur une durée égale on a la transition se fait plus naturellement et sonne mieux à l'oreille.
+Si nous écoutons les sons générés, nous pouvons percevoir un petit clap entre chaques transitions de notes. Afin d'éviter cela nous allons appliquer une enveloppe de volume sur chacune des notes. Ceci est fait en faisant passer le volume de 1, à 0.4 puis 0 comme suit: ==points := { 0@1 . 400@0.4 . 500@0}. ==. La note jouée est à son maximum au début puis passe progressivement à 0 au bout de 500ms. L'enveloppe étant définie sur une durée égale à la durée de la note la transition se fait plus naturellement et sonne mieux à l'oreille.
 
 @@note enveloppe qui fait quoi? est ce correct ce que j'ai ecrit et pourquoi 0 pour le premier? Oui ca me paraît correcte. Le zéro correspond au début du son. On est alors au maximum du volume. Par contre je n'ai jamais fais le test de ne pas définir le 0. Peut être est on déjà à 1 ? a creuser.
 
-Changeons un peu le code
+Voyons ce que donne notre code précédent avec une enveloppe de volume
 
 [[[
 | seq snd1 snd2 snd3 points |
@@ -188,11 +188,11 @@ seq add: snd3.
 seq play.
 ]]]
 
-La note jouée est voit le volume à son maximum au début puis progressivement au cour du temps celui-ci diminue pour passer à 0 au bout de 500ms. La durée étant également de 500ms, la transition vers la note suivante est plus douce. La séquence est plus agréable à écouter.
+La séquence est maintenant plus agréable à écouter.
 
 !!Jouer plusieurs sons simultanément
 
-Jouer des sons en séquence c'est bien mais pas encore suffisant pour donner une âme à notre production. Si nous voulons avoir quelque chose qui sonne correctement à nos oreilles il va falloir maintenant rajouter ce que nous appellerons des pistes. La classe ==MixedSound== va nous aider à cela. Elle va litéralement mixer plusieurs sons en même temps.
+Jouer des sons en séquence c'est bien mais pas encore suffisant pour donner une âme à notre production. Pour cela nous allons utiliser La classe ==MixedSound==. Elle va litéralement mixer plusieurs sons en même temps.
 
 [[[
 | mix snd1 snd2 points |
@@ -233,7 +233,7 @@ snd2 addEnvelope: (VolumeEnvelope points: points loopStart: 6  loopEnd: 6).
 ]]]
 
 Le son produit comme un écho. La variation entre les valeurs est douce et continue. Un calcul est fait entre chacune d'entre elles pour éviter les cassures disgracieuse à l'oreille. Vous pouvez vous avec les nouvelles valeurs ci dessous.
-
+@@note cette phrase est une répétition. J'ai déjà évoqué cela plus haut plusieurs fois ... à revoir !
 [[[
 points := { 0@1 . 100@0.6 . 200@0 . 201@0.6 . 400@0.2 . 500@0 }.
 ]]]
@@ -245,7 +245,8 @@ Nous avons également utiliser le message ==pan:== qui va positionner le son en 
 
 !!Les enveloppes
 
-L'enveloppe modifie le son au cours du temps. Nous venons de le voir avec le volume, mais il est également possible de faire varier la note pendant qu'elle est jouée, c'est ce qu'on appelle l'attque de la note, le pitch en anglais. De la même manière que pour le volume nous allons définir un ensemble de points qui indiqueront le moment du changement de la fréquence du son. Plus la valeur est haute, plus la note le sera. Si on indique un chiffre négatif, la note descendra en dessous de la note de départ. Nous définissons donc une enveloppe mais cette fois-ci une enveloppe d'attaque en utilisant la classe ==PitchEnvelope==.
+Nous venons de voir une première enveloppe qui modifie le volume d'un son. Il y en a une autre qui change la note ou plutôt sa fréquence pendant qu'elle est jouée, c'est ce qu'on appelle l'attaque de la note, le pitch en anglais.
+De la même manière que pour le volume nous allons définir un ensemble de points qui indiqueront le moment du changement de la fréquence du son. Plus la valeur est haute, plus la note le sera. Si on indique un chiffre négatif, la note descendra en dessous de la note de départ. Nous définissons donc une enveloppe mais cette fois-ci une enveloppe d'attaque en utilisant la classe ==PitchEnvelope==.
 
 [[[
 | snd p |
@@ -267,9 +268,8 @@ snd addEnvelope: (VolumeEnvelope points: p2 loopStart: 7  loopEnd: 7).
 (snd setPitch: 'a4' dur: 2 loudness: 0.5) play.
 ]]]
 
-@@note why p est vide - XM: Hummm j'ai l'impression q'un copier/coller s'est mal passé, c'est corrigé.
-
-Au lieu de définir l'enveloppe points par points nous allons utiliser une méthode appelée ==exponentialDecay:== de la classe ==VolumeEnvelope== pour le volume oe la classe ==PitchEnvelope== pour le pitch. La courbe sera de type exponentielle partant du volume le plus haut pour arriver en douceur à 0.
+Imaginons que nous voulions définir plus de points pour diminuer le volume de manière douce. Il faudrait écrire beaucoup de points. C'est faisable mais fastidieux.
+Au lieu de définir l'enveloppe points par points nous allons utiliser une méthode appelée ==exponentialDecay:== de la classe ==VolumeEnvelope== pour le volume ou la classe ==PitchEnvelope== pour le pitch. La courbe sera de type exponentielle partant du volume le plus haut pour arriver en douceur à 0.
 
 La définition du volume devient alors ceci:
 
@@ -283,13 +283,13 @@ La valeur doit être impérativement plus grande que 0 et plus petite que 1. Pou
 (VolumeEnvelope exponentialDecay: 0.2) points.
 ]]]
 
-Le résultat est le suivant
+Nous obtenons le résultat suivant
 
 [[[
 {(0@0.0). (10@1.0). (20@0.2). (30@0.04000000000000001). (50@0.0)}
 ]]]
 
-Les enveloppes viennent compléter nos connaissances sur la génération du son. Nous savons donc jouer un son, plusieurs sons les uns après les autres ou encore plusieurs sons joués en même temps.
+Les enveloppes viennent compléter nos connaissances sur la génération du son. Nous savons donc jouer un son, plusieurs sons les uns après les autres ou encore plusieurs joués en même temps.
 
 On a entre nos mains pratiquement tous les outils pour écrire notre première mélodie, que disons-nous, notre première super production !
 
@@ -301,7 +301,7 @@ A quoi peut bien ressembler de la musique produite dans Pharo ? Evaluons la lign
 FMSound bachFugue play
 ]]]
 
-La musique est une séquence de notes. Nous savons maintenant comment écrire une telle séquence mais pour une mélodie entière ce n'est pas adapté. Il est nécessaire de faire autrement.
+La musique est constituée d'une séquence de notes. Nous savons maintenant comment écrire une telle séquence mais pour une mélodie entière ce n'est pas adapté. Il est nécessaire de faire autrement.
 
 Nous allons décrire l'ensemble des notes dans un tableau. Le format est le suivant
 
@@ -309,9 +309,9 @@ Nous allons décrire l'ensemble des notes dans un tableau. Le format est le suiv
 (note duree volume)
 ]]]
 
-La note peut être écrite sous sa forme littérale ou en hertz. La durée s'exprime en millisecondes. Le volume quant à lui est une valeur entre 0 et 1000. Au delà de 1000 le son peut saturer mais cela peut se révéler utile dans certain cas pour donner un effet.
+La note peut être écrite sous sa forme littérale ou d'après sa fréquence en hertz. La durée s'exprime en millisecondes. Le volume quant à lui est une valeur entre 0 et 1000. Au delà de 1000 le son peut être ammené à saturer mais cela peut se révéler utile dans certains cas pour donner un effet.
 
-Voici un exemple de déclaration
+Voici un exemple de déclaration d'une séquence
 
 [[[
 notes := #((a3 200 150) (a4 100 150) (g3 150 150))
@@ -351,7 +351,7 @@ FMSound class>>pacmanV1On: aSound
         ^self noteSequenceOn: aSound from: notes.
 ]]]
 @@note on doit expliquer noteSequenceOn: 
-
+@@revue de code
 La méthode suivante va produire une mélodie avec des notes assez basse. Lorsqu'un son sinusoïdale possède une fréquence basse, le volume de celui ci semble faible. Pour que cette piste soit audible on va augmenter le son de chacune des notes.
 
 [[[
