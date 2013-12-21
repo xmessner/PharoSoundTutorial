@@ -352,7 +352,7 @@ FMSound class>>pacmanV1On: aSound
 ]]]
 @@note on doit expliquer noteSequenceOn: 
 @@revue de code
-La méthode suivante va produire une mélodie avec des notes assez basse. Lorsqu'un son sinusoïdale possède une fréquence basse, le volume de celui ci semble faible. Pour que cette piste soit audible on va augmenter le son de chacune des notes.
+La méthode suivante va produire une mélodie avec des notes dont les fréquences sont assez basses, le volume de celle ci semble faible. Pour qu'elle soit audible on va augmenter le son de chacune des notes en les passant à 500.
 
 [[[
 FMSound class>>pacmanV2On: aSound
