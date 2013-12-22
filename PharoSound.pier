@@ -14,18 +14,20 @@ or if curl is not available:
 wget -O- get.pharo.org/30+vmLatest | bash
 ]]]
 
-Une fois obtenue vous devez charger le package PharoSound en utilisant Gofer le gestionnaire de packages
-@@note cela ne fonctionne pas, il y a une erreur lors de l'exécution
++Configuration browser: un gestionnaire de packages>file://figures/configurationBrowser.pdf|width=50|label=configurationBrowser+
+
+Une fois obtenue vous devez charger le package PharoSound en utilisant soit le configurationBrowser (comme le montre la Figure *configurationBrowser*) qui se trouve dans le menu Tools soit Gofer le gestionnaire de packages:
+
 [[[
 Gofer new
-	smalltalkhubUser: 'PharoExtras' project:'Sound'
-	configuration;
+	smalltalkhubUser: 'PharoExtras' project: 'Sound';
+	package: 'ConfigurationOfPharoSound';
 	load.
-(ConfigurationOfPharoSound project version: #stable) load
+(#ConfigurationOfPharoSound asClass project version: #stable) load
 ]]]
 
 
-!!Bases de la synthèse FM par l'exemple
+!! Vérifications
 
 Avant de se familiariser avec les différentes méthodes utiles nous allons nous assurer que notre environnement puisse jouer un son convenablement. Pour cela on va ouvrir un workspace (depuis le menu Tools) et évaluer la ligne de code suivante. Nous vous expliquerons par la suite ce dont il s'agit.
 
@@ -33,12 +35,20 @@ Avant de se familiariser avec les différentes méthodes utiles nous allons nous
 FMSound organ1 play.
 ]]]
 
-Si aucun son n'est produit vous pouvez vérifier ces premiers points
+Si aucun son n'est produit vous pouvez vérifier ces premiers points: 
 
-@@note Indiquer la marche à suivre ou une page internet l'indiquant ?
+
++Settings:>file://figures/SoundSetting.pdf|width=50|label=setting+
+
+
 
 -Le volume sonore de votre OS n'est pas correctement ajusté ou en mode muet
+- Vérifiez que le son est permis. Ouvrez le Setting Browser depuis le menu Tools, tapez sound dans la barre et cliquez sur le radio bouton.
+
 -Le plugin sonore n'est pas installé (Linux).
+
+@@note Indiquer la marche à suivre ou une page internet l'indiquant ?
+@@note Aussi mais il faut que cela fonctionne je vais ouvrir un bug
 
 #Télécharger la dernière version de *Squeak 4.4>http://ftp.squeak.org/4.4/Squeak-4.4-All-in-One.zip*
 #Décompresser l'archive dans le répertoire de votre choix.
@@ -52,6 +62,9 @@ Si aucun son n'est produit vous pouvez vérifier ces premiers points
 SoundPlayer stopPlayerProcess.
 SoundPlayer startUp
 ]]]
+
+!!Bases de la synthèse FM par l'exemple
+
 
 Maintenant que nous nous sommes assuré que le son est fonctionnel,  nous allons découvrir comment celui-ci est généré. Prenons le code de la méthode qui définit l'instrument ==organ1==:
 
@@ -351,7 +364,7 @@ FMSound class>>pacmanV1On: aSound
         ^self noteSequenceOn: aSound from: notes.
 ]]]
 @@note on doit expliquer noteSequenceOn: 
-@@revue de code
+@@note revue de code
 La méthode suivante va produire une mélodie avec des notes dont les fréquences sont assez basses, le volume de celle ci semble faible. Pour qu'elle soit audible on va augmenter le son de chacune des notes en les passant à 500.
 
 [[[
@@ -499,26 +512,28 @@ Nous vous avons montré une petite partie des possibilités que Pharo offre pour
 !!!Tableau des fréquences
 
 @@note to debug je ne comprends pas pourquoi le tableau bug. - XM: l'emplacement de l'appel au tableau ne convient pas à la génération du PDF. Si on rajoute la référence au début du document ça refonctionne en partie. J'avais eu ce soucis mais sans connaître le problème ni savoir comment ça s'est résolu ...
+@@note je n'arrive pas a latexer donc je comment pour le moment 
 
-@frequence
+#@frequence
+#
+#|!|Note|!|Octave
+#|| |!|-1|!|0|!|1|!|2|!|3|!|4|!|5|!|6|!|7
+#|!|C||16.3||32.7||65||131||262||523||1046.5||2093||4186
+#|!|C#||17.3||34.6||69||139||277||554||1109||2217||4435
+#|!|D||18.3||36.7||74||147||294||587||1175||2349||4698
+#|!|D#||19.4||38.9||78||156||311||622||1244.5||2489||4978
+#|!|E||20.5||41.2||83||165||330||659||1318.5||2637||5274
+#|!|F||21.8||43.6||87||175||349||698.5||1397||2794||5588
+#|!|F#||23.1||46.2||92.5||185||370||740||1480||2960||5920
+#|!|G||24.5||49.0||98||196||392||784||1568||3136||6272
+#|!|G#||26.0||51.9||104||208||415||831||1661||3322||6645
+#|!|A||27.5||55.0||110||220||440||880||1760||3520||7040
+#|!|A#||29.1||58.0||117||233||466||932||1865||3729||7458
+#|!|B||30.8||62.0||123||247||494||988||1975||3951||7902
 
-|!|Note|!|Octave
-|| |!|-1|!|0|!|1|!|2|!|3|!|4|!|5|!|6|!|7
-|!|C||16.3||32.7||65||131||262||523||1046.5||2093||4186
-|!|C#||17.3||34.6||69||139||277||554||1109||2217||4435
-|!|D||18.3||36.7||74||147||294||587||1175||2349||4698
-|!|D#||19.4||38.9||78||156||311||622||1244.5||2489||4978
-|!|E||20.5||41.2||83||165||330||659||1318.5||2637||5274
-|!|F||21.8||43.6||87||175||349||698.5||1397||2794||5588
-|!|F#||23.1||46.2||92.5||185||370||740||1480||2960||5920
-|!|G||24.5||49.0||98||196||392||784||1568||3136||6272
-|!|G#||26.0||51.9||104||208||415||831||1661||3322||6645
-|!|A||27.5||55.0||110||220||440||880||1760||3520||7040
-|!|A#||29.1||58.0||117||233||466||932||1865||3729||7458
-|!|B||30.8||62.0||123||247||494||988||1975||3951||7902
-
-!!!Notation anglaise
+#!!!Notation anglaise
 
 @notation
+
 |!|Anglais|C|C#|D|D#|E|F|F#|G|G#|A|A#|H
 |!|Français|Do|Do#|Re|Re#|Mi|Fa|Fa#|Sol|Sol#|La|La#|Si
