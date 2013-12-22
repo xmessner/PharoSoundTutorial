@@ -4,19 +4,25 @@ Dans cet article nous allons vous présenter une facette de Pharo qu'on n'a pas 
 
 
 Tout d'abord récupérer et installer la dernière version 30 de Pharo à l'adresse: http://www.pharo.org/.
-Le plus simple restant d'utiliser un script de téléchargement comme ceux disponible à http://get.pharo.org
+Le plus simple restant d'exécuter le script de téléchargement qui suit dans un shell. 
 
 [[[
 curl get.pharo.org/30+vmLatest | bash 
 
-or if curl is not available: 
+ou si curl n'est pas disponible: 
 
 wget -O- get.pharo.org/30+vmLatest | bash
 ]]]
 
+http://get.pharo.org contient d'autres scripts de téléchargement. 
+
+
 +Configuration browser: un gestionnaire de packages>file://figures/configurationBrowser.pdf|width=50|label=configurationBrowser+
 
-Une fois obtenue vous devez charger le package PharoSound en utilisant soit le configurationBrowser (comme le montre la Figure *configurationBrowser*) qui se trouve dans le menu Tools soit Gofer le gestionnaire de packages:
+Une fois obtenue vous devez charger le package PharoSound en utilisant 
+- soit le configurationBrowser (comme le montre la Figure *configurationBrowser*) qui se trouve dans le menu Tools. Entrer Sound dans la zone de texte pour sélectionner le package, puis presser le bouton 'Install Stable Version'.
+
+- soit Gofer le gestionnaire de packages:
 
 [[[
 Gofer new
@@ -29,7 +35,7 @@ Gofer new
 
 !! Vérifications
 
-Avant de se familiariser avec les différentes méthodes utiles nous allons nous assurer que notre environnement puisse jouer un son convenablement. Pour cela on va ouvrir un workspace (depuis le menu Tools) et évaluer la ligne de code suivante. Nous vous expliquerons par la suite ce dont il s'agit.
+Avant de se familiariser avec les différentes méthodes utiles nous allons nous assurer que notre environnement puisse jouer un son convenablement. Pour cela on va ouvrir un workspace (depuis le menu Tools) et évaluer la ligne de code suivante en sélectionnant l'expression puis en utilisant l'item 'Do it' du menu. Nous vous expliquerons par la suite ce dont il s'agit.
 
 [[[
 FMSound organ1 play.
