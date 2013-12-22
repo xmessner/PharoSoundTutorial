@@ -35,7 +35,7 @@ Gofer new
 
 !! Vérifications
 
-Avant de se familiariser avec les différentes méthodes utiles, nous allons nous assurer que notre environnement puisse jouer un son convenablement. Pour cela on va ouvrir un workspace (depuis le menu Tools) et évaluer la ligne de code suivante en sélectionnant l'expression puis en utilisant l'item 'Do it' du menu. Nous vous expliquerons par la suite ce dont il s'agit.
+Avant de se familiariser avec les différentes méthodes utiles, nous allons nous assurer que notre environnement puisse jouer un son convenablement. Pour cela on va ouvrir un workspace (depuis le menu Tools) et évaluer la ligne de code suivante en sélectionnant l'expression puis en utilisant l'item 'Do it' du menu. Nous vous expliquerons par la suite ce dont il s'agit. Notez que dans un workspace pour exécuter une ligne positionner la souris sur la ligne et presser alt-d (cela equivaut à sélectionner la ligne et  utiliser le menu). Pour sélectionner un bloc d'instructions rapidement placez la souris au tout début ou à la fin du block et cliquez, cela a pour effet de tout sélectionner. 
 
 [[[
 FMSound organ1 play.
@@ -50,17 +50,18 @@ Si aucun son n'est produit vous pouvez vérifier ces premiers points:
 
 -Le plugin sonore n'est pas installé (Linux).
 
-@@note Indiquer la marche à suivre ou une page internet l'indiquant ?
-@@note Aussi mais il faut que cela fonctionne je vais ouvrir un bug
+@@comment Indiquer la marche à suivre ou une page internet l'indiquant ?
+@@comment Aussi mais il faut que cela fonctionne je vais ouvrir un bug
 
 #Télécharger la dernière version de *Squeak 4.4>http://ftp.squeak.org/4.4/Squeak-4.4-All-in-One.zip*
 #Décompresser l'archive dans le répertoire de votre choix.
 #Copier le fichier se trouvant dans ==Contents/Linux-i686/lib/squeak/4.4.7-2357/so.vm-sound-pulse== dans ==bin/vm-sound-pulse==.
 #Changer les droits du plugins avec ==chmod +x bin/vm-sound-pulse==.
 
-@note est-ce que sous les autres OS le son est actif d'origine ?
-@note cela depend de l'image et pas des OS. Maintenant le plugin sound sur linux n'est plus a jour et on va le fixer.
--Le process sonore interne ne fonctionne plus. Il faut l'arrêter puis le relancer en évaluant 
+@comment est-ce que sous les autres OS le son est actif d'origine ?
+@comment cela depend de l'image et pas des OS. Maintenant le plugin sound sur linux n'est plus a jour et on va le fixer.
+
+-Le process sonore interne ne fonctionne plus. Il faut l'arrêter puis le relancer en évaluant les expressions suivantes:
 
 [[[
 SoundPlayer stopPlayerProcess.
@@ -69,8 +70,7 @@ SoundPlayer startUp
 
 !!Bases de la synthèse FM par l'exemple
 
-
-Maintenant que nous nous sommes assuré que le son est fonctionnel,  nous allons découvrir comment celui-ci est généré. Prenons le code de la méthode qui définit l'instrument ==organ1==:
+Maintenant que nous nous sommes assurés que le son est fonctionnel,  nous allons découvrir comment celui-ci est généré. Prenons le code de la méthode qui définit l'instrument ==organ1==:
 
 [[[
 FMSound class>>organ1
@@ -95,7 +95,6 @@ sound := self new.
 ]]]
 
 Elle définit ensuite un ensemble de points afin de créer une enveloppe de volume. Pour chaque point la première donnée exprime une durée en milliseconde, la seconde un volume exprimé de 0 à 1 (1 étant égal à 100% du volume).
-@@note "Notez qu'utiliser un point est un abus et que le programmeur aurait du utiliser une paire." <- Est ce qu'on le précise dans ce contexte ? A garder plutot pour faire évoluer le système sonore.
  
 [[[
 sound addEnvelope: (VolumeEnvelope
@@ -104,6 +103,8 @@ sound addEnvelope: (VolumeEnvelope
 ]]]
 
 Nous remarquons qu'une enveloppe se caractérise d'après un ensemble de points et d'une boucle. La méthode associée est ==points:loopStart:loopEnd:==. Une boucle peut aussi bien utiliser l'ensemble des points définis ou 1 seul.
+
+
 
 Par exemple ici on ajoute au son une enveloppe avec une boucle allant des indices 2 et 4. La séquence suivante est jouée ==60@1.0 . 110@0.8 . 200@1.0 == pour des valeurs oscillant entre 0.8 et 1. Le volume du son semble vibrer.
 Si nous avions voulu maintenir le volume à un certain niveau, nous aurions écris l'enveloppe comme ceci
@@ -120,27 +121,32 @@ Finalement, la méthode retourne le son avec comme paramètre la note (ici expri
 ^ sound setPitch: 440.0 dur: 1.0 loudness: 0.5
 ]]]
 
+
+
+@@note cela serait bien de dessiner une enveloppe - on doit chercher plotmorph car cela serait sympa de voir l;enveloppe en Pharo. on pourrait meme l'deiter graphiqeuyment.
+
+
+
+
 !!Comment faire pour jouer notre propre son ?
 
 Nous allons vous montrer comment nous allons créer notre propre son. 
-Commençons par jouer un ==LA== de cette manière:
+Commençons par jouer un ==LA== de la manière suivante:
 
 [[[
 (FMSound new setPitch: 440 dur: 1.0 loudness: 1) play
 ]]]
 
 Le son est joué à une fréquence de 440 Hz pendant 1 seconde.
-@@note un jour on devra changer l'interface car je hais cette method setPitch:duration:loudness: aurait deja ete 10 fois mieux.
+@@comment un jour on devra changer l'interface car je hais cette method setPitch:duration:loudness: aurait deja ete 10 fois mieux.
 
 La classe ==FMSound== permet la génération de sons sinusoïdaux. Ça donne un son assez doux et régulier. La figure *sinusoide* ci dessous montre à quoi ressemble la courbe.
 
-@@note cela serait sympa d'utiliser plotMorph pour montrer la sinusode. - XM: Effectivement, autant utiliser ce qui existe. A creuser.
+@@comment cela serait sympa d'utiliser plotMorph pour montrer la sinusode. - XM: Effectivement, autant utiliser ce qui existe. A creuser.
 
 +Sinusoïde produite>file://figures/sine.png|width=50|label=sinusoide+
 
-L'écriture pour une seule note est simple, mais cela peut rapidement devenir long, fastidieux et les erreurs difficiles à détecter si nous devons écrire tout une mélodie de cette manière.
-
-Une chose à savoir, est qu'au lieu de définir une note par sa fréquence nous pouvons l'écrire dans sa notation anglaise. Le tableau ""*notation*"" va nous indiquer les correspondances pour plus de facilité.
+L'écriture pour une seule note est simple, mais cela peut rapidement devenir long, fastidieux et les erreurs difficiles à détecter si nous devons écrire tout une mélodie de cette manière. Une chose à savoir, est qu'au lieu de définir une note par sa fréquence nous pouvons l'écrire dans sa notation anglaise. Le tableau ""*notation*"" va nous indiquer les correspondances pour plus de facilité. Par exemple, le LA est représenté dans la notation anglaise par un 'a'. Pour obtenir le LA de la quatrième octave nous demandons a4.
 
 Le ==LA== de tout à l'heure peut s'écrire maintenant sous cette forme
 
@@ -148,13 +154,19 @@ Le ==LA== de tout à l'heure peut s'écrire maintenant sous cette forme
 (FMSound new setPitch: 'a4' dur: 1.0 loudness: 1) play
 ]]]
 
+@notation
+
+|!|Anglais|C|C#|D|D#|E|F|F#|G|G#|A|A#|H
+|!|Français|Do|Do#|Re|Re#|Mi|Fa|Fa#|Sol|Sol#|La|La#|Si
+
+
 Le ==SOL#==  par exemple s'écrit
 
 [[[
-(FMSound new setPitch: 'g#4' dur:1.0 loudness: 1) play
+(FMSound new setPitch: 'g#4' dur: 1.0 loudness: 1) play
 ]]]
 
-@@note encore une fois passer une chaine ou un nombre est horrible. cela serait bien de faire le menage dans ce code. - XM: Tu verrais quoi à la place ?
+@@comment encore une fois passer une chaine ou un nombre est horrible. cela serait bien de faire le menage dans ce code. - XM: Tu verrais quoi à la place ? deux interfaces differentes et commune qui accepte les deux. setPitchForFrequence: aNumber setPitchForNote: setPitch
 
 !!Jouer plusieurs sons en séquence
 
@@ -163,9 +175,9 @@ Jouer un son c'est bien, mais en jouer deux c'est mieux. Pour cela nous avons à
 [[[
 | seq |
 seq := SequentialSound new.
-seq add: (FMSound new setPitch: 'g#4' dur:0.5 loudness: 1).
-seq add: (FMSound new setPitch: 'a3' dur:0.5 loudness: 1).
-seq add: (FMSound new setPitch: 'g#4' dur:0.5 loudness: 1).
+seq add: (FMSound new setPitch: 'c4' dur: 0.5 loudness: 1).
+seq add: (FMSound new setPitch: 'e4' dur: 0.5 loudness: 1).
+seq add: (FMSound new setPitch: 'g4' dur:0.5 loudness: 1).
 seq play.
 ]]]
 
@@ -218,7 +230,7 @@ snd1 := FMSound new.
 snd2 := FMSound new.
 
 "Creation du volume pour les instruments"
-points := { 0@1;add: 400@0.4 . 500@0 }.
+points := { 0@1 . 400@0.4 . 500@0 }.
 
 "Generation des notes"
 snd1 setPitch: 'a4' dur:1 loudness: 1.
@@ -232,9 +244,10 @@ mix add: snd1 pan: 0; add: snd2 pan: 1.
 
 mix play.
 ]]]
+
 @@note c'est bien la methode add:pan:?
 
-Le son généré est quelque peu old school. Modifions un peu les valeurs de l'attaque à l'aide de la méthode==setPitch:dur:loudness:== pour obtenir des notes différentes et nous familiariser avec les méthodes. Les enveloppes de volume modifient la courbe du son au cours du temps et peuvent être utilisées pour obtenir des effets particuliers.
+Le son généré est quelque peu old school. Modifions un peu les valeurs de l'attaque à l'aide de la méthode ==setPitch:dur:loudness:== pour obtenir des notes différentes et nous familiariser avec les méthodes. Les enveloppes de volume modifient la courbe du son au cours du temps et peuvent être utilisées pour obtenir des effets particuliers.
 
 Remplacez les valeurs des points par
 
@@ -334,11 +347,63 @@ Voici un exemple de déclaration d'une séquence
 notes := #((a3 200 150) (a4 100 150) (g3 150 150))
 ]]]
 
-Nous allons écrire notre premier morceau avec un air qui devrait rappeler des bons souvenirs à tout ceux qui ont connu le début des jeux vidéos.
 
-@@note pourquoi ne pas creer une classe separee et pas modifier FMSound. Je trouverais cela plus propre. - XM: C'est ce que j'ai souhaité faire au départ mais j'ai eu des soucis d'éritage, j'ai pas tout compris. J'ai ensuite suivi l'exemple inclus dans la classe. Mais je suis d'accord, c'est plus propre dans une classe séparée. A creuser.
+Nous allons écrire notre premier morceau avec un air qui devrait rappeler des bons souvenirs à tout ceux qui aiment le début des jeux vidéos. Nous allons définir la mélodie de pacman.
 
-Déclarons la classe permettant de mixer l'ensemble des pistes.
+!!! Définissons un nouvel élément
+Commençons par définir un nouvel instrument. Afin de ne pas compliquer notre exercice, nous allons utiliser la classe ==FMSound== dans laquelle nous allons définir quelques nouvelles méthodes. Notez que pour être plus propre et modulaire, nous devrions définir notre propre package et classes. 
+
+Pour définir une méthode nous allons utiliser un navigateur de classe: Pour cela 
+
+- ouvrez le SystemBrowser depuis le menu Tools
+- trouvez la classe ==FMSound== en utilisant l'item Find Class du menu de la liste la plus a gauche (la liste des packages)
+
+Vous devez obtenir un navigateur comme celui de la figure *systemBrowser*
+
++System browser: un navigateur de classes>file://figures/SystemBrowser.pdf|width=100|label=systemBrowser+
+
+Comme les méthodes que nous définissons sont des méthodes qui créent des instances de ==FMSound== par opposition à des méthodes qui agissent sur des instances de la classe ==FMSound== nous allons les définir sur le coté classe de la classe ==FMSound==. Pour cela:
+
+- cliquez sur le radio bouton 'Class side'
+- à l'aide du menu de la troisième liste en partant de la gauche (liste des protocoles de méthodes - il s'agit de simple classeurs de rangement), ajoutez un protocole nommé par exemple 'new instruments'.
+- sélectionner le nouveau protocole puis ajouter la méthode ==fm1== suivante. Pour ajouter une méthode, tapez le corps de la méthode puis utiliser l'entrée 'Accept' qui compile la méthode. 
+
+[[[
+fm1
+	| snd |
+	snd := self new.
+	snd addEnvelope: (VolumeEnvelope points: { 0@1 . 300@0 }
+					 				 loopStart: 2
+									 loopEnd: 2).
+	snd modulation: 1 ratio: 2.
+	^ snd
+]]]
+
+Vérifiez que votre nouvel instrument fonctionne en executant ==FMSound fm1 play==.
+
+Vous devez obtenir une situation similaire à celle présentée par la figure **
+
+
++System browser sur une méthode de classe>file://figures/fm1.pdf|width=100|label=fm1+
+
+Nous allons définir un autre instrument en copiant celui-ci afin de vous permettre d'expériementer. 
+
+[[[
+fm2
+	| snd |
+	snd := self new.
+	snd addEnvelope: (VolumeEnvelope points: { 0@1 . 300@0 }
+					 				 loopStart: 2
+									 loopEnd: 2).
+	snd modulation: 1 ratio: 2.
+	^ snd
+]]]
+
+
+@@comment pourquoi ne pas creer une classe separee et pas modifier FMSound. Je trouverais cela plus propre. - XM: C'est ce que j'ai souhaité faire au départ mais j'ai eu des soucis d'éritage, j'ai pas tout compris. J'ai ensuite suivi l'exemple inclus dans la classe. Mais je suis d'accord, c'est plus propre dans une classe séparée. A creuser. il suffit de creer une souclasse de FMSound.
+
+
+Déclarons maintenant, la méthode permettant de mixer l'ensemble des pistes qui vont être créées à l'aide des méthodes ==pacmanV10:== et ==pacmanV20:==).
 
 [[[
 FMSound class>>pacman
@@ -354,7 +419,7 @@ Les deux méthodes suivantes contiennent l'ensemble des notes à jouer avec le t
 [[[
 FMSound class>>pacmanV1On: aSound
 
-	|notes|
+	| notes |
 	notes := #(
         (b4 0.144 150) (b5 0.144 150) ('f#5' 0.144 150) ('d#5' 0.144 150)
         (b5 0.072 150) ('f#5' 0.144 150) ('d#5' 0.288 150) (c5 0.144 150)
@@ -367,13 +432,14 @@ FMSound class>>pacmanV1On: aSound
 
         ^self noteSequenceOn: aSound from: notes.
 ]]]
-@@note on doit expliquer noteSequenceOn: 
-@@note revue de code
+
+@@note on doit expliquer noteSequenceOn: + revue de code
+
 La méthode suivante va produire une mélodie avec des notes dont les fréquences sont assez basses, le volume de celle ci semble faible. Pour qu'elle soit audible on va augmenter le son de chacune des notes en les passant à 500.
 
 [[[
 FMSound class>>pacmanV2On: aSound
-	|notes|
+	| notes |
 	notes := #(
         (b1 0.432 500) (b2 0.144 500) (b1 0.432 500) (b2 0.144 500) (c2 0.432 500)
         (c3 0.144 500) (c2 0.432 500) (c3 0.144 500) (b1 0.432 500) (b2 0.144 500)
@@ -383,34 +449,7 @@ FMSound class>>pacmanV2On: aSound
         ^self noteSequenceOn: aSound from: notes.
 ]]]
 
-Les deux méthodes suivantes décrivent les instruments qu'on va utiliser pour jouer la mélodie.
-
-[[[
-FMSound class>>fm1
-	|snd|
-	snd := self new.
-	snd addEnvelope: (VolumeEnvelope points: { 0@1 . 300@0 }
-					 				 loopStart: 2
-									 loopEnd: 2).
-	snd modulation: 1 ratio: 2.
-	^ snd
-]]]
-
-[[[
-FMSound class>>fm2
-	| snd |
-	snd := self new.
-	snd addEnvelope: (VolumeEnvelope
-			points: { 0@1 . 300@0 }
-			loopStart: 2
-			loopEnd: 2).
-	snd modulation: 1 ratio: 2.
-	^snd
-]]]
-
-@@note revue de code en cours
-
-Les deux méthodes définissant les instruments sont rigoureusement les mêmes, mais je vous invite une fois de plus à modifier les valeurs de l'enveloppe ou de la modulation et d'écouter le résultat.
+Voila il ne reste plus qu'à demander l'exécution de la mélodie: ==FMSound pacman==.
 
 !!Jouer un sample 
 
@@ -537,7 +576,3 @@ Nous vous avons montré une petite partie des possibilités que Pharo offre pour
 
 #!!!Notation anglaise
 
-@notation
-
-|!|Anglais|C|C#|D|D#|E|F|F#|G|G#|A|A#|H
-|!|Français|Do|Do#|Re|Re#|Mi|Fa|Fa#|Sol|Sol#|La|La#|Si
