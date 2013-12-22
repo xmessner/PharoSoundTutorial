@@ -35,7 +35,7 @@ Gofer new
 
 !! Vérifications
 
-Avant de se familiariser avec les différentes méthodes utiles nous allons nous assurer que notre environnement puisse jouer un son convenablement. Pour cela on va ouvrir un workspace (depuis le menu Tools) et évaluer la ligne de code suivante en sélectionnant l'expression puis en utilisant l'item 'Do it' du menu. Nous vous expliquerons par la suite ce dont il s'agit.
+Avant de se familiariser avec les différentes méthodes utiles, nous allons nous assurer que notre environnement puisse jouer un son convenablement. Pour cela on va ouvrir un workspace (depuis le menu Tools) et évaluer la ligne de code suivante en sélectionnant l'expression puis en utilisant l'item 'Do it' du menu. Nous vous expliquerons par la suite ce dont il s'agit.
 
 [[[
 FMSound organ1 play.
@@ -43,13 +43,10 @@ FMSound organ1 play.
 
 Si aucun son n'est produit vous pouvez vérifier ces premiers points: 
 
-
 +Settings:>file://figures/SoundSetting.pdf|width=50|label=setting+
 
-
-
 -Le volume sonore de votre OS n'est pas correctement ajusté ou en mode muet
-- Vérifiez que le son est permis. Ouvrez le Setting Browser depuis le menu Tools, tapez sound dans la barre et cliquez sur le radio bouton.
+-Vérifier que le son est permis dans votre image Pharo. Pour cela ouvrer le Setting Browser depuis le menu Tools, tapez sound dans la barre et cliquez sur le radio bouton. Vous devez obtenir un système proche de l'image montrée par la figure *setting*.
 
 -Le plugin sonore n'est pas installé (Linux).
 
@@ -62,6 +59,7 @@ Si aucun son n'est produit vous pouvez vérifier ces premiers points:
 #Changer les droits du plugins avec ==chmod +x bin/vm-sound-pulse==.
 
 @note est-ce que sous les autres OS le son est actif d'origine ?
+@note cela depend de l'image et pas des OS. Maintenant le plugin sound sur linux n'est plus a jour et on va le fixer.
 -Le process sonore interne ne fonctionne plus. Il faut l'arrêter puis le relancer en évaluant 
 
 [[[
