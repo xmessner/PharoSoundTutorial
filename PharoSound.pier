@@ -1,5 +1,15 @@
 ! Une introduction aux sons en Pharo
 
+Xavier j'ai mis a jour le package sound pour que l'edition des enveloppe d'un son fonctionne.
+
+Essaye EnvelopeEditorMorph new openInWorld :)
+Sinon j'ai migre sur Pharo PlotMorph (dans PharoExtras )
+	Regarde PlotMorph test.
+   			PlotMorph test2.
+car c'est cool :)
+
+
+
 Dans cet article nous allons vous présenter une facette de Pharo qu'on n'a pas l'habitude de voir, un domaine pour lequel il peut surprendre. Ce domaine c'est la synthèse sonore. Dès qu'on a besoin de sonoriser un peu notre tout nouveau programme on pense soit à du mp3 pour la musique ou des sons digitalisés pour les bruitages. Dans Pharo on dispose d'outils et bibliothèques permettant créer de toute pièce du son synthétisé pour nos productions. Nous allons vous montrer comment on fait cela en quelques ligne de code seulement.
 
 
