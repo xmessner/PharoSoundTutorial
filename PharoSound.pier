@@ -10,7 +10,7 @@ car c'est cool :)
 
 
 
-Dans cet article nous allons vous présenter une facette de Pharo qu'on n'a pas l'habitude de voir, un domaine pour lequel il peut surprendre. Ce domaine c'est la synthèse sonore. Dès qu'on a besoin de sonoriser un peu notre tout nouveau programme on pense soit à du mp3 pour la musique ou des sons digitalisés pour les bruitages. Dans Pharo on dispose d'outils et bibliothèques permettant créer de toute pièce du son synthétisé pour nos productions. Nous allons vous montrer comment on fait cela en quelques ligne de code seulement.
+Dans cet article nous allons vous présenter une facette de Pharo qu'on n'a pas l'habitude de voir, un domaine pour lequel il peut surprendre. Ce domaine c'est la synthèse sonore. Dès qu'on a besoin de sonoriser un peu notre tout nouveau programme on pense soit à du mp3 pour la musique ou des sons digitalisés pour les bruitages. Dans Pharo on dispose d'outils et bibliothèques permettant créer de toute pièce du son synthétisé pour nos productions. Nous allons vous montrer comment on fait cela en quelques lignes de code seulement.
 
 
 Tout d'abord récupérer et installer la dernière version 30 de Pharo à l'adresse: http://www.pharo.org/.
@@ -26,11 +26,9 @@ wget -O- get.pharo.org/30+vmLatest | bash
 
 http://get.pharo.org contient d'autres scripts de téléchargement. 
 
-
-+Configuration browser: un gestionnaire de packages>file://figures/configurationBrowser.pdf|width=50|label=configurationBrowser+
-
 Une fois obtenue vous devez charger le package PharoSound en utilisant 
 - soit le configurationBrowser (comme le montre la Figure *configurationBrowser*) qui se trouve dans le menu Tools. Entrer Sound dans la zone de texte pour sélectionner le package, puis presser le bouton 'Install Stable Version'.
++Configuration browser: un gestionnaire de packages>file://figures/configurationBrowser.pdf|width=50|label=configurationBrowser+
 
 - soit Gofer le gestionnaire de packages:
 
@@ -98,6 +96,7 @@ FMSound class>>organ1
 
 
 Etudions cette méthode:
+
 Tout d'abord, elle crée une nouvelle instance de la classe ==FMSound==.
 
 [[[
@@ -116,7 +115,11 @@ Nous remarquons qu'une enveloppe se caractérise d'après un ensemble de points 
 
 
 
-Par exemple ici on ajoute au son une enveloppe avec une boucle allant des indices 2 et 4. La séquence suivante est jouée ==60@1.0 . 110@0.8 . 200@1.0 == pour des valeurs oscillant entre 0.8 et 1. Le volume du son semble vibrer.
+Par exemple ici on ajoute au son une enveloppe avec une boucle allant des indices 2 à 4 (1 étant la première valeur du tableau). La séquence suivante est jouée pour des valeurs oscillant entre 0.8 et 1. Le volume du son semble vibrer.
+[[[
+60@1.0 . 110@0.8 . 200@1.0
+]]]
+
 Si nous avions voulu maintenir le volume à un certain niveau, nous aurions écris l'enveloppe comme ceci
 
 [[[
@@ -125,16 +128,34 @@ sound addEnvelope: (VolumeEnvelope
                       loopStart: 5 loopEnd: 5).
 ]]]
 
+Le son se termine avec la valeur ==250@0.0== et une boucle dessus maintenant le volume à 0 pendant toute sa durée.
+
 Finalement, la méthode retourne le son avec comme paramètre la note (ici exprimée en Hz, voir tableau ""*frequence*""), la durée en seconde et un volume global de la note. Ce volume sera ensuite modulé grâce à l'enveloppe qui est définie.
 
 [[[
 ^ sound setPitch: 440.0 dur: 1.0 loudness: 0.5
 ]]]
 
+@frequence
+
+|!|Note|!|Octave
+|| |!|-1|!|0|!|1|!|2|!|3|!|4|!|5|!|6|!|7
+|!|C||16.3||32.7||65||131||262||523||1046.5||2093||4186
+|!|C#||17.3||34.6||69||139||277||554||1109||2217||4435
+|!|D||18.3||36.7||74||147||294||587||1175||2349||4698
+|!|D#||19.4||38.9||78||156||311||622||1244.5||2489||4978
+|!|E||20.5||41.2||83||165||330||659||1318.5||2637||5274
+|!|F||21.8||43.6||87||175||349||698.5||1397||2794||5588
+|!|F#||23.1||46.2||92.5||185||370||740||1480||2960||5920
+|!|G||24.5||49.0||98||196||392||784||1568||3136||6272
+|!|G#||26.0||51.9||104||208||415||831||1661||3322||6645
+|!|A||27.5||55.0||110||220||440||880||1760||3520||7040
+|!|A#||29.1||58.0||117||233||466||932||1865||3729||7458
+|!|B||30.8||62.0||123||247||494||988||1975||3951||7902
 
 
 @@note cela serait bien de dessiner une enveloppe - on doit chercher plotmorph car cela serait sympa de voir l;enveloppe en Pharo. on pourrait meme l'deiter graphiqeuyment.
-
+@@note j'ai testé EnveloppeMorph mais j'ai une erreur d'exécution sur un message qui n'est pas connu.
 
 
 
@@ -152,9 +173,7 @@ Le son est joué à une fréquence de 440 Hz pendant 1 seconde.
 
 La classe ==FMSound== permet la génération de sons sinusoïdaux. Ça donne un son assez doux et régulier. La figure *sinusoide* ci dessous montre à quoi ressemble la courbe.
 
-@@comment cela serait sympa d'utiliser plotMorph pour montrer la sinusode. - XM: Effectivement, autant utiliser ce qui existe. A creuser.
-
-+Sinusoïde produite>file://figures/sine.png|width=50|label=sinusoide+
++Sinusoïde produite>file://figures/sin.png|width=75|label=sinusoide+
 
 L'écriture pour une seule note est simple, mais cela peut rapidement devenir long, fastidieux et les erreurs difficiles à détecter si nous devons écrire tout une mélodie de cette manière. Une chose à savoir, est qu'au lieu de définir une note par sa fréquence nous pouvons l'écrire dans sa notation anglaise. Le tableau ""*notation*"" va nous indiquer les correspondances pour plus de facilité. Par exemple, le LA est représenté dans la notation anglaise par un 'a'. Pour obtenir le LA de la quatrième octave nous demandons a4.
 
@@ -180,7 +199,7 @@ Le ==SOL#==  par exemple s'écrit
 
 !!Jouer plusieurs sons en séquence
 
-Jouer un son c'est bien, mais en jouer deux c'est mieux. Pour cela nous avons à notre disposition une classe nommée ==SequentialSound==. Comme son nom l'indique nous allons pouvoir jouer les sons qu'on souhaite de manière séquentielle.
+Jouer un son c'est bien, mais en jouer deux c'est mieux. Pour cela nous avons à notre disposition une classe nommée ==SequentialSound==. Comme son nom l'indique nous allons pouvoir jouer les sons de manière séquentielle.
 
 [[[
 | seq |
@@ -191,7 +210,13 @@ seq add: (FMSound new setPitch: 'g4' dur:0.5 loudness: 1).
 seq play.
 ]]]
 
-Si nous écoutons les sons générés, nous pouvons percevoir un petit clap entre chaques transitions de notes. Afin d'éviter cela nous allons appliquer une enveloppe de volume sur chacune des notes. Ceci est fait en faisant passer le volume de 1, à 0.4 puis 0 comme suit: ==points := { 0@1 . 400@0.4 . 500@0}. ==. La note jouée est à son maximum au début puis passe progressivement à 0 au bout de 500ms. L'enveloppe étant définie sur une durée égale à la durée de la note la transition se fait plus naturellement et sonne mieux à l'oreille.
+Si nous écoutons les sons générés, nous pouvons percevoir un petit clap entre chaques transitions de notes. Afin d'éviter cela nous allons appliquer une enveloppe de volume sur chacune des notes. Ceci est fait en faisant passer le volume de 1, à 0.4 puis 0 comme suit:
+ 
+[[[
+points := { 0@1 . 400@0.4 . 500@0}.
+]]]
+
+La note jouée est à son maximum au début puis passe progressivement à 0 au bout de 500ms. L'enveloppe étant définie sur une durée égale à la durée de la note la transition se fait plus naturellement et sonne mieux à l'oreille.
 
 @@note enveloppe qui fait quoi? est ce correct ce que j'ai ecrit et pourquoi 0 pour le premier? Oui ca me paraît correcte. Le zéro correspond au début du son. On est alors au maximum du volume. Par contre je n'ai jamais fais le test de ne pas définir le 0. Peut être est on déjà à 1 ? a creuser.
 
@@ -272,8 +297,9 @@ snd1 addEnvelope: (VolumeEnvelope points: points loopStart: 6  loopEnd: 6).
 snd2 addEnvelope: (VolumeEnvelope points: points loopStart: 6  loopEnd: 6).
 ]]]
 
-Le son produit comme un écho. La variation entre les valeurs est douce et continue. Un calcul est fait entre chacune d'entre elles pour éviter les cassures disgracieuse à l'oreille. Vous pouvez vous avec les nouvelles valeurs ci dessous.
+Le son produit comme un écho. La variation entre les valeurs est douce et continue. Un calcul est fait entre chacune d'entre elles pour éviter les cassures disgracieuses. Vous pouvez vous avec les nouvelles valeurs ci dessous.
 @@note cette phrase est une répétition. J'ai déjà évoqué cela plus haut plusieurs fois ... à revoir !
+@@note ce sont les mêmes points ... je dois revoir l'exemple !
 [[[
 points := { 0@1 . 100@0.6 . 200@0 . 201@0.6 . 400@0.2 . 500@0 }.
 ]]]
@@ -281,6 +307,8 @@ points := { 0@1 . 100@0.6 . 200@0 . 201@0.6 . 400@0.2 . 500@0 }.
 La cassure est nettement plus audible.
 
 Nous avons également utiliser le message ==pan:== qui va positionner le son en stéréo. Une valeur de ==0== pour gauche et ==1== pour droite. Une valeur de ==0.5== place le son au milieu.
+
+@@note un exemple à fournir pour le pan:
 
 
 !!Les enveloppes
@@ -366,7 +394,7 @@ Commençons par définir un nouvel instrument. Afin de ne pas compliquer notre e
 Pour définir une méthode nous allons utiliser un navigateur de classe: Pour cela 
 
 - ouvrez le SystemBrowser depuis le menu Tools
-- trouvez la classe ==FMSound== en utilisant l'item Find Class du menu de la liste la plus a gauche (la liste des packages)
+- trouvez la classe ==FMSound== en utilisant l'item Find Class du menu de la liste la plus à gauche (la liste des packages)
 
 Vous devez obtenir un navigateur comme celui de la figure *systemBrowser*
 
@@ -391,7 +419,7 @@ fm1
 
 Vérifiez que votre nouvel instrument fonctionne en executant ==FMSound fm1 play==.
 
-Vous devez obtenir une situation similaire à celle présentée par la figure **
+Vous devez obtenir une situation similaire à celle présentée par la figure *fm1*
 
 
 +System browser sur une méthode de classe>file://figures/fm1.pdf|width=100|label=fm1+
@@ -413,7 +441,7 @@ fm2
 @@comment pourquoi ne pas creer une classe separee et pas modifier FMSound. Je trouverais cela plus propre. - XM: C'est ce que j'ai souhaité faire au départ mais j'ai eu des soucis d'éritage, j'ai pas tout compris. J'ai ensuite suivi l'exemple inclus dans la classe. Mais je suis d'accord, c'est plus propre dans une classe séparée. A creuser. il suffit de creer une souclasse de FMSound.
 
 
-Déclarons maintenant, la méthode permettant de mixer l'ensemble des pistes qui vont être créées à l'aide des méthodes ==pacmanV10:== et ==pacmanV20:==).
+Déclarons maintenant, la méthode permettant de mixer l'ensemble des pistes qui vont être créées à l'aide des méthodes ==pacmanV10:== et ==pacmanV20:==.
 
 [[[
 FMSound class>>pacman
@@ -443,7 +471,7 @@ FMSound class>>pacmanV1On: aSound
         ^self noteSequenceOn: aSound from: notes.
 ]]]
 
-@@note on doit expliquer noteSequenceOn: + revue de code
+@@note on doit expliquer noteSequenceOn:
 
 La méthode suivante va produire une mélodie avec des notes dont les fréquences sont assez basses, le volume de celle ci semble faible. Pour qu'elle soit audible on va augmenter le son de chacune des notes en les passant à 500.
 
@@ -463,7 +491,7 @@ Voila il ne reste plus qu'à demander l'exécution de la mélodie: ==FMSound pac
 
 !!Jouer un sample 
 
-La sonorisation d'une production ne passe pas essentiellement par de la synthèse sonore, parfois il est nécessaire de faire appel à des bruitages ou des voix enregistrées. Nous allons vous montrer comment à partir d'un fichier ou directement depuis la mémoire nous pouvons jouer un sample..
+La sonorisation d'une production ne passe pas essentiellement par de la synthèse sonore, parfois il est nécessaire de faire appel à des bruitages ou des voix enregistrées. Nous allons vous montrer comment jouer un sample à partir d'un fichier ou directement depuis la mémoire.
 
 Essayons dans un premier temps de jouer un son à partir d'un fichier au format wav.
 
@@ -471,7 +499,7 @@ Essayons dans un premier temps de jouer un son à partir d'un fichier au format 
 (SampledSound fromWaveFileNamed: '/home/messner/sound.wav') play
 ]]]
 
-Le son est joué directement depuis le fichier, cependant si nous faisions un jeu, les chargements risqueraient de saccader les animations et rendre le jeu injouable. Afin d'éviter ces petits désagréments les sons seront chargés en mémoire et joués lorsque ce sera nécessaire.
+Si nous faisions un jeu, les chargements risqueraient de saccader les animations et le rendre injouable. Afin d'éviter ces petits désagréments les sons seront chargés en mémoire et joués lorsque ce sera nécessaire.
 
 Pour cela on va le rajouter à notre librairie de sons en utilisant le message ==addLibrarySoundNamed:samples:samplingRate:==. 
 @@note on devrait ajouter une methode ==addLibrarySoundNamed:== qui appelle addLibrary avec samples et originalSamplingRate
@@ -487,9 +515,7 @@ SampledSound addLibrarySoundNamed: 'guitar'
              samplingRate: spl originalSamplingRate.
 ]]]
 
-@@note le "à" n'est pas correctement interprété dans un bloc. Pkoi ??? surement un probleme de police
-
-Il nous reste plus qu'à le jouer à la fréquence et à la durée souhaitée
+Maintenant nous pouvons jouer le sample à la fréquence et à la durée souhaitée
 
 [[[
 | spl spl2 |
@@ -506,7 +532,6 @@ spl2 play.
 Nous allons clore cet article sur une dernière méthode permettant de jouer plusieurs sons digitalisés en séquence.
 
 Dans un premier temps nous allons charger en mémoire les différents samples qui seront utilisés.
-@@note on doit mettre les fichiers wav accessibles de facon a ce que le gars puissent reproduire le code. pourrais-tu mettre les fichiers dans git deaj? - XM: Tout les sons sont présents dans le répertoire sound/. C'est bien là qu'ils doivent être ?
 
 [[[
 | spl spl1 spl2 |
@@ -529,8 +554,7 @@ SampledSound addLibrarySoundNamed: 'bateau'
 
 @@note on doit ameliorer fromWaveFileNamed: pour lui passer un fileSystem FileSystem disc workingDirectory / 'ocean.wav'
 
-Maintenant que tous nos sons sont chargés nous allons les jouer en séquence grâce à la classe ==QueueSound==.
-@@note ==QueueSound== elle fait quoi? Je pensais l'avoir fait ...
+Maintenant que tous nos sons sont chargés nous allons les jouer en séquence grâce à la classe ==QueueSound==. Les sons sont joués les uns après les autres à la fréquence souhaitée.
 
 [[[
 | mix q1 q2 spl1 spl2 spl3 |
@@ -559,30 +583,3 @@ mix play.
 !! Conclusion
 
 Nous vous avons montré une petite partie des possibilités que Pharo offre pour la création et manipulations des sons. Nous espérons vous avoir donner envie d'experimenter. 
-
-!!Annexes
-
-!!!Tableau des fréquences
-
-@@note to debug je ne comprends pas pourquoi le tableau bug. - XM: l'emplacement de l'appel au tableau ne convient pas à la génération du PDF. Si on rajoute la référence au début du document ça refonctionne en partie. J'avais eu ce soucis mais sans connaître le problème ni savoir comment ça s'est résolu ...
-@@note je n'arrive pas a latexer donc je comment pour le moment 
-
-#@frequence
-#
-#|!|Note|!|Octave
-#|| |!|-1|!|0|!|1|!|2|!|3|!|4|!|5|!|6|!|7
-#|!|C||16.3||32.7||65||131||262||523||1046.5||2093||4186
-#|!|C#||17.3||34.6||69||139||277||554||1109||2217||4435
-#|!|D||18.3||36.7||74||147||294||587||1175||2349||4698
-#|!|D#||19.4||38.9||78||156||311||622||1244.5||2489||4978
-#|!|E||20.5||41.2||83||165||330||659||1318.5||2637||5274
-#|!|F||21.8||43.6||87||175||349||698.5||1397||2794||5588
-#|!|F#||23.1||46.2||92.5||185||370||740||1480||2960||5920
-#|!|G||24.5||49.0||98||196||392||784||1568||3136||6272
-#|!|G#||26.0||51.9||104||208||415||831||1661||3322||6645
-#|!|A||27.5||55.0||110||220||440||880||1760||3520||7040
-#|!|A#||29.1||58.0||117||233||466||932||1865||3729||7458
-#|!|B||30.8||62.0||123||247||494||988||1975||3951||7902
-
-#!!!Notation anglaise
-
