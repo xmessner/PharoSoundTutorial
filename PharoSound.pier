@@ -159,6 +159,7 @@ Finalement, la méthode retourne le son avec comme paramètre la note (ici expri
 
 
 
+
 !!Comment faire pour jouer notre propre son ?
 
 Nous allons vous montrer comment nous allons créer notre propre son. 
@@ -356,6 +357,19 @@ Nous obtenons le résultat suivant
 [[[
 {(0@0.0). (10@1.0). (20@0.2). (30@0.04000000000000001). (50@0.0)}
 ]]]
+
+Nous pouvons visualiser à quoi ressemble notre envelope en ouvrant le morph ==EnvelopeEditorMorph== comme ceci
+
+[[[
+EnvelopeEditorMorph new openInWorld
+]]]
+
+Sélectionnez l'ensemble de la ligne et faites ""clic droit/Do it"". Une fenêtre devrait apparaître comme celle présentée ci-dessous
+
++Editeur d'enveloppe>file://figures/EnvelopeEditorMorph.png|width=75|label=EnvelopeEditorMorph+
+
+Vous pouvez agrandir la fenêtre en la sélectionnant avec ""shit + clic droit"" puis en déplaçant l'ancre en bas à droite de la fenêtre.
+Le morph expose les courbes de l'instrument et nous permet de les modifier. Pour écouter les modifications nous allons utiliser le clavier du piano disponible.
 
 Les enveloppes viennent compléter nos connaissances sur la génération du son. Nous savons donc jouer un son, plusieurs sons les uns après les autres ou encore plusieurs joués en même temps.
 
