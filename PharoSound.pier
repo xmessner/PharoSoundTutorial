@@ -90,7 +90,7 @@ FMSound class>>organ1
 	sound addEnvelope: (VolumeEnvelope 
                               points: { 0@0 . 60@1.0 . 110@0.8 . 200@1.0 . 250@0.0} 
                               loopStart: 2 loopEnd: 4).
-	sound setPitch: 440.0 dur: 1.0 loudness: 0.5.
+	sound setPitch: 440.0 duration: 1.0 loudness: 0.5.
         ^ snd
 ]]]
 
@@ -133,7 +133,7 @@ Le son se termine avec la valeur ==250@0.0== et une boucle dessus maintenant le 
 Finalement, la méthode retourne le son avec comme paramètre la note (ici exprimée en Hz, voir tableau ""*frequence*""), la durée en seconde et un volume global de la note. Ce volume sera ensuite modulé grâce à l'enveloppe qui est définie.
 
 [[[
-^ sound setPitch: 440.0 dur: 1.0 loudness: 0.5
+^ sound setPitch: 440.0 duration: 1.0 loudness: 0.5
 ]]]
 
 @frequence
@@ -166,7 +166,7 @@ Nous allons vous montrer comment nous allons créer notre propre son.
 Commençons par jouer un ==LA== de la manière suivante:
 
 [[[
-(FMSound new setPitch: 440 dur: 1.0 loudness: 1) play
+(FMSound new setPitch: 440 duration: 1.0 loudness: 1) play
 ]]]
 
 Le son est joué à une fréquence de 440 Hz pendant 1 seconde.
@@ -181,7 +181,7 @@ L'écriture pour une seule note est simple, mais cela peut rapidement devenir lo
 Le ==LA== de tout à l'heure peut s'écrire maintenant sous cette forme
 
 [[[
-(FMSound new setPitch: 'a4' dur: 1.0 loudness: 1) play
+(FMSound new setPitch: 'a4' duration: 1.0 loudness: 1) play
 ]]]
 
 @notation
@@ -193,7 +193,7 @@ Le ==LA== de tout à l'heure peut s'écrire maintenant sous cette forme
 Le ==SOL#==  par exemple s'écrit
 
 [[[
-(FMSound new setPitch: 'g#4' dur: 1.0 loudness: 1) play
+(FMSound new setPitch: 'g#4' duration: 1.0 loudness: 1) play
 ]]]
 
 @@comment encore une fois passer une chaine ou un nombre est horrible. cela serait bien de faire le menage dans ce code. - XM: Tu verrais quoi à la place ? deux interfaces differentes et commune qui accepte les deux. setPitchForFrequence: aNumber setPitchForNote: setPitch
@@ -205,9 +205,9 @@ Jouer un son c'est bien, mais en jouer deux c'est mieux. Pour cela nous avons à
 [[[
 | seq |
 seq := SequentialSound new.
-seq add: (FMSound new setPitch: 'c4' dur: 0.5 loudness: 1).
-seq add: (FMSound new setPitch: 'e4' dur: 0.5 loudness: 1).
-seq add: (FMSound new setPitch: 'g4' dur:0.5 loudness: 1).
+seq add: (FMSound new setPitch: 'c4' duration: 0.5 loudness: 1).
+seq add: (FMSound new setPitch: 'e4' duration: 0.5 loudness: 1).
+seq add: (FMSound new setPitch: 'g4' duration:0.5 loudness: 1).
 seq play.
 ]]]
 
@@ -235,9 +235,9 @@ snd3 := FMSound new.
 points := { 0@1 . 400@0.4 . 500@0}.
 
 "Generation des notes"
-snd1 setPitch: 'g#4' dur:0.5 loudness: 1.
-snd2 setPitch: 'a3' dur:0.5 loudness: 1.
-snd3 setPitch: 'g#4' dur:0.5 loudness: 1.
+snd1 setPitch: 'g#4' duration:0.5 loudness: 1.
+snd2 setPitch: 'a3' duration:0.5 loudness: 1.
+snd3 setPitch: 'g#4' duration:0.5 loudness: 1.
 
 "Application de l'enveloppe aux sons"
 snd1 addEnvelope: (VolumeEnvelope points: points loopStart: 3  loopEnd: 3).
@@ -269,8 +269,8 @@ snd2 := FMSound new.
 points := { 0@1 . 400@0.4 . 500@0 }.
 
 "Generation des notes"
-snd1 setPitch: 'a4' dur:1 loudness: 1.
-snd2 setPitch: 'a3' dur:1 loudness: 1.
+snd1 setPitch: 'a4' duration:1 loudness: 1.
+snd2 setPitch: 'a3' duration:1 loudness: 1.
 
 "Application de l'enveloppe aux sons"
 snd1 addEnvelope: (VolumeEnvelope points: points loopStart: 3  loopEnd: 3).
@@ -283,7 +283,7 @@ mix play.
 
 @@note c'est bien la methode add:pan:?
 
-Le son généré est quelque peu old school. Modifions un peu les valeurs de l'attaque à l'aide de la méthode ==setPitch:dur:loudness:== pour obtenir des notes différentes et nous familiariser avec les méthodes. Les enveloppes de volume modifient la courbe du son au cours du temps et peuvent être utilisées pour obtenir des effets particuliers.
+Le son généré est quelque peu old school. Modifions un peu les valeurs de l'attaque à l'aide de la méthode ==setPitch:duration:loudness:== pour obtenir des notes différentes et nous familiariser avec les méthodes. Les enveloppes de volume modifient la courbe du son au cours du temps et peuvent être utilisées pour obtenir des effets particuliers.
 
 Remplacez les valeurs des points par
 
@@ -322,7 +322,7 @@ De la même manière que pour le volume nous allons définir un ensemble de poin
 p := { 0@0 . 100@0.1 . 200@0.2 . 300@(-0.5) . 400@0.7 . 800@0.8 . 1000@1 }.
 snd := FMSound new.
 snd addEnvelope: (PitchEnvelope points: p loopStart: 7  loopEnd:7).
-(snd setPitch: 'a4' dur: 2 loudness: 0.5) play.
+(snd setPitch: 'a4' duration: 2 loudness: 0.5) play.
 ]]]
 
 La variation se fait en douceur et sans cassures. En couplant cela à une enveloppe de volume on peut commencer à produire un son intéressant.
@@ -334,7 +334,7 @@ p2 := { 0@0 . 100@0.1 . 200@0.2 . 300@(-0.5) . 400@0.7 . 800@0.8 . 1000@0 }.
 snd := FMSound new.
 snd addEnvelope: (PitchEnvelope points: p loopStart: 7  loopEnd: 7).
 snd addEnvelope: (VolumeEnvelope points: p2 loopStart: 7  loopEnd: 7).
-(snd setPitch: 'a4' dur: 2 loudness: 0.5) play.
+(snd setPitch: 'a4' duration: 2 loudness: 0.5) play.
 ]]]
 
 Imaginons que nous voulions définir plus de points pour diminuer le volume de manière douce. Il faudrait écrire beaucoup de points. C'est faisable mais fastidieux.
@@ -364,16 +364,21 @@ Nous pouvons visualiser à quoi ressemble notre envelope en ouvrant le morph ==E
 EnvelopeEditorMorph new openInWorld
 ]]]
 
-Sélectionnez l'ensemble de la ligne et faites ""clic droit/Do it"". Une fenêtre devrait apparaître comme celle présentée ci-dessous
+Sélectionnez l'ensemble de la ligne et faites ""clic droit/Do it"". Une fenêtre apparaît comme celle présentée en figure *EnvelopeEditorMorph* ci-dessous
 
-+Editeur d'enveloppe>file://figures/EnvelopeEditorMorph.png|width=75|label=EnvelopeEditorMorph+
++Editeur d'enveloppe>file://figures/envelopeEditorMorph.png|width=75|label=EnvelopeEditorMorph+
 
-Vous pouvez agrandir la fenêtre en la sélectionnant avec ""shit + clic droit"" puis en déplaçant l'ancre en bas à droite de la fenêtre.
-Le morph expose les courbes de l'instrument et nous permet de les modifier. Pour écouter les modifications nous allons utiliser le clavier du piano disponible.
+Vous pouvez l'agrandir en la sélectionnant avec ""shit + clic droit"" puis en déplaçant l'ancre en bas à droite de la fenêtre comme sur la figure *EnvelopeEditorMorphAnchor*
+
++Ancre>file://figures/envelopeEditorMorphAnchor.png|width=75|label=EnvelopeEditorMorphAnchor+
+
+Le morph expose les courbes de l'instrument et nous permet de les modifier en déplaçant les points les composant. Vous pouvez passer d'une courbe à l'autre soit en la sélectionnant directement dans la fenêtre, soit en la choisissant dans le menu ==editing== en bas à gauche du morph.
+En abscisse nous avons le temps en milisecondes. L'ordonnée se modifie en fonction de la courbe choisie. Nous avons également 3 délimitations représentées par les axes en orange. Les deux plus à gauche sont utilisées pour la boucle lorsque la note est tenue, ce sont les paramètres ==loopStart== et ==loopEnd==. La plus à droite c'est lorsque la note est relachée.
+Le clavier disponible va nous aider à comprendre ce que chacune des courbes a comme effet sur le son.
 
 Les enveloppes viennent compléter nos connaissances sur la génération du son. Nous savons donc jouer un son, plusieurs sons les uns après les autres ou encore plusieurs joués en même temps.
 
-On a entre nos mains pratiquement tous les outils pour écrire notre première mélodie, que disons-nous, notre première super production !
+Nous avons entre nos mains pratiquement tous les outils pour écrire notre première mélodie, que disons-nous, notre première super production !
 
 !!Jouer une mélodie
 
