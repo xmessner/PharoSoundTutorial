@@ -103,8 +103,6 @@ sound addEnvelope: (VolumeEnvelope
 
 Nous remarquons qu'une enveloppe se caractérise d'après un ensemble de points et d'une boucle. La méthode associée est ==points:loopStart:loopEnd:==. Une boucle peut aussi bien utiliser l'ensemble des points définis ou 1 seul.
 
-
-
 Par exemple ici on ajoute au son une enveloppe avec une boucle allant des indices 2 à 4 (1 étant la première valeur du tableau). La séquence suivante est jouée pour des valeurs oscillant entre 0.8 et 1. Le volume du son semble vibrer.
 [[[
 60@1.0 . 110@0.8 . 200@1.0
@@ -288,10 +286,11 @@ Dans notre exemple nous avons également utiliser le message ==pan:== qui va pos
 Nous allons réutiliser l'exemple plus haut et lui rajouter de la stéréo.
 
 [[[
-| mix seq1 seq2 seq3 snd1 snd2 snd3 points rest |
+| mix seq1 seq2 seq3 snd1 snd2 snd3 points rest rest2 |
 "Declaration des sons"
 mix := MixedSound new.
 rest := RestSound new.
+rest2 := RestSound new.
 seq1 := SequentialSound new.
 seq2 := SequentialSound new.
 seq3 := SequentialSound new.
@@ -307,6 +306,7 @@ snd1 setPitch: 'g#4' duration:0.5 loudness: 1.
 snd2 setPitch: 'a3' duration:0.5 loudness: 1.
 snd3 setPitch: 'g#4' duration:0.5 loudness: 1.
 rest duration: 0.5.
+rest2 duration: 0.5.
 
 "Application de l'enveloppe aux sons"
 snd1 addEnvelope: (VolumeEnvelope points: points loopStart: 3  loopEnd: 3).
@@ -316,7 +316,7 @@ snd3 addEnvelope: (VolumeEnvelope points: points loopStart: 3  loopEnd: 3).
 "Les sons les uns a la suite des autres"
 seq1 add: snd1.
 seq2 add: rest; add: snd2.
-seq3 add: rest; add: rest; add: snd3.
+seq3 add: rest; add: rest2; add: snd3.
 
 mix add: seq1 pan:0.
 mix add: seq2 pan:0.5.
@@ -327,6 +327,8 @@ mix play.
 
 Dans ce nouvel exemple nous avons introduit une nouvelle classe de son: ==RestSound==. Elle nous permet simplement de créer un silence. Quel est l'intêret me direz vous ? Simplement de pouvoir insérer entre 2 sons sans devoir bidouiller le son avec une enveloppe de volume pour le même résultat..
 Elle ne comprend que le message ==duration:== exprimé en seconde.
+
+@@note rajouter ici l'explication de la classe ==QueueSound==. Ce sera plus adapté.
 
 !!Les enveloppes
 
