@@ -1,15 +1,5 @@
 ! Une introduction aux sons en Pharo
 
-Xavier j'ai mis a jour le package sound pour que l'edition des enveloppe d'un son fonctionne.
-
-Essaye EnvelopeEditorMorph new openInWorld :)
-Sinon j'ai migre sur Pharo PlotMorph (dans PharoExtras )
-	Regarde PlotMorph test.
-   			PlotMorph test2.
-car c'est cool :)
-
-
-
 Dans cet article nous allons vous présenter une facette de Pharo qu'on n'a pas l'habitude de voir, un domaine pour lequel il peut surprendre. Ce domaine c'est la synthèse sonore. Dès qu'on a besoin de sonoriser un peu notre tout nouveau programme on pense soit à du mp3 pour la musique ou des sons digitalisés pour les bruitages. Dans Pharo on dispose d'outils et bibliothèques permettant créer de toute pièce du son synthétisé pour nos productions. Nous allons vous montrer comment on fait cela en quelques lignes de code seulement.
 
 
@@ -66,8 +56,8 @@ Si aucun son n'est produit vous pouvez vérifier ces premiers points:
 #Copier le fichier se trouvant dans ==Contents/Linux-i686/lib/squeak/4.4.7-2357/so.vm-sound-pulse== dans ==bin/vm-sound-pulse==.
 #Changer les droits du plugins avec ==chmod +x bin/vm-sound-pulse==.
 
-@comment est-ce que sous les autres OS le son est actif d'origine ?
-@comment cela depend de l'image et pas des OS. Maintenant le plugin sound sur linux n'est plus a jour et on va le fixer.
+@@comment est-ce que sous les autres OS le son est actif d'origine ?
+@@comment cela depend de l'image et pas des OS. Maintenant le plugin sound sur linux n'est plus a jour et on va le fixer.
 
 -Le process sonore interne ne fonctionne plus. Il faut l'arrêter puis le relancer en évaluant les expressions suivantes:
 
@@ -154,12 +144,6 @@ Finalement, la méthode retourne le son avec comme paramètre la note (ici expri
 |!|B||30.8||62.0||123||247||494||988||1975||3951||7902
 
 
-@@note cela serait bien de dessiner une enveloppe - on doit chercher plotmorph car cela serait sympa de voir l;enveloppe en Pharo. on pourrait meme l'deiter graphiqeuyment.
-@@note j'ai testé EnveloppeMorph mais j'ai une erreur d'exécution sur un message qui n'est pas connu.
-
-
-
-
 !!Comment faire pour jouer notre propre son ?
 
 Nous allons vous montrer comment nous allons créer notre propre son. 
@@ -170,7 +154,6 @@ Commençons par jouer un ==LA== de la manière suivante:
 ]]]
 
 Le son est joué à une fréquence de 440 Hz pendant 1 seconde.
-@@comment un jour on devra changer l'interface car je hais cette method setPitch:duration:loudness: aurait deja ete 10 fois mieux.
 
 La classe ==FMSound== permet la génération de sons sinusoïdaux. Ça donne un son assez doux et régulier. La figure *sinusoide* ci dessous montre à quoi ressemble la courbe.
 
@@ -285,7 +268,7 @@ mix play.
 
 Le son généré est quelque peu old school. Modifions un peu les valeurs de l'attaque à l'aide de la méthode ==setPitch:duration:loudness:== pour obtenir des notes différentes et nous familiariser avec les méthodes. Les enveloppes de volume modifient la courbe du son au cours du temps et peuvent être utilisées pour obtenir des effets particuliers.
 
-Remplacez les valeurs des points par
+Par exemple si nous voulions rajouter un effet de réverbération à notre son il faudrait modifier les points de l'enveloppe de volume par
 
 [[[
 points := { 0@1 . 100@0.6  . 200@0 . 300@0.6 . 400@0.2 . 500@0 }.
@@ -298,19 +281,52 @@ snd1 addEnvelope: (VolumeEnvelope points: points loopStart: 6  loopEnd: 6).
 snd2 addEnvelope: (VolumeEnvelope points: points loopStart: 6  loopEnd: 6).
 ]]]
 
-Le son produit comme un écho. La variation entre les valeurs est douce et continue. Un calcul est fait entre chacune d'entre elles pour éviter les cassures disgracieuses. Vous pouvez vous avec les nouvelles valeurs ci dessous.
-@@note cette phrase est une répétition. J'ai déjà évoqué cela plus haut plusieurs fois ... à revoir !
-@@note ce sont les mêmes points ... je dois revoir l'exemple !
-[[[
-points := { 0@1 . 100@0.6 . 200@0 . 201@0.6 . 400@0.2 . 500@0 }.
-]]]
-
-La cassure est nettement plus audible.
-
-Nous avons également utiliser le message ==pan:== qui va positionner le son en stéréo. Une valeur de ==0== pour gauche et ==1== pour droite. Une valeur de ==0.5== place le son au milieu.
+Dans notre exemple nous avons également utiliser le message ==pan:== qui va positionner le son en stéréo. Une valeur de ==0== pour gauche et ==1== pour droite. Une valeur de ==0.5== place le son au milieu.
 
 @@note un exemple à fournir pour le pan:
 
+Nous allons réutiliser l'exemple plus haut et lui rajouter de la stéréo.
+
+[[[
+| mix seq1 seq2 seq3 snd1 snd2 snd3 points rest |
+"Declaration des sons"
+mix := MixedSound new.
+rest := RestSound new.
+seq1 := SequentialSound new.
+seq2 := SequentialSound new.
+seq3 := SequentialSound new.
+snd1 := FMSound new.
+snd2 := FMSound new. 
+snd3 := FMSound new.
+
+"Creation du volume pour les instruments"
+points := { 0@1 . 400@0.4 . 500@0}.
+
+"Generation des notes"
+snd1 setPitch: 'g#4' duration:0.5 loudness: 1.
+snd2 setPitch: 'a3' duration:0.5 loudness: 1.
+snd3 setPitch: 'g#4' duration:0.5 loudness: 1.
+rest duration: 0.5.
+
+"Application de l'enveloppe aux sons"
+snd1 addEnvelope: (VolumeEnvelope points: points loopStart: 3  loopEnd: 3).
+snd2 addEnvelope: (VolumeEnvelope points: points loopStart: 3  loopEnd: 3).
+snd3 addEnvelope: (VolumeEnvelope points: points loopStart: 3  loopEnd: 3).
+
+"Les sons les uns a la suite des autres"
+seq1 add: snd1.
+seq2 add: rest; add: snd2.
+seq3 add: rest; add: rest; add: snd3.
+
+mix add: seq1 pan:0.
+mix add: seq2 pan:0.5.
+mix add: seq3 pan:1.
+"On joue le tout"
+mix play.
+]]]
+
+Dans ce nouvel exemple nous avons introduit une nouvelle classe de son: ==RestSound==. Elle nous permet simplement de créer un silence. Quel est l'intêret me direz vous ? Simplement de pouvoir insérer entre 2 sons sans devoir bidouiller le son avec une enveloppe de volume pour le même résultat..
+Elle ne comprend que le message ==duration:== exprimé en seconde.
 
 !!Les enveloppes
 
@@ -455,10 +471,6 @@ fm2
 	snd modulation: 1 ratio: 2.
 	^ snd
 ]]]
-
-
-@@comment pourquoi ne pas creer une classe separee et pas modifier FMSound. Je trouverais cela plus propre. - XM: C'est ce que j'ai souhaité faire au départ mais j'ai eu des soucis d'éritage, j'ai pas tout compris. J'ai ensuite suivi l'exemple inclus dans la classe. Mais je suis d'accord, c'est plus propre dans une classe séparée. A creuser. il suffit de creer une souclasse de FMSound.
-
 
 Déclarons maintenant, la méthode permettant de mixer l'ensemble des pistes qui vont être créées à l'aide des méthodes ==pacmanV10:== et ==pacmanV20:==.
 
