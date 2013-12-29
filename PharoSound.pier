@@ -186,19 +186,19 @@ Jouer un son c'est bien, mais en jouer deux c'est mieux. Pour cela nous avons à
 [[[
 | seq |
 seq := SequentialSound new.
-seq add: (FMSound new setPitch: 'c4' duration: 0.5 loudness: 1).
-seq add: (FMSound new setPitch: 'e4' duration: 0.5 loudness: 1).
-seq add: (FMSound new setPitch: 'g4' duration:0.5 loudness: 1).
+seq add: (FMSound new setPitch: 'g#4' duration: 0.5 loudness: 1).
+seq add: (FMSound new setPitch: 'a3' duration: 0.5 loudness: 1).
+seq add: (FMSound new setPitch: 'g#4' duration:0.5 loudness: 1).
 seq play.
 ]]]
 
-Si nous écoutons les sons générés, nous pouvons percevoir un petit clap entre chaques transitions de notes. Afin d'éviter cela nous allons appliquer une enveloppe de volume sur chacune des notes. Ceci est fait en faisant passer le volume de 1, à 0.4 puis 0 comme suit:
+Si nous écoutons les sons générés, nous pouvons percevoir un petit clap entre chaques transitions de notes. Afin d'éviter cela nous allons appliquer une enveloppe de volume sur chacune des notes. Ceci est fait comme suit:
  
 [[[
-points := { 0@1 . 400@0.4 . 500@0}.
+points := { 0@0 . 10@1 . 400@0.4 . 500@0}.
 ]]]
 
-La note jouée est à son maximum au début puis passe progressivement à 0 au bout de 500ms. L'enveloppe étant définie sur une durée égale à la durée de la note la transition se fait plus naturellement et sonne mieux à l'oreille.
+La note jouée est à son maximum au début puis repasse progressivement à 0 au bout de 500ms. L'enveloppe étant définie sur une durée égale à la durée de la note la transition se fait plus naturellement et sonne mieux à l'oreille.
 
 @@note enveloppe qui fait quoi? est ce correct ce que j'ai ecrit et pourquoi 0 pour le premier? Oui ca me paraît correcte. Le zéro correspond au début du son. On est alors au maximum du volume. Par contre je n'ai jamais fais le test de ne pas définir le 0. Peut être est on déjà à 1 ? a creuser.
 
@@ -213,7 +213,7 @@ snd2 := FMSound new.
 snd3 := FMSound new.
 
 "Creation du volume pour les instruments"
-points := { 0@1 . 400@0.4 . 500@0}.
+points := { 0@0 . 10@1 . 400@0.4 . 500@0}.
 
 "Generation des notes"
 snd1 setPitch: 'g#4' duration:0.5 loudness: 1.
@@ -221,9 +221,9 @@ snd2 setPitch: 'a3' duration:0.5 loudness: 1.
 snd3 setPitch: 'g#4' duration:0.5 loudness: 1.
 
 "Application de l'enveloppe aux sons"
-snd1 addEnvelope: (VolumeEnvelope points: points loopStart: 3  loopEnd: 3).
-snd2 addEnvelope: (VolumeEnvelope points: points loopStart: 3  loopEnd: 3).
-snd3 addEnvelope: (VolumeEnvelope points: points loopStart: 3  loopEnd: 3).
+snd1 addEnvelope: (VolumeEnvelope points: points loopStart: 4  loopEnd: 4).
+snd2 addEnvelope: (VolumeEnvelope points: points loopStart: 4  loopEnd: 4).
+snd3 addEnvelope: (VolumeEnvelope points: points loopStart: 4  loopEnd: 4).
 
 "Les sons les uns a la suite des autres"
 seq add: snd1.
@@ -247,15 +247,15 @@ snd1 := FMSound new.
 snd2 := FMSound new.
 
 "Creation du volume pour les instruments"
-points := { 0@1 . 400@0.4 . 500@0 }.
+points := { 0@0 . 10@1 . 400@0.4 . 500@0}.
 
 "Generation des notes"
 snd1 setPitch: 'a4' duration:1 loudness: 1.
 snd2 setPitch: 'a3' duration:1 loudness: 1.
 
 "Application de l'enveloppe aux sons"
-snd1 addEnvelope: (VolumeEnvelope points: points loopStart: 3  loopEnd: 3).
-snd2 addEnvelope: (VolumeEnvelope points: points loopStart: 3  loopEnd: 3).
+snd1 addEnvelope: (VolumeEnvelope points: points loopStart: 4  loopEnd: 4).
+snd2 addEnvelope: (VolumeEnvelope points: points loopStart: 4  loopEnd: 4).
 
 mix add: snd1 pan: 0; add: snd2 pan: 1.
 
@@ -264,12 +264,12 @@ mix play.
 
 @@note c'est bien la methode add:pan:?
 
-Le son généré est quelque peu old school. Modifions un peu les valeurs de l'attaque à l'aide de la méthode ==setPitch:duration:loudness:== pour obtenir des notes différentes et nous familiariser avec les méthodes. Les enveloppes de volume modifient la courbe du son au cours du temps et peuvent être utilisées pour obtenir des effets particuliers.
+Modifions un peu les valeurs de l'attaque à l'aide de la méthode ==setPitch:duration:loudness:== pour obtenir des notes différentes et nous familiariser avec les méthodes. Les enveloppes de volume modifient la courbe du son au cours du temps et peuvent être utilisées pour obtenir des effets particuliers.
 
 Par exemple si nous voulions rajouter un effet de réverbération à notre son il faudrait modifier les points de l'enveloppe de volume par
 
 [[[
-points := { 0@1 . 100@0.6  . 200@0 . 300@0.6 . 400@0.2 . 500@0 }.
+points := { 0@1 . 100@0.6  . 200@0 . 300@0.2 . 400@0.1 . 500@0 }.
 ]]]
 
 et la déclaration des enveloppes par
@@ -325,10 +325,40 @@ mix add: seq3 pan:1.
 mix play.
 ]]]
 
-Dans ce nouvel exemple nous avons introduit une nouvelle classe de son: ==RestSound==. Elle nous permet simplement de créer un silence. Quel est l'intêret me direz vous ? Simplement de pouvoir insérer entre 2 sons sans devoir bidouiller le son avec une enveloppe de volume pour le même résultat..
+Dans ce nouvel exemple nous avons introduit une nouvelle classe de son ==RestSound==. Elle nous permet de simplement créer un silence utilisable entre 2 sons.
 Elle ne comprend que le message ==duration:== exprimé en seconde.
 
 @@note rajouter ici l'explication de la classe ==QueueSound==. Ce sera plus adapté.
+La méthode ==SequentialSound== possède une limitation. Regardons l'exemple suivant pour voir ce qu'il se passe
+
+[[[
+| seq snd1 snd2 snd3 |
+"Declaration des sons"
+seq := SequentialSound new.
+snd1 := FMSound new.
+snd2 := FMSound new.
+snd3 := FMSound new.
+
+"Generation des notes"
+snd1 setPitch: 'g#4' duration:0.5 loudness: 1.
+snd2 setPitch: 'a3' duration:0.5 loudness: 1.
+snd3 setPitch: 'g#4' duration:0.5 loudness: 1.
+
+"Les sons les uns a la suite des autres"
+"Le résultat ne va pas etre celui attendu"
+seq add: snd1.
+seq add: snd2.
+seq add: snd3.
+seq add: snd2.
+
+"On joue le tout"
+seq play.
+]]]
+
+Normalement on devrait entendre 4 sons à la suite, or il n'y en a que 3. Pour en avoir 4 il faut en déclarer un nouveau même si celui ci devait être identique à un son déjà existant. Cette méthode n'est pas adaptée pour ce que nous souhaitons faire. Pour cela il existe une autre classe qui va répondre à notre besoin: ==QueueSound== 
+
+Remplaçons la ligne ==seq := SequentialSound== par ==seq := QueueSound== et ecoutez à nouveau l'exemple. Nous entendons bien maintenant nos 4 sons.
+@@note revue
 
 !!Les enveloppes
 
