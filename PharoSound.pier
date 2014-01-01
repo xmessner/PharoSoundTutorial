@@ -355,14 +355,13 @@ seq add: snd2.
 seq play.
 ]]]
 
-Normalement on devrait entendre 4 sons à la suite, or il n'y en a que 3. Pour en avoir 4 il faut en déclarer un nouveau même si celui ci devait être identique à un son déjà existant. Cette méthode n'est pas adaptée pour ce que nous souhaitons faire. Pour cela il existe une autre classe qui va répondre à notre besoin: ==QueueSound== 
+Normalement nous devrions entendre 4 sons à la suite, or il n'y en a que 3. Visiblement nous ne pouvons pas réutiliser un son déclaré. Cette méthode n'est pas adaptée pour ce que nous souhaitons faire. Pour cela il existe une autre classe qui va répondre à notre besoin: ==QueueSound== 
 
-Remplaçons la ligne ==seq := SequentialSound== par ==seq := QueueSound== et ecoutez à nouveau l'exemple. Nous entendons bien maintenant nos 4 sons.
-@@note revue
+Remplaçons la ligne ==seq := SequentialSound== par ==seq := QueueSound== et ecoutez à nouveau l'exemple. Nous entendons bien maintenant nos 4 sons. Le tour est joué !
 
 !!Les enveloppes
 
-Nous venons de voir une première enveloppe qui modifie le volume d'un son. Il y en a une autre qui change la note ou plutôt sa fréquence pendant qu'elle est jouée, c'est ce qu'on appelle l'attaque de la note, le pitch en anglais.
+Nous venons d'utiliser une première enveloppe qui agit sur le volume d'un son. Il y en a une autre qui change la note ou plutôt sa fréquence pendant qu'elle est jouée, c'est ce qu'on appelle l'attaque de la note, le pitch en anglais.
 De la même manière que pour le volume nous allons définir un ensemble de points qui indiqueront le moment du changement de la fréquence du son. Plus la valeur est haute, plus la note le sera. Si on indique un chiffre négatif, la note descendra en dessous de la note de départ. Nous définissons donc une enveloppe mais cette fois-ci une enveloppe d'attaque en utilisant la classe ==PitchEnvelope==.
 
 [[[
@@ -373,7 +372,7 @@ snd addEnvelope: (PitchEnvelope points: p loopStart: 7  loopEnd:7).
 (snd setPitch: 'a4' duration: 2 loudness: 0.5) play.
 ]]]
 
-La variation se fait en douceur et sans cassures. En couplant cela à une enveloppe de volume on peut commencer à produire un son intéressant.
+La transition entre les différentes fréquences se fait en douceur et sans cassures. Nous allons rajouter à cela une enveloppe de volume on pour produire un son intéressant.
 
 [[[
 | snd p p2 |
@@ -385,8 +384,8 @@ snd addEnvelope: (VolumeEnvelope points: p2 loopStart: 7  loopEnd: 7).
 (snd setPitch: 'a4' duration: 2 loudness: 0.5) play.
 ]]]
 
-Imaginons que nous voulions définir plus de points pour diminuer le volume de manière douce. Il faudrait écrire beaucoup de points. C'est faisable mais fastidieux.
-Au lieu de définir l'enveloppe points par points nous allons utiliser une méthode appelée ==exponentialDecay:== de la classe ==VolumeEnvelope== pour le volume ou la classe ==PitchEnvelope== pour le pitch. La courbe sera de type exponentielle partant du volume le plus haut pour arriver en douceur à 0.
+Imaginons que nous voulions introduire plus de variations dans le volume du son, il faudrait alors définir plus de points. C'est faisable mais fastidieux.
+Au lieu de définir une enveloppe points par points nous allons utiliser une méthode appelée ==exponentialDecay:== de la classe ==VolumeEnvelope== pour le volume ou la classe ==PitchEnvelope== pour le pitch. La courbe sera de type exponentielle partant du volume le plus haut pour arriver en douceur à 0.
 
 La définition du volume devient alors ceci:
 
@@ -419,6 +418,8 @@ Sélectionnez l'ensemble de la ligne et faites ""clic droit/Do it"". Une fenêtr
 Vous pouvez l'agrandir en la sélectionnant avec ""shit + clic droit"" puis en déplaçant l'ancre en bas à droite de la fenêtre comme sur la figure *EnvelopeEditorMorphAnchor*
 
 +Ancre>file://figures/envelopeEditorMorphAnchor.png|width=75|label=EnvelopeEditorMorphAnchor+
+
+@@note revue
 
 Le morph expose les courbes de l'instrument et nous permet de les modifier en déplaçant les points les composant. Vous pouvez passer d'une courbe à l'autre soit en la sélectionnant directement dans la fenêtre, soit en la choisissant dans le menu ==editing== en bas à gauche du morph.
 En abscisse nous avons le temps en milisecondes. L'ordonnée se modifie en fonction de la courbe choisie. Nous avons également 3 délimitations représentées par les axes en orange. Les deux plus à gauche sont utilisées pour la boucle lorsque la note est tenue, ce sont les paramètres ==loopStart== et ==loopEnd==. La plus à droite c'est lorsque la note est relachée.
