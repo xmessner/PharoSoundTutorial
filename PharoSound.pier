@@ -419,11 +419,15 @@ Vous pouvez l'agrandir en la sélectionnant avec ""shit + clic droit"" puis en d
 
 +Ancre>file://figures/envelopeEditorMorphAnchor.png|width=75|label=EnvelopeEditorMorphAnchor+
 
-@@note revue
-
 Le morph expose les courbes de l'instrument et nous permet de les modifier en déplaçant les points les composant. Vous pouvez passer d'une courbe à l'autre soit en la sélectionnant directement dans la fenêtre, soit en la choisissant dans le menu ==editing== en bas à gauche du morph.
-En abscisse nous avons le temps en milisecondes. L'ordonnée se modifie en fonction de la courbe choisie. Nous avons également 3 délimitations représentées par les axes en orange. Les deux plus à gauche sont utilisées pour la boucle lorsque la note est tenue, ce sont les paramètres ==loopStart== et ==loopEnd==. La plus à droite c'est lorsque la note est relachée.
-Le clavier disponible va nous aider à comprendre ce que chacune des courbes a comme effet sur le son.
+
+En abscisse nous avons le temps en milisecondes. L'ordonnée se modifie en fonction de la courbe choisie. Nous avons également 3 délimitations représentées par les axes verticaux de couleur orange. Les deux plus à gauche sont utilisées pour la boucle lorsque la note est tenue, ce sont les paramètres ==loopStart:loopEndi:==. La plus à droite c'est lorsque la note est relachée. Nous pouvons également les déplacer en fonction de nos besoins en utilisant les triangles orange au dessus de la courbe des abscisses. A noter qu'il n'est pas possible d'avoir sur le morph une boucle d'une durée inférieur à 50ms, comme il n'est pas possible d'avoir une valeur de début de boucle différente de la valeur de fin. Ce qui parraît logique si on souhaite avoir une boucle harmonieuse.
+
+Pour rajouter un point sur une partie de la courbe il suffit de cliquer sur les petits triangles verts pour faire apparaître le point correspondant. Ce point peut être ensuite déplacer pour être positionné à la valeur souhaitée.
+@@note peut on supprimer un point une fois qu'il a été créé ? en même temps vu que le morph est là uniquement pour tester, est ce vraiment utile ?
+
+Je vous invite à tester toutes ces possibilités et à écouter le résultat obtenue grace au clavier de piano disponible.
+@@note Il faudra rajouter dans le morph d'autres timbres ou du moins faire en sorte qu'il n'y ait pas d'erreur si on veut en sélectionner un autre.
 
 Les enveloppes viennent compléter nos connaissances sur la génération du son. Nous savons donc jouer un son, plusieurs sons les uns après les autres ou encore plusieurs joués en même temps.
 
@@ -454,7 +458,7 @@ notes := #((a3 200 150) (a4 100 150) (g3 150 150))
 ]]]
 
 
-Nous allons écrire notre premier morceau avec un air qui devrait rappeler des bons souvenirs à tout ceux qui aiment le début des jeux vidéos. Nous allons définir la mélodie de pacman.
+Nous allons écrire notre premier morceau avec un air qui devrait rappeler des bons souvenirs à tout ceux qui aiment le début des jeux vidéos. Nous allons définir la mélodie d'intro du jeu pacman.
 
 !!! Définissons un nouvel élément
 Commençons par définir un nouvel instrument. Afin de ne pas compliquer notre exercice, nous allons utiliser la classe ==FMSound== dans laquelle nous allons définir quelques nouvelles méthodes. Notez que pour être plus propre et modulaire, nous devrions définir notre propre package et classes. 
@@ -535,9 +539,7 @@ FMSound class>>pacmanV1On: aSound
         ^self noteSequenceOn: aSound from: notes.
 ]]]
 
-@@note on doit expliquer noteSequenceOn:
-
-La méthode suivante va produire une mélodie avec des notes dont les fréquences sont assez basses, le volume de celle ci semble faible. Pour qu'elle soit audible on va augmenter le son de chacune des notes en les passant à 500.
+La méthode ==noteSequenceOn:from:== va générer une séquence de notes (par exemple SequentialSound) à partir d'un tableau de notes pour un instrument donné. Il va utilisé comme vu précédemment le triplet note, durée, volume.
 
 [[[
 FMSound class>>pacmanV2On: aSound
@@ -551,7 +553,11 @@ FMSound class>>pacmanV2On: aSound
         ^self noteSequenceOn: aSound from: notes.
 ]]]
 
-Voila il ne reste plus qu'à demander l'exécution de la mélodie: ==FMSound pacman==.
+Si votre mélodie utilise des notes à fréquence basse, le volume de celle ci peut être difficilement audible. Vous pouvez alors pour y remédier augementer le volume des notes. Ici nous sommes passé à un volume de 500, contrairement à la précédente mélodie où nous étions resté à 150.
+
+Voila il ne reste plus qu'à demander l'exécution de la mélodie: ==FMSound pacman play==.
+
+@@note revue
 
 !!Jouer un sample 
 
