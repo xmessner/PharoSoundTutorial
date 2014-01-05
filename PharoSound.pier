@@ -328,7 +328,7 @@ mix play.
 @@note revue
 
 Dans ce nouvel exemple nous avons introduit une nouvelle classe de son ==RestSound==. Elle nous permet de simplement créer un silence utilisable entre 2 sons.
-Elle ne comprend que le message ==duration:== exprimé en seconde.
+Elle ne possède qu'un seul message ==duration:== exprimé en seconde générant un son plus ou moins long.
 
 La méthode ==SequentialSound== possède une limitation. Regardons l'exemple suivant pour voir ce qu'il se passe
 
@@ -362,7 +362,7 @@ Remplaçons la ligne ==seq := SequentialSound== par ==seq := QueueSound== et eco
 
 !!Les enveloppes
 
-Nous venons d'utiliser une première enveloppe qui agit sur le volume d'un son. Il y en a une autre qui change la note ou plutôt sa fréquence pendant qu'elle est jouée, c'est ce qu'on appelle l'attaque de la note, le pitch en anglais.
+Nous avons introduit une première enveloppe qui agit sur le volume d'un son. Il y en a une autre qui change la note ou plutôt sa fréquence pendant qu'elle est jouée, c'est ce qu'on appelle l'attaque de la note, le pitch en anglais.
 De la même manière que pour le volume nous allons définir un ensemble de points qui indiqueront le moment du changement de la fréquence du son. Plus la valeur est haute, plus la note le sera. Si on indique un chiffre négatif, la note descendra en dessous de la note de départ. Nous définissons donc une enveloppe mais cette fois-ci une enveloppe d'attaque en utilisant la classe ==PitchEnvelope==.
 
 [[[
@@ -406,6 +406,8 @@ Nous obtenons le résultat suivant
 {(0@0.0). (10@1.0). (20@0.2). (30@0.04000000000000001). (50@0.0)}
 ]]]
 
+Plus la valeur est grande plus le nombre de valeurs sera important.
+.
 Nous pouvons visualiser à quoi ressemble notre envelope en ouvrant le morph ==EnvelopeEditorMorph== comme ceci
 
 [[[
@@ -422,12 +424,12 @@ Vous pouvez l'agrandir en la sélectionnant avec ""shit + clic droit"" puis en d
 
 Le morph expose les courbes de l'instrument et nous permet de les modifier en déplaçant les points les composant. Vous pouvez passer d'une courbe à l'autre soit en la sélectionnant directement dans la fenêtre, soit en la choisissant dans le menu ==editing== en bas à gauche du morph.
 
-En abscisse nous avons le temps en milisecondes. L'ordonnée se modifie en fonction de la courbe choisie. Nous avons également 3 délimitations représentées par les axes verticaux de couleur orange. Les deux plus à gauche sont utilisées pour la boucle lorsque la note est tenue, ce sont les paramètres ==loopStart:loopEndi:==. La plus à droite c'est lorsque la note est relachée. Nous pouvons également les déplacer en fonction de nos besoins en utilisant les triangles orange au dessus de la courbe des abscisses. A noter qu'il n'est pas possible d'avoir sur le morph une boucle d'une durée inférieur à 50ms, comme il n'est pas possible d'avoir une valeur de début de boucle différente de la valeur de fin. Ce qui parraît logique si on souhaite avoir une boucle harmonieuse.
+En abscisse nous avons le temps en milisecondes. L'ordonnée se modifie en fonction de la courbe choisie. Nous avons également 3 délimitations représentées par les axes verticaux de couleur orange. Les deux plus à gauche sont utilisées pour la boucle lorsque la note est tenue, ce sont les paramètres ==loopStart:loopEnd:==. La plus à droite c'est lorsque la note est relachée. Nous pouvons également les déplacer en fonction de nos besoins en utilisant les triangles orange au dessus de la courbe des abscisses. A noter qu'il n'est pas possible d'avoir sur le morph une boucle d'une durée inférieur à 50ms, comme il n'est pas possible d'avoir une valeur de début de boucle différente de la valeur de fin. Ce qui parraît logique si on souhaite avoir une boucle harmonieuse.
 
 Pour rajouter un point sur une partie de la courbe il suffit de cliquer sur les petits triangles verts pour faire apparaître le point correspondant. Ce point peut être ensuite déplacer pour être positionné à la valeur souhaitée.
 @@note peut on supprimer un point une fois qu'il a été créé ? en même temps vu que le morph est là uniquement pour tester, est ce vraiment utile ?
 
-Je vous invite à tester toutes ces possibilités et à écouter le résultat obtenue grace au clavier de piano disponible.
+Je vous invite à tester toutes ces possibilités et à écouter le résultat obtenu grace au clavier de piano disponible.
 @@note Il faudra rajouter dans le morph d'autres timbres ou du moins faire en sorte qu'il n'y ait pas d'erreur si on veut en sélectionner un autre.
 
 Les enveloppes viennent compléter nos connaissances sur la génération du son. Nous savons donc jouer un son, plusieurs sons les uns après les autres ou encore plusieurs joués en même temps.
@@ -458,10 +460,10 @@ Voici un exemple de déclaration d'une séquence
 notes := #((a3 200 150) (a4 100 150) (g3 150 150))
 ]]]
 
-
-Nous allons écrire notre premier morceau avec un air qui devrait rappeler des bons souvenirs à tout ceux qui aiment le début des jeux vidéos. Nous allons définir la mélodie d'intro du jeu pacman.
+Nous allons écrire notre premier morceau avec un air qui devrait rappeler des bons souvenirs à tout ceux qui aiment le début de l'air des jeux vidéos. Nous allons définir la mélodie d'intro du jeu pacman.
 
 !!! Définissons un nouvel élément
+
 Commençons par définir un nouvel instrument. Afin de ne pas compliquer notre exercice, nous allons utiliser la classe ==FMSound== dans laquelle nous allons définir quelques nouvelles méthodes. Notez que pour être plus propre et modulaire, nous devrions définir notre propre package et classes. 
 
 Pour définir une méthode nous allons utiliser un navigateur de classe: Pour cela 
@@ -490,12 +492,11 @@ fm1
 	^ snd
 ]]]
 
-Vérifiez que votre nouvel instrument fonctionne en executant ==FMSound fm1 play==.
-
 Vous devez obtenir une situation similaire à celle présentée par la figure *fm1*
 
-
 +System browser sur une méthode de classe>file://figures/fm1.pdf|width=100|label=fm1+
+
+Vérifiez que votre nouvel instrument fonctionne en executant ==FMSound fm1 play==.
 
 Nous allons définir un autre instrument en copiant celui-ci afin de vous permettre d'expériementer. 
 
@@ -540,7 +541,7 @@ FMSound class>>pacmanV1On: aSound
         ^self noteSequenceOn: aSound from: notes.
 ]]]
 
-La méthode ==noteSequenceOn:from:== va générer une séquence de notes (par exemple SequentialSound) à partir d'un tableau de notes pour un instrument donné. Il va utilisé comme vu précédemment le triplet note, durée, volume.
+La méthode ==noteSequenceOn:from:== va générer une séquence de notes (par exemple SequentialSound) à partir d'un tableau de notes pour un instrument donné. Elle va utiliser comme vu précédemment le triplet note, durée, volume.
 
 [[[
 FMSound class>>pacmanV2On: aSound
@@ -556,7 +557,7 @@ FMSound class>>pacmanV2On: aSound
 
 Si votre mélodie utilise des notes à fréquence basse, le volume de celle ci peut être difficilement audible. Vous pouvez alors pour y remédier augementer le volume des notes. Ici nous sommes passé à un volume de 500, contrairement à la précédente mélodie où nous étions resté à 150.
 
-Voila il ne reste plus qu'à demander l'exécution de la mélodie: ==FMSound pacman play==.
+Voila il ne reste plus qu'à exécuter la mélodie: ==FMSound pacman play==.
 
 !!Jouer un sample 
 
@@ -570,7 +571,7 @@ Essayons dans un premier temps de jouer un son à partir d'un fichier au format 
 
 Le son est joué en tâche de fond sans bloquer le reste de notre environnement. Nous pouvons par exemple utiliser cette méthode pour sonoriser une action ponctuelle ou une alerte.
 
-Si notre but était de concevoir un jeu, le chargement du fichier directement depuis le disque à des moments clés risquerait de ralentir les animations voir de le rendre injouable. Afin d'éviter ces petits désagréments les sons seront chargés en mémoire et joués lorsque ce sera nécessaire pour gagner en temps de réponse.
+Si notre but était de concevoir un jeu, le chargement du son directement depuis le disque à des moments clés risquerait de ralentir les animations voir de le rendre injouable. Afin d'éviter ces petits désagréments les sons seront chargés en mémoire et joués lorsque ce sera nécessaire pour gagner en temps de réponse.
 
 Pour cela nous allons le rajouter à notre librairie de sons en utilisant le message ==addLibrarySoundNamed:samples:samplingRate:==. 
 @@note on devrait ajouter une methode ==addLibrarySoundNamed:== qui appelle addLibrary avec samples et originalSamplingRate
