@@ -8,18 +8,19 @@ Le plus simple restant d'exécuter le script de téléchargement qui suit dans u
 
 [[[
 curl get.pharo.org/30+vmLatest | bash 
+]]]
 
 ou si curl n'est pas disponible: 
 
+[[[
 wget -O- get.pharo.org/30+vmLatest | bash
 ]]]
 
-http://get.pharo.org contient d'autres scripts de téléchargement. 
+D'autres scripts de téléchargement sont disponibles à l'adresse http://get.pharo.org. 
 
 Une fois obtenue vous devez charger le package PharoSound en utilisant 
-- soit le configurationBrowser (comme le montre la Figure *configurationBrowser*) qui se trouve dans le menu Tools. Entrer Sound dans la zone de texte pour sélectionner le package, puis presser le bouton 'Install Stable Version'.
+- soit le configurationBrowser (comme le montre la Figure *configurationBrowser*) qui se trouve dans le menu Tools. Entrer ==Sound== dans la zone de texte pour sélectionner le package, puis presser le bouton 'Install Stable Version'.
 +Configuration browser: un gestionnaire de packages>file://figures/configurationBrowser.pdf|width=50|label=configurationBrowser+
-
 - soit Gofer le gestionnaire de packages:
 
 [[[
@@ -33,7 +34,7 @@ Gofer new
 
 !! Vérifications
 
-Avant de se familiariser avec les différentes méthodes utiles, nous allons nous assurer que notre environnement puisse jouer un son convenablement. Pour cela on va ouvrir un workspace (depuis le menu Tools) et évaluer la ligne de code suivante en sélectionnant l'expression puis en utilisant l'item 'Do it' du menu. Nous vous expliquerons par la suite ce dont il s'agit. Notez que dans un workspace pour exécuter une ligne positionner la souris sur la ligne et presser alt-d (cela equivaut à sélectionner la ligne et  utiliser le menu). Pour sélectionner un bloc d'instructions rapidement placez la souris au tout début ou à la fin du block et cliquez, cela a pour effet de tout sélectionner. 
+Avant de se familiariser avec les différentes méthodes utiles, nous allons nous assurer que notre environnement puisse jouer un son convenablement. Pour cela on va ouvrir un workspace (depuis le menu Tools) et évaluer la ligne de code suivante en sélectionnant l'expression puis en utilisant l'item 'Do it' du menu. Nous vous expliquerons par la suite ce dont il s'agit. Notez que dans un workspace pour exécuter une ligne il suffit d'y positionner le curseur de la souris et de presser alt-d (cela equivaut à sélectionner la ligne et utiliser le menu). Pour sélectionner un bloc d'instructions rapidement placez la souris au tout début ou à la fin du block et cliquez, cela a pour effet de tout sélectionner. 
 
 [[[
 FMSound organ1 play.
@@ -41,10 +42,10 @@ FMSound organ1 play.
 
 Si aucun son n'est produit vous pouvez vérifier ces premiers points: 
 
-+Settings:>file://figures/SoundSetting.pdf|width=50|label=setting+
++Settings>file://figures/SoundSetting.pdf|width=50|label=setting+
 
 -Le volume sonore de votre OS n'est pas correctement ajusté ou en mode muet
--Vérifier que le son est permis dans votre image Pharo. Pour cela ouvrer le Setting Browser depuis le menu Tools, tapez sound dans la barre et cliquez sur le radio bouton. Vous devez obtenir un système proche de l'image montrée par la figure *setting*.
+-Vérifier que le son est permis dans votre image Pharo. Pour cela ouvrez le Setting Browser depuis le menu Tools, tapez sound dans la barre et cliquez sur le radio bouton. Vous devez obtenir un système proche de l'image montrée par la figure *setting*.
 
 -Le plugin sonore n'est pas installé (Linux).
 
@@ -68,7 +69,7 @@ SoundPlayer startUp
 
 !!Bases de la synthèse FM par l'exemple
 
-Maintenant que nous nous sommes assurés que le son est fonctionnel,  nous allons découvrir comment celui-ci est généré. Prenons le code de la méthode qui définit l'instrument ==organ1==:
+Maintenant que nous nous sommes assurés que le son était fonctionnel,  nous allons découvrir comment celui-ci est généré. Prenons le code de la méthode qui définit l'instrument ==organ1==:
 
 [[[
 FMSound class>>organ1
@@ -103,7 +104,8 @@ sound addEnvelope: (VolumeEnvelope
 
 Nous remarquons qu'une enveloppe se caractérise d'après un ensemble de points et d'une boucle. La méthode associée est ==points:loopStart:loopEnd:==. Une boucle peut aussi bien utiliser l'ensemble des points définis ou 1 seul.
 
-Par exemple ici on ajoute au son une enveloppe avec une boucle allant des indices 2 à 4 (1 étant la première valeur du tableau). La séquence suivante est jouée pour des valeurs oscillant entre 0.8 et 1. Le volume du son semble vibrer.
+Par exemple ici on ajoute au son une enveloppe avec une boucle allant des indices 2 à 4 (l'indice 1 correspondant la première valeur du tableau).
+La séquence suivante est jouée pour des valeurs oscillant entre 0.8 et 1. Le volume du son semble vibrer.
 [[[
 60@1.0 . 110@0.8 . 200@1.0
 ]]]
@@ -116,7 +118,7 @@ sound addEnvelope: (VolumeEnvelope
                       loopStart: 5 loopEnd: 5).
 ]]]
 
-Le son se termine avec la valeur ==250@0.0== et une boucle dessus maintenant le volume à 0 pendant toute sa durée.
+Le son se termine avec la valeur ==250@0.0== et une boucle maintenant le volume à 0 pendant toute sa durée.
 
 Finalement, la méthode retourne le son avec comme paramètre la note (ici exprimée en Hz, voir tableau ""*frequence*""), la durée en seconde et un volume global de la note. Ce volume sera ensuite modulé grâce à l'enveloppe qui est définie.
 
@@ -151,13 +153,14 @@ Commençons par jouer un ==LA== de la manière suivante:
 (FMSound new setPitch: 440 duration: 1.0 loudness: 1) play
 ]]]
 
-Le son est joué à une fréquence de 440 Hz pendant 1 seconde.
+Le son est joué à une fréquence de 440 Hz pendant 1 seconde avec un volume maximum.
 
 La classe ==FMSound== permet la génération de sons sinusoïdaux. Ça donne un son assez doux et régulier. La figure *sinusoide* ci dessous montre à quoi ressemble la courbe.
 
 +Sinusoïde produite>file://figures/sin.png|width=75|label=sinusoide+
 
-L'écriture pour une seule note est simple, mais cela peut rapidement devenir long, fastidieux et les erreurs difficiles à détecter si nous devons écrire tout une mélodie de cette manière. Une chose à savoir, est qu'au lieu de définir une note par sa fréquence nous pouvons l'écrire dans sa notation anglaise. Le tableau ""*notation*"" va nous indiquer les correspondances pour plus de facilité. Par exemple, le LA est représenté dans la notation anglaise par un 'a'. Pour obtenir le LA de la quatrième octave nous demandons a4.
+@@note utile ou pas ? L'écriture pour une seule note est simple, mais cela peut rapidement devenir long, fastidieux et les erreurs difficiles à détecter si nous devons écrire tout une mélodie de cette manière. 
+Une chose à savoir, est qu'au lieu de définir une note par sa fréquence nous pouvons l'écrire dans sa notation anglaise. Le tableau ""*notation*"" va nous indiquer les correspondances pour plus de facilité. Par exemple, le LA est représenté dans la notation anglaise par un 'a'. Pour obtenir le LA de la quatrième octave nous demandons a4.
 
 Le ==LA== de tout à l'heure peut s'écrire maintenant sous cette forme
 
@@ -169,7 +172,6 @@ Le ==LA== de tout à l'heure peut s'écrire maintenant sous cette forme
 
 |!|Anglais|C|C#|D|D#|E|F|F#|G|G#|A|A#|H
 |!|Français|Do|Do#|Re|Re#|Mi|Fa|Fa#|Sol|Sol#|La|La#|Si
-
 
 Le ==SOL#==  par exemple s'écrit
 
@@ -266,7 +268,7 @@ mix play.
 
 Modifions un peu les valeurs de l'attaque à l'aide de la méthode ==setPitch:duration:loudness:== pour obtenir des notes différentes et nous familiariser avec les méthodes. Les enveloppes de volume modifient la courbe du son au cours du temps et peuvent être utilisées pour obtenir des effets particuliers.
 
-Par exemple si nous voulions rajouter un effet de réverbération à notre son il faudrait modifier les points de l'enveloppe de volume par
+Par exemple si nous voulions rajouter un effet d'écho à notre son il faudrait modifier les points de l'enveloppe de volume par
 
 [[[
 points := { 0@1 . 100@0.6  . 200@0 . 300@0.2 . 400@0.1 . 500@0 }.
@@ -280,8 +282,6 @@ snd2 addEnvelope: (VolumeEnvelope points: points loopStart: 6  loopEnd: 6).
 ]]]
 
 Dans notre exemple nous avons également utiliser le message ==pan:== qui va positionner le son en stéréo. Une valeur de ==0== pour gauche et ==1== pour droite. Une valeur de ==0.5== place le son au milieu.
-
-@@note un exemple à fournir pour le pan:
 
 Nous allons réutiliser l'exemple plus haut et lui rajouter de la stéréo.
 
@@ -325,10 +325,11 @@ mix add: seq3 pan:1.
 mix play.
 ]]]
 
+@@note revue
+
 Dans ce nouvel exemple nous avons introduit une nouvelle classe de son ==RestSound==. Elle nous permet de simplement créer un silence utilisable entre 2 sons.
 Elle ne comprend que le message ==duration:== exprimé en seconde.
 
-@@note rajouter ici l'explication de la classe ==QueueSound==. Ce sera plus adapté.
 La méthode ==SequentialSound== possède une limitation. Regardons l'exemple suivant pour voir ce qu'il se passe
 
 [[[
@@ -357,7 +358,7 @@ seq play.
 
 Normalement nous devrions entendre 4 sons à la suite, or il n'y en a que 3. Visiblement nous ne pouvons pas réutiliser un son déclaré. Cette méthode n'est pas adaptée pour ce que nous souhaitons faire. Pour cela il existe une autre classe qui va répondre à notre besoin: ==QueueSound== 
 
-Remplaçons la ligne ==seq := SequentialSound== par ==seq := QueueSound== et ecoutez à nouveau l'exemple. Nous entendons bien maintenant nos 4 sons. Le tour est joué !
+Remplaçons la ligne ==seq := SequentialSound== par ==seq := QueueSound== et ecoutez à nouveau l'exemple. Nous entendons maintenant nos 4 sons. Le tour est joué !
 
 !!Les enveloppes
 
@@ -557,11 +558,9 @@ Si votre mélodie utilise des notes à fréquence basse, le volume de celle ci p
 
 Voila il ne reste plus qu'à demander l'exécution de la mélodie: ==FMSound pacman play==.
 
-@@note revue
-
 !!Jouer un sample 
 
-La sonorisation d'une production ne passe pas essentiellement par de la synthèse sonore, parfois il est nécessaire de faire appel à des bruitages ou des voix enregistrées. Nous allons vous montrer comment jouer un sample à partir d'un fichier ou directement depuis la mémoire.
+La sonorisation d'une production ne passe pas essentiellement par de la synthèse sonore, parfois il est nécessaire de faire appel à des sons digitalisés reproduisant des bruitages, des voix ou des musiques entières. Nous allons vous montrer comment jouer un sample à partir d'un fichier ou directement depuis la mémoire.
 
 Essayons dans un premier temps de jouer un son à partir d'un fichier au format wav.
 
@@ -569,10 +568,13 @@ Essayons dans un premier temps de jouer un son à partir d'un fichier au format 
 (SampledSound fromWaveFileNamed: '/home/messner/sound.wav') play
 ]]]
 
-Si nous faisions un jeu, les chargements risqueraient de saccader les animations et le rendre injouable. Afin d'éviter ces petits désagréments les sons seront chargés en mémoire et joués lorsque ce sera nécessaire.
+Le son est joué en tâche de fond sans bloquer le reste de notre environnement. Nous pouvons par exemple utiliser cette méthode pour sonoriser une action ponctuelle ou une alerte.
 
-Pour cela on va le rajouter à notre librairie de sons en utilisant le message ==addLibrarySoundNamed:samples:samplingRate:==. 
+Si notre but était de concevoir un jeu, le chargement du fichier directement depuis le disque à des moments clés risquerait de ralentir les animations voir de le rendre injouable. Afin d'éviter ces petits désagréments les sons seront chargés en mémoire et joués lorsque ce sera nécessaire pour gagner en temps de réponse.
+
+Pour cela nous allons le rajouter à notre librairie de sons en utilisant le message ==addLibrarySoundNamed:samples:samplingRate:==. 
 @@note on devrait ajouter une methode ==addLibrarySoundNamed:== qui appelle addLibrary avec samples et originalSamplingRate
+@@note à corriger après la revue
 
 [[[
 | spl spl2 |
@@ -624,7 +626,7 @@ SampledSound addLibrarySoundNamed: 'bateau'
 
 @@note on doit ameliorer fromWaveFileNamed: pour lui passer un fileSystem FileSystem disc workingDirectory / 'ocean.wav'
 
-Maintenant que tous nos sons sont chargés nous allons les jouer en séquence grâce à la classe ==QueueSound==. Les sons sont joués les uns après les autres à la fréquence souhaitée.
+Maintenant que tous nos sons sont chargés nous allons les jouer en séquence grâce à la classe ==QueueSound== vue précédemment. Les sons sont joués les uns après les autres à la fréquence souhaitée.
 
 [[[
 | mix q1 q2 spl1 spl2 spl3 |
