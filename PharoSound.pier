@@ -325,9 +325,7 @@ mix add: seq3 pan:1.
 mix play.
 ]]]
 
-@@note revue
-
-Dans ce nouvel exemple nous avons introduit une nouvelle classe de son ==RestSound==. Elle nous permet de simplement créer un silence utilisable entre 2 sons.
+Dans ce nouvel exemple nous avons introduit une nouvelle classe de son ==RestSound== pour créer uun silence.
 Elle ne possède qu'un seul message ==duration:== exprimé en seconde générant un son plus ou moins long.
 
 La méthode ==SequentialSound== possède une limitation. Regardons l'exemple suivant pour voir ce qu'il se passe
@@ -356,11 +354,12 @@ seq add: snd2.
 seq play.
 ]]]
 
-Normalement nous devrions entendre 4 sons à la suite, or il n'y en a que 3. Visiblement nous ne pouvons pas réutiliser un son déclaré. Cette méthode n'est pas adaptée pour ce que nous souhaitons faire. Pour cela il existe une autre classe qui va répondre à notre besoin: ==QueueSound== 
+Normalement nous devrions entendre 4 sons joués à la suite, or il n'y en a que 3. Visiblement nous ne pouvons pas réutiliser un son déjà déclaré. Cette méthode n'est pas adaptée pour ce que nous souhaitons faire. Pour cela il existe une autre classe qui va répondre à notre besoin: ==QueueSound== 
 
-Remplaçons la ligne ==seq := SequentialSound== par ==seq := QueueSound== et ecoutez à nouveau l'exemple. Nous entendons maintenant nos 4 sons. Le tour est joué !
+Remplaçons la ligne ==seq := SequentialSound== par ==seq := QueueSound== et ecoutons de nouveau notre exemple. Nous entendons bien nos 4 sons. Le tour est joué !
 
 !!Les enveloppes
+@@note revue
 
 Nous avons introduit une première enveloppe qui agit sur le volume d'un son. Il y en a une autre qui change la note ou plutôt sa fréquence pendant qu'elle est jouée, c'est ce qu'on appelle l'attaque de la note, le pitch en anglais.
 De la même manière que pour le volume nous allons définir un ensemble de points qui indiqueront le moment du changement de la fréquence du son. Plus la valeur est haute, plus la note le sera. Si on indique un chiffre négatif, la note descendra en dessous de la note de départ. Nous définissons donc une enveloppe mais cette fois-ci une enveloppe d'attaque en utilisant la classe ==PitchEnvelope==.
