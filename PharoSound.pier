@@ -359,10 +359,9 @@ Normalement nous devrions entendre 4 sons joués à la suite, or il n'y en a que
 Remplaçons la ligne ==seq := SequentialSound== par ==seq := QueueSound== et ecoutons de nouveau notre exemple. Nous entendons bien nos 4 sons. Le tour est joué !
 
 !!Les enveloppes
-@@note revue
 
 Nous avons introduit une première enveloppe qui agit sur le volume d'un son. Il y en a une autre qui change la note ou plutôt sa fréquence pendant qu'elle est jouée, c'est ce qu'on appelle l'attaque de la note, le pitch en anglais.
-De la même manière que pour le volume nous allons définir un ensemble de points qui indiqueront le moment du changement de la fréquence du son. Plus la valeur est haute, plus la note le sera. Si on indique un chiffre négatif, la note descendra en dessous de la note de départ. Nous définissons donc une enveloppe mais cette fois-ci une enveloppe d'attaque en utilisant la classe ==PitchEnvelope==.
+De la même manière que pour le volume nous allons définir un ensemble de points qui indiqueront le moment du changement de la fréquence du son. Plus la valeur est haute, plus la note sera haute. Si on indique un chiffre négatif, la note descendra en dessous de la note de départ. Nous définissons donc une enveloppe mais cette fois-ci une enveloppe d'attaque en utilisant la classe ==PitchEnvelope==.
 
 [[[
 | snd p |
@@ -372,7 +371,7 @@ snd addEnvelope: (PitchEnvelope points: p loopStart: 7  loopEnd:7).
 (snd setPitch: 'a4' duration: 2 loudness: 0.5) play.
 ]]]
 
-La transition entre les différentes fréquences se fait en douceur et sans cassures. Nous allons rajouter à cela une enveloppe de volume on pour produire un son intéressant.
+La transition entre les différentes fréquences se fait en douceur et sans cassures. Nous allons rajouter à cela une enveloppe de volume pour produire un son plus intéressant.
 
 [[[
 | snd p p2 |
@@ -384,8 +383,8 @@ snd addEnvelope: (VolumeEnvelope points: p2 loopStart: 7  loopEnd: 7).
 (snd setPitch: 'a4' duration: 2 loudness: 0.5) play.
 ]]]
 
-Imaginons que nous voulions introduire plus de variations dans le volume du son, il faudrait alors définir plus de points. C'est faisable mais fastidieux.
-Au lieu de définir une enveloppe points par points nous allons utiliser une méthode appelée ==exponentialDecay:== de la classe ==VolumeEnvelope== pour le volume ou la classe ==PitchEnvelope== pour le pitch. La courbe sera de type exponentielle partant du volume le plus haut pour arriver en douceur à 0.
+Le volume est dans notre exemple très variable, l'ensemble des points ont été définis manuellement. Imaginons maintenant que nous voulions le réduire progressivement jusqu'à 0. Nous aurions à définir un certains nombre de points afin pour produire une courbe décroissante. C'est faisable, fastidieux et surtout la courbe ne produirait pas l'effet souhaité.
+Au lieu de la définir points par points nous allons utiliser une méthode appelée ==exponentialDecay:== de la classe ==VolumeEnvelope== pour le volume ou la classe ==PitchEnvelope== pour le pitch. La courbe sera de type exponentielle partant du volume le plus élevé pour arriver en douceur à 0.
 
 La définition du volume devient alors ceci:
 
@@ -406,14 +405,14 @@ Nous obtenons le résultat suivant
 ]]]
 
 Plus la valeur est grande plus le nombre de valeurs sera important.
-.
+
 Nous pouvons visualiser à quoi ressemble notre envelope en ouvrant le morph ==EnvelopeEditorMorph== comme ceci
 
 [[[
 EnvelopeEditorMorph new openInWorld
 ]]]
 
-Sélectionnez l'ensemble de la ligne et faites ""clic droit/Do it"". Une fenêtre apparaît comme celle présentée en figure *EnvelopeEditorMorph* ci-dessous
+Sélectionnez l'ensemble de la ligne et faites ""clic droit/Do it"". Une fenêtre apparaît comme celle présentée en figure *EnvelopeEditorMorph*.
 
 +Editeur d'enveloppe>file://figures/envelopeEditorMorph.png|width=75|label=EnvelopeEditorMorph+
 
@@ -421,9 +420,9 @@ Vous pouvez l'agrandir en la sélectionnant avec ""shit + clic droit"" puis en d
 
 +Ancre>file://figures/envelopeEditorMorphAnchor.png|width=75|label=EnvelopeEditorMorphAnchor+
 
-Le morph expose les courbes de l'instrument et nous permet de les modifier en déplaçant les points les composant. Vous pouvez passer d'une courbe à l'autre soit en la sélectionnant directement dans la fenêtre, soit en la choisissant dans le menu ==editing== en bas à gauche du morph.
+Le morph expose les courbes de l'instrument et nous permet de les modifier en déplaçant les points le composant. Vous pouvez passer d'une courbe à l'autre soit en la sélectionnant directement dans la fenêtre, soit en la choisissant dans le menu ==editing== en bas à gauche du morph.
 
-En abscisse nous avons le temps en milisecondes. L'ordonnée se modifie en fonction de la courbe choisie. Nous avons également 3 délimitations représentées par les axes verticaux de couleur orange. Les deux plus à gauche sont utilisées pour la boucle lorsque la note est tenue, ce sont les paramètres ==loopStart:loopEnd:==. La plus à droite c'est lorsque la note est relachée. Nous pouvons également les déplacer en fonction de nos besoins en utilisant les triangles orange au dessus de la courbe des abscisses. A noter qu'il n'est pas possible d'avoir sur le morph une boucle d'une durée inférieur à 50ms, comme il n'est pas possible d'avoir une valeur de début de boucle différente de la valeur de fin. Ce qui parraît logique si on souhaite avoir une boucle harmonieuse.
+En abscisse nous avons le temps en milisecondes. L'ordonnée se modifie en fonction de la courbe choisie. Nous avons également 3 délimitations représentées par les axes verticaux de couleur orange. Les deux plus à gauche sont utilisées pour la boucle lorsque la note est tenue, ce sont les paramètres ==loopStart:loopEnd:==. La plus à droite c'est lorsque la note est relachée. Nous pouvons également les déplacer en fonction de nos besoins en utilisant les triangles orange au dessus de la courbe des abscisses. A noter qu'il n'est pas possible d'avoir sur le morph une boucle d'une durée inférieur à 50ms, comme il n'est pas possible d'avoir une valeur de début de boucle différente de la valeur de fin. Ce qui parraît logique si nous souhaitons obtenir une boucle harmonieuse.
 
 Pour rajouter un point sur une partie de la courbe il suffit de cliquer sur les petits triangles verts pour faire apparaître le point correspondant. Ce point peut être ensuite déplacer pour être positionné à la valeur souhaitée.
 @@note peut on supprimer un point une fois qu'il a été créé ? en même temps vu que le morph est là uniquement pour tester, est ce vraiment utile ?
@@ -459,7 +458,7 @@ Voici un exemple de déclaration d'une séquence
 notes := #((a3 200 150) (a4 100 150) (g3 150 150))
 ]]]
 
-Nous allons écrire notre premier morceau avec un air qui devrait rappeler des bons souvenirs à tout ceux qui aiment le début de l'air des jeux vidéos. Nous allons définir la mélodie d'intro du jeu pacman.
+Nous allons écrire notre premier morceau avec un air qui devrait rappeler des bons souvenirs à tout ceux qui aiment le début de l'air des jeux vidéos. Nous allons définir la mélodie d'introduction du jeu pacman.
 
 !!! Définissons un nouvel élément
 
@@ -554,11 +553,13 @@ FMSound class>>pacmanV2On: aSound
         ^self noteSequenceOn: aSound from: notes.
 ]]]
 
-Si votre mélodie utilise des notes à fréquence basse, le volume de celle ci peut être difficilement audible. Vous pouvez alors pour y remédier augementer le volume des notes. Ici nous sommes passé à un volume de 500, contrairement à la précédente mélodie où nous étions resté à 150.
+Si votre mélodie utilise des notes à fréquence basse, le volume de celle ci sera difficilement audible. Vous pouvez alors pour y remédier augementer le volume des notes. Ici nous sommes passé à un volume de 500, contrairement à la précédente mélodie où nous étions resté à 150.
 
 Voila il ne reste plus qu'à exécuter la mélodie: ==FMSound pacman play==.
 
 !!Jouer un sample 
+
+@@note rajouter le téléchargement des fichiers depuis GIT ?
 
 La sonorisation d'une production ne passe pas essentiellement par de la synthèse sonore, parfois il est nécessaire de faire appel à des sons digitalisés reproduisant des bruitages, des voix ou des musiques entières. Nous allons vous montrer comment jouer un sample à partir d'un fichier ou directement depuis la mémoire.
 
@@ -572,9 +573,12 @@ Le son est joué en tâche de fond sans bloquer le reste de notre environnement.
 
 Si notre but était de concevoir un jeu, le chargement du son directement depuis le disque à des moments clés risquerait de ralentir les animations voir de le rendre injouable. Afin d'éviter ces petits désagréments les sons seront chargés en mémoire et joués lorsque ce sera nécessaire pour gagner en temps de réponse.
 
-Pour cela nous allons le rajouter à notre librairie de sons en utilisant le message ==addLibrarySoundNamed:samples:samplingRate:==. 
+Pharo met à notre disposition une banque de sons que nous pouvons alimenter suivant nos besoins. Pour rajouter un son à cette librairie nous utiliserons le message ==addLibrarySoundNamed:samples:samplingRate:==. 
 @@note on devrait ajouter une methode ==addLibrarySoundNamed:== qui appelle addLibrary avec samples et originalSamplingRate
 @@note à corriger après la revue
+@@note rajouter un exemple pour lister le contenu de la librairie si on peut ... mais oui on peut :)
+
+Dans un workspace copiez le code suivant et évaluez-le pour rajouter le sample dans la librairie
 
 [[[
 | spl spl2 |
@@ -626,7 +630,7 @@ SampledSound addLibrarySoundNamed: 'bateau'
 
 @@note on doit ameliorer fromWaveFileNamed: pour lui passer un fileSystem FileSystem disc workingDirectory / 'ocean.wav'
 
-Maintenant que tous nos sons sont chargés nous allons les jouer en séquence grâce à la classe ==QueueSound== vue précédemment. Les sons sont joués les uns après les autres à la fréquence souhaitée.
+Maintenant que tous nos sons sont chargés nous allons les jouer en séquence grâce à la classe ==QueueSound== vue précédemment. Ils sont joués les uns après les autres à la fréquence souhaitée.
 
 [[[
 | mix q1 q2 spl1 spl2 spl3 |
