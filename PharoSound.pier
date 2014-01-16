@@ -344,7 +344,7 @@ snd2 setPitch: 'a3' duration:0.5 loudness: 1.
 snd3 setPitch: 'g#4' duration:0.5 loudness: 1.
 
 "Les sons les uns a la suite des autres"
-"Le résultat ne va pas etre celui attendu"
+"Le resultat ne va pas etre celui attendu"
 seq add: snd1.
 seq add: snd2.
 seq add: snd3.
