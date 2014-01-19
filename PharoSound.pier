@@ -566,7 +566,7 @@ wget https://github.com/xmessner/PharoSoundTutorial/archive/master.zip
 
 Décompressez la ensuite dans le répertoire de votre choix. Le sous-répertoire ==sounds== contient l'ensemble des sons digitalisés de l'article dont nous aurons besion.
 
-Il vous faudra adapter les répertoires de dépot en fonction de votre environnement.
+Il vous faudra adapter les répertoires de dépôt en fonction de votre environnement.
 
 Essayons dans un premier temps de jouer un son à partir d'un fichier au format wav.
 
