@@ -159,7 +159,6 @@ La classe ==FMSound== permet la génération de sons sinusoïdaux. Ça donne un 
 
 +Sinusoïde produite>file://figures/sin.png|width=75|label=sinusoide+
 
-@@note utile ou pas ? L'écriture pour une seule note est simple, mais cela peut rapidement devenir long, fastidieux et les erreurs difficiles à détecter si nous devons écrire tout une mélodie de cette manière. 
 Une chose à savoir, est qu'au lieu de définir une note par sa fréquence nous pouvons l'écrire dans sa notation anglaise. Le tableau ""*notation*"" va nous indiquer les correspondances pour plus de facilité. Par exemple, le LA est représenté dans la notation anglaise par un 'a'. Pour obtenir le LA de la quatrième octave nous demandons a4.
 
 Le ==LA== de tout à l'heure peut s'écrire maintenant sous cette forme
@@ -202,7 +201,7 @@ points := { 0@0 . 10@1 . 400@0.4 . 500@0}.
 
 La note jouée est à son maximum au début puis repasse progressivement à 0 au bout de 500ms. L'enveloppe étant définie sur une durée égale à la durée de la note la transition se fait plus naturellement et sonne mieux à l'oreille.
 
-@@note enveloppe qui fait quoi? est ce correct ce que j'ai ecrit et pourquoi 0 pour le premier? Oui ca me paraît correcte. Le zéro correspond au début du son. On est alors au maximum du volume. Par contre je n'ai jamais fais le test de ne pas définir le 0. Peut être est on déjà à 1 ? a creuser.
+@@todo enveloppe qui fait quoi? est ce correct ce que j'ai ecrit et pourquoi 0 pour le premier? Oui ca me paraît correcte. Le zéro correspond au début du son. On est alors au maximum du volume. Par contre je n'ai jamais fais le test de ne pas définir le 0. Peut être est on déjà à 1 ? a creuser.
 
 Voyons ce que donne notre code précédent avec une enveloppe de volume
 
@@ -263,8 +262,6 @@ mix add: snd1 pan: 0; add: snd2 pan: 1.
 
 mix play.
 ]]]
-
-@@note c'est bien la methode add:pan:?
 
 Modifions un peu les valeurs de l'attaque à l'aide de la méthode ==setPitch:duration:loudness:== pour obtenir des notes différentes et nous familiariser avec les méthodes. Les enveloppes de volume modifient la courbe du son au cours du temps et peuvent être utilisées pour obtenir des effets particuliers.
 
@@ -425,10 +422,10 @@ Le morph expose les courbes de l'instrument et nous permet de les modifier en d�
 En abscisse nous avons le temps en milisecondes. L'ordonnée se modifie en fonction de la courbe choisie. Nous avons également 3 délimitations représentées par les axes verticaux de couleur orange. Les deux plus à gauche sont utilisées pour la boucle lorsque la note est tenue, ce sont les paramètres ==loopStart:loopEnd:==. La plus à droite c'est lorsque la note est relachée. Nous pouvons également les déplacer en fonction de nos besoins en utilisant les triangles orange au dessus de la courbe des abscisses. A noter qu'il n'est pas possible d'avoir sur le morph une boucle d'une durée inférieur à 50ms, comme il n'est pas possible d'avoir une valeur de début de boucle différente de la valeur de fin. Ce qui parraît logique si nous souhaitons obtenir une boucle harmonieuse.
 
 Pour rajouter un point sur une partie de la courbe il suffit de cliquer sur les petits triangles verts pour faire apparaître le point correspondant. Ce point peut être ensuite déplacer pour être positionné à la valeur souhaitée.
-@@note peut on supprimer un point une fois qu'il a été créé ? en même temps vu que le morph est là uniquement pour tester, est ce vraiment utile ?
+@@todo peut on supprimer un point une fois qu'il a été créé ? en même temps vu que le morph est là uniquement pour tester, est ce vraiment utile ?
 
 Je vous invite à tester toutes ces possibilités et à écouter le résultat obtenu grace au clavier de piano disponible.
-@@note Il faudra rajouter dans le morph d'autres timbres ou du moins faire en sorte qu'il n'y ait pas d'erreur si on veut en sélectionner un autre.
+@@todo Il faudra rajouter dans le morph d'autres timbres ou du moins faire en sorte qu'il n'y ait pas d'erreur si on veut en sélectionner un autre. A essayer de rajouter en correction.
 
 Les enveloppes viennent compléter nos connaissances sur la génération du son. Nous savons donc jouer un son, plusieurs sons les uns après les autres ou encore plusieurs joués en même temps.
 
@@ -559,9 +556,17 @@ Voila il ne reste plus qu'à exécuter la mélodie: ==FMSound pacman play==.
 
 !!Jouer un sample 
 
-@@note rajouter le téléchargement des fichiers depuis GIT ?
-
 La sonorisation d'une production ne passe pas essentiellement par de la synthèse sonore, parfois il est nécessaire de faire appel à des sons digitalisés reproduisant des bruitages, des voix ou des musiques entières. Nous allons vous montrer comment jouer un sample à partir d'un fichier ou directement depuis la mémoire.
+
+Tout d'abord nous allons télécharger les sons pour notre exemple. Pour cela exécuter dans une console la commande suivante ou alors téléchargez directement l'archive sur votre ordinateur.
+
+[[[
+wget https://github.com/xmessner/PharoSoundTutorial/archive/master.zip
+]]]
+
+Décompressez la ensuite dans le répertoire de votre choix. Le sous-répertoire ==sounds== contient l'ensemble des sons digitalisés de l'article dont nous aurons besion.
+
+Il vous faudra adapter les répertoires de dépot en fonction de votre environnement.
 
 Essayons dans un premier temps de jouer un son à partir d'un fichier au format wav.
 
@@ -574,9 +579,9 @@ Le son est joué en tâche de fond sans bloquer le reste de notre environnement.
 Si notre but était de concevoir un jeu, le chargement du son directement depuis le disque à des moments clés risquerait de ralentir les animations voir de le rendre injouable. Afin d'éviter ces petits désagréments les sons seront chargés en mémoire et joués lorsque ce sera nécessaire pour gagner en temps de réponse.
 
 Pharo met à notre disposition une banque de sons que nous pouvons alimenter suivant nos besoins. Pour rajouter un son à cette librairie nous utiliserons le message ==addLibrarySoundNamed:samples:samplingRate:==. 
-@@note on devrait ajouter une methode ==addLibrarySoundNamed:== qui appelle addLibrary avec samples et originalSamplingRate
-@@note à corriger après la revue
-@@note rajouter un exemple pour lister le contenu de la librairie si on peut ... mais oui on peut :)
+@@todo on devrait ajouter une methode ==addLibrarySoundNamed:== qui appelle addLibrary avec samples et originalSamplingRate
+@@todo à corriger après la revue
+@@todo rajouter un exemple pour lister le contenu de la librairie si on peut ... mais oui on peut :)
 
 Dans un workspace copiez le code suivant et évaluez-le pour rajouter le sample dans la librairie
 
@@ -601,7 +606,7 @@ spl2 duration: 0.1.
 spl2 play.
 ]]]
 
-@@note estil possible de le jouer a la vitesse ou il a ete enregistre? il me semble que oui avec originalSamplingRate. Il faut que je fasse le test sur un sample plus significatif.
+@@todo estil possible de le jouer a la vitesse ou il a ete enregistre? il me semble que oui avec originalSamplingRate. Il faut que je fasse le test sur un sample plus significatif.
 
 !!Un dernier petit effort
 
@@ -628,7 +633,7 @@ SampledSound addLibrarySoundNamed: 'bateau'
              samplingRate: spl2 originalSamplingRate.
 ]]]
 
-@@note on doit ameliorer fromWaveFileNamed: pour lui passer un fileSystem FileSystem disc workingDirectory / 'ocean.wav'
+@@todo on doit ameliorer fromWaveFileNamed: pour lui passer un fileSystem FileSystem disc workingDirectory / 'ocean.wav'
 
 Maintenant que tous nos sons sont chargés nous allons les jouer en séquence grâce à la classe ==QueueSound== vue précédemment. Ils sont joués les uns après les autres à la fréquence souhaitée.
 
