@@ -49,8 +49,8 @@ Si aucun son n'est produit vous pouvez vérifier ces premiers points:
 
 -Le plugin sonore n'est pas installé (Linux).
 
-@@comment Indiquer la marche à suivre ou une page internet l'indiquant ?
-@@comment Aussi mais il faut que cela fonctionne je vais ouvrir un bug
+@@todo Indiquer la marche à suivre ou une page internet l'indiquant ?
+@@todo Aussi mais il faut que cela fonctionne je vais ouvrir un bug
 
 #Télécharger la dernière version de *Squeak 4.4>http://ftp.squeak.org/4.4/Squeak-4.4-All-in-One.zip*
 #Décompresser l'archive dans le répertoire de votre choix.
@@ -58,7 +58,7 @@ Si aucun son n'est produit vous pouvez vérifier ces premiers points:
 #Changer les droits du plugins avec ==chmod +x bin/vm-sound-pulse==.
 
 @@comment est-ce que sous les autres OS le son est actif d'origine ?
-@@comment cela depend de l'image et pas des OS. Maintenant le plugin sound sur linux n'est plus a jour et on va le fixer.
+@@todo cela depend de l'image et pas des OS. Maintenant le plugin sound sur linux n'est plus a jour et on va le fixer.
 
 -Le processus sonore interne ne fonctionne plus. Il faut l'arrêter puis le relancer en évaluant les expressions suivantes:
 
