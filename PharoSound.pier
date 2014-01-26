@@ -34,7 +34,7 @@ Gofer new
 
 !! Vérifications
 
-Avant de se familiariser avec les différentes méthodes utiles, nous allons nous assurer que notre environnement puisse jouer un son convenablement. Pour cela on va ouvrir un workspace (depuis le menu Tools) et évaluer la ligne de code suivante en sélectionnant l'expression puis en utilisant l'item 'Do it' du menu. Nous vous expliquerons par la suite ce dont il s'agit. Notez que dans un workspace pour exécuter une ligne il suffit d'y positionner le curseur de la souris et de presser alt-d (cela equivaut à sélectionner la ligne et utiliser le menu). Pour sélectionner un bloc d'instructions rapidement placez la souris au tout début ou à la fin du block et cliquez, cela a pour effet de tout sélectionner. 
+Avant de se familiariser avec les différentes méthodes utiles, nous allons nous assurer que notre environnement puisse jouer un son convenablement. Pour cela on va ouvrir un workspace (depuis le menu Tools) et évaluer la ligne de code suivante en sélectionnant l'expression puis en utilisant l'item 'Do it' du menu. Nous vous expliquerons par la suite ce dont il s'agit. Notez que dans un workspace pour exécuter une ligne il suffit d'y positionner le curseur de la souris et de presser alt-d (cela équivaut à sélectionner la ligne et utiliser le menu). Pour sélectionner un bloc d'instructions rapidement placez la souris au tout début ou à la fin du bloc et cliquez, cela a pour effet de tout sélectionner. 
 
 [[[
 FMSound organ1 play.
@@ -60,7 +60,7 @@ Si aucun son n'est produit vous pouvez vérifier ces premiers points:
 @@comment est-ce que sous les autres OS le son est actif d'origine ?
 @@comment cela depend de l'image et pas des OS. Maintenant le plugin sound sur linux n'est plus a jour et on va le fixer.
 
--Le process sonore interne ne fonctionne plus. Il faut l'arrêter puis le relancer en évaluant les expressions suivantes:
+-Le processus sonore interne ne fonctionne plus. Il faut l'arrêter puis le relancer en évaluant les expressions suivantes:
 
 [[[
 SoundPlayer stopPlayerProcess.
@@ -193,7 +193,7 @@ seq add: (FMSound new setPitch: 'g#4' duration:0.5 loudness: 1).
 seq play.
 ]]]
 
-Si nous écoutons les sons générés, nous pouvons percevoir un petit clap entre chaques transitions de notes. Afin d'éviter cela nous allons appliquer une enveloppe de volume sur chacune des notes. Ceci est fait comme suit:
+Si nous écoutons les sons générés, nous pouvons percevoir un petit clap entre chaque transitions de notes. Afin d'éviter cela nous allons appliquer une enveloppe de volume sur chacune des notes. Ceci est fait comme suit:
  
 [[[
 points := { 0@0 . 10@1 . 400@0.4 . 500@0}.
@@ -239,7 +239,7 @@ La séquence est maintenant plus agréable à écouter.
 
 !!Jouer plusieurs sons simultanément
 
-Jouer des sons en séquence c'est bien mais pas encore suffisant pour donner une âme à notre production. Pour cela nous allons utiliser La classe ==MixedSound==. Elle va litéralement mixer plusieurs sons en même temps.
+Jouer des sons en séquence c'est bien mais pas encore suffisant pour donner une âme à notre production. Pour cela nous allons utiliser La classe ==MixedSound==. Elle va littéralement mixer plusieurs sons en même temps.
 
 [[[
 | mix snd1 snd2 points |
@@ -322,7 +322,7 @@ mix add: seq3 pan:1.
 mix play.
 ]]]
 
-Dans ce nouvel exemple nous avons introduit une nouvelle classe de son ==RestSound== pour créer uun silence.
+Dans ce nouvel exemple nous avons introduit une nouvelle classe de son ==RestSound== pour créer un silence.
 Elle ne possède qu'un seul message ==duration:== exprimé en seconde générant un son plus ou moins long.
 
 La méthode ==SequentialSound== possède une limitation. Regardons l'exemple suivant pour voir ce qu'il se passe
@@ -353,7 +353,7 @@ seq play.
 
 Normalement nous devrions entendre 4 sons joués à la suite, or il n'y en a que 3. Visiblement nous ne pouvons pas réutiliser un son déjà déclaré. Cette méthode n'est pas adaptée pour ce que nous souhaitons faire. Pour cela il existe une autre classe qui va répondre à notre besoin: ==QueueSound== 
 
-Remplaçons la ligne ==seq := SequentialSound== par ==seq := QueueSound== et ecoutons de nouveau notre exemple. Nous entendons bien nos 4 sons. Le tour est joué !
+Remplaçons la ligne ==seq := SequentialSound== par ==seq := QueueSound== et écoutons de nouveau notre exemple. Nous entendons bien nos 4 sons. Le tour est joué !
 
 !!Les enveloppes
 
@@ -403,7 +403,7 @@ Nous obtenons le résultat suivant
 
 Plus la valeur est grande plus le nombre de valeurs sera important.
 
-Nous pouvons visualiser à quoi ressemble notre envelope en ouvrant le morph ==EnvelopeEditorMorph== comme ceci
+Nous pouvons visualiser à quoi ressemble notre enveloppe en ouvrant le morph ==EnvelopeEditorMorph== comme ceci
 
 [[[
 EnvelopeEditorMorph new openInWorld
@@ -419,12 +419,12 @@ Vous pouvez l'agrandir en la sélectionnant avec ""shit + clic droit"" puis en d
 
 Le morph expose les courbes de l'instrument et nous permet de les modifier en déplaçant les points le composant. Vous pouvez passer d'une courbe à l'autre soit en la sélectionnant directement dans la fenêtre, soit en la choisissant dans le menu ==editing== en bas à gauche du morph.
 
-En abscisse nous avons le temps en milisecondes. L'ordonnée se modifie en fonction de la courbe choisie. Nous avons également 3 délimitations représentées par les axes verticaux de couleur orange. Les deux plus à gauche sont utilisées pour la boucle lorsque la note est tenue, ce sont les paramètres ==loopStart:loopEnd:==. La plus à droite c'est lorsque la note est relachée. Nous pouvons également les déplacer en fonction de nos besoins en utilisant les triangles orange au dessus de la courbe des abscisses. A noter qu'il n'est pas possible d'avoir sur le morph une boucle d'une durée inférieur à 50ms, comme il n'est pas possible d'avoir une valeur de début de boucle différente de la valeur de fin. Ce qui parraît logique si nous souhaitons obtenir une boucle harmonieuse.
+En abscisse nous avons le temps en millisecondes. L'ordonnée se modifie en fonction de la courbe choisie. Nous avons également 3 délimitations représentées par les axes verticaux de couleur orange. Les deux plus à gauche sont utilisées pour la boucle lorsque la note est tenue, ce sont les paramètres ==loopStart:loopEnd:==. La plus à droite c'est lorsque la note est relâchée. Nous pouvons également les déplacer en fonction de nos besoins en utilisant les triangles orange au dessus de la courbe des abscisses. A noter qu'il n'est pas possible d'avoir sur le morph une boucle d'une durée inférieur à 50ms, comme il n'est pas possible d'avoir une valeur de début de boucle différente de la valeur de fin. Ce qui paraît logique si nous souhaitons obtenir une boucle harmonieuse.
 
 Pour rajouter un point sur une partie de la courbe il suffit de cliquer sur les petits triangles verts pour faire apparaître le point correspondant. Ce point peut être ensuite déplacer pour être positionné à la valeur souhaitée.
 @@todo peut on supprimer un point une fois qu'il a été créé ? en même temps vu que le morph est là uniquement pour tester, est ce vraiment utile ?
 
-Je vous invite à tester toutes ces possibilités et à écouter le résultat obtenu grace au clavier de piano disponible.
+Je vous invite à tester toutes ces possibilités et à écouter le résultat obtenu grâce au clavier de piano disponible.
 @@todo Il faudra rajouter dans le morph d'autres timbres ou du moins faire en sorte qu'il n'y ait pas d'erreur si on veut en sélectionner un autre. A essayer de rajouter en correction.
 
 Les enveloppes viennent compléter nos connaissances sur la génération du son. Nous savons donc jouer un son, plusieurs sons les uns après les autres ou encore plusieurs joués en même temps.
@@ -447,7 +447,7 @@ Nous allons décrire l'ensemble des notes dans un tableau. Le format est le suiv
 (note duree volume)
 ]]]
 
-La note peut être écrite sous sa forme littérale ou d'après sa fréquence en hertz. La durée s'exprime en millisecondes. Le volume quant à lui est une valeur entre 0 et 1000. Au delà de 1000 le son peut être ammené à saturer mais cela peut se révéler utile dans certains cas pour donner un effet.
+La note peut être écrite sous sa forme littérale ou d'après sa fréquence en hertz. La durée s'exprime en millisecondes. Le volume quant à lui est une valeur entre 0 et 1000. Au delà de 1000 le son peut être amené à saturer mais cela peut se révéler utile dans certains cas pour donner un effet.
 
 Voici un exemple de déclaration d'une séquence
 
@@ -493,7 +493,7 @@ Vous devez obtenir une situation similaire à celle présentée par la figure *f
 
 Vérifiez que votre nouvel instrument fonctionne en executant ==FMSound fm1 play==.
 
-Nous allons définir un autre instrument en copiant celui-ci afin de vous permettre d'expériementer. 
+Nous allons définir un autre instrument en copiant celui-ci afin de vous permettre d'expérimenter. 
 
 [[[
 fm2
@@ -550,7 +550,7 @@ FMSound class>>pacmanV2On: aSound
         ^self noteSequenceOn: aSound from: notes.
 ]]]
 
-Si votre mélodie utilise des notes à fréquence basse, le volume de celle ci sera difficilement audible. Vous pouvez alors pour y remédier augementer le volume des notes. Ici nous sommes passé à un volume de 500, contrairement à la précédente mélodie où nous étions resté à 150.
+Si votre mélodie utilise des notes à fréquence basse, le volume de celle ci sera difficilement audible. Vous pouvez alors pour y remédier augmenter le volume des notes. Ici nous sommes passé à un volume de 500, contrairement à la précédente mélodie où nous étions resté à 150.
 
 Voila il ne reste plus qu'à exécuter la mélodie: ==FMSound pacman play==.
 
@@ -564,7 +564,7 @@ Tout d'abord nous allons télécharger les sons pour notre exemple. Pour cela ex
 wget https://github.com/xmessner/PharoSoundTutorial/archive/master.zip
 ]]]
 
-Décompressez la ensuite dans le répertoire de votre choix. Le sous-répertoire ==sounds== contient l'ensemble des sons digitalisés de l'article dont nous aurons besion.
+Décompressez la ensuite dans le répertoire de votre choix. Le sous-répertoire ==sounds== contient l'ensemble des sons digitalisés de l'article dont nous aurons besoin.
 
 Il vous faudra adapter les répertoires de dépôt en fonction de votre environnement.
 
@@ -663,4 +663,4 @@ mix play.
 
 !! Conclusion
 
-Nous vous avons montré une petite partie des possibilités que Pharo offre pour la création et manipulations des sons. Nous espérons vous avoir donner envie d'experimenter. 
+Nous vous avons montré une petite partie des possibilités que Pharo offre pour la création et manipulations des sons. Nous espérons vous avoir donner envie d'expérimenter. 
