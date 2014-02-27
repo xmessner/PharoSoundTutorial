@@ -1,9 +1,9 @@
-! Une introduction aux sons en Pharo
+!Une introduction aux sons en Pharo
 
-Dans cet article nous allons vous présenter une facette de Pharo qu'on n'a pas l'habitude de voir, un domaine pour lequel il peut surprendre. Ce domaine c'est la synthèse sonore. Dès qu'on a besoin de sonoriser un peu notre tout nouveau programme on pense soit à du mp3 pour la musique ou des sons digitalisés pour les bruitages. Dans Pharo on dispose d'outils et bibliothèques permettant créer de toute pièce du son synthétisé pour nos productions. Nous allons vous montrer comment on fait cela en quelques lignes de code seulement.
+Dans cet article nous allons vous présenter une facette de Pharo qui n'est pas habituellement mise en avant. Ce domaine c'est la synthèse sonore. Si nous avons besoin de sonoriser un peu notre tout nouveau programme ce qui nous vient à l'esprit c'est l'utilisation du mp3 pour jouer la musique en fond sonore ou des sons digitalisés pour les bruitages. Dans Pharo nous disposons d'outils et bibliothèques permettant créer de toute pièce du son synthétisé pour nos productions. Nous allons vous montrer comment faire cela en quelques lignes de code seulement.
 
 
-Tout d'abord récupérer et installer la dernière version 30 de Pharo à l'adresse: http://www.pharo.org/.
+Tout d'abord il faut récupérer et installer la dernière version 30 de Pharo à l'adresse: http://www.pharo.org/.
 Le plus simple restant d'exécuter le script de téléchargement qui suit dans un shell. 
 
 [[[
@@ -32,9 +32,9 @@ Gofer new
 ]]]
 
 
-!! Vérifications
+!!Vérifications
 
-Avant de se familiariser avec les différentes méthodes utiles, nous allons nous assurer que notre environnement puisse jouer un son convenablement. Pour cela on va ouvrir un workspace (depuis le menu Tools) et évaluer la ligne de code suivante en sélectionnant l'expression puis en utilisant l'item 'Do it' du menu. Nous vous expliquerons par la suite ce dont il s'agit. Notez que dans un workspace pour exécuter une ligne il suffit d'y positionner le curseur de la souris et de presser alt-d (cela équivaut à sélectionner la ligne et utiliser le menu). Pour sélectionner un bloc d'instructions rapidement placez la souris au tout début ou à la fin du bloc et cliquez, cela a pour effet de tout sélectionner. 
+Avant de se familiariser avec les différentes méthodes proposées, nous allons nous assurer que notre environnement puisse jouer un son convenablement. Pour cela il suffit d'ouvrir un workspace (depuis le menu Tools) et d'évaluer la ligne de code suivante en sélectionnant l'expression puis en utilisant l'item 'Do it' du menu. Nous vous expliquerons par la suite ce dont il s'agit. Notez que dans un workspace pour exécuter une ligne il suffit d'y positionner le curseur de la souris et de presser alt-d (cela équivaut à sélectionner la ligne et utiliser le menu). Pour sélectionner un bloc d'instructions rapidement placez la souris au tout début ou à la fin du bloc et cliquez, cela a pour effet de tout sélectionner. 
 
 [[[
 FMSound organ1 play.
@@ -457,7 +457,7 @@ notes := #((a3 200 150) (a4 100 150) (g3 150 150))
 
 Nous allons écrire notre premier morceau avec un air qui devrait rappeler des bons souvenirs à tout ceux qui aiment le début de l'air des jeux vidéos. Nous allons définir la mélodie d'introduction du jeu pacman.
 
-!!! Définissons un nouvel élément
+!!!Définissons un nouvel élément
 
 Commençons par définir un nouvel instrument. Afin de ne pas compliquer notre exercice, nous allons utiliser la classe ==FMSound== dans laquelle nous allons définir quelques nouvelles méthodes. Notez que pour être plus propre et modulaire, nous devrions définir notre propre package et classes. 
 
@@ -661,6 +661,6 @@ mix add: q1 pan: 0 volume: 0.100;
 mix play.
 ]]]
 
-!! Conclusion
+!!Conclusion
 
 Nous vous avons montré une petite partie des possibilités que Pharo offre pour la création et manipulations des sons. Nous espérons vous avoir donner envie d'expérimenter. 
