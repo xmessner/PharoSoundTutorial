@@ -3,8 +3,7 @@
 Dans cet article nous allons vous présenter une facette de Pharo qui n'est pas habituellement mise en avant. Ce domaine c'est la synthèse sonore. Si nous avons besoin de sonoriser un peu notre tout nouveau programme ce qui nous vient à l'esprit c'est l'utilisation du mp3 pour jouer la musique en fond sonore ou des sons digitalisés pour les bruitages. Dans Pharo nous disposons d'outils et bibliothèques permettant créer de toute pièce du son synthétisé pour nos productions. Nous allons vous montrer comment faire cela en quelques lignes de code seulement.
 
 
-Tout d'abord il faut récupérer et installer la dernière version 30 de Pharo à l'adresse: http://www.pharo.org/.
-Le plus simple restant d'exécuter le script de téléchargement qui suit dans un shell. 
+Tout d'abord il faut récupérer et installer la dernière version 30 de Pharo à l'adresse: http://www.pharo.org/. Le plus simple restant d'exécuter le script de téléchargement qui suit dans un shell. 
 
 [[[
 curl get.pharo.org/30+vmLatest | bash 
@@ -16,9 +15,9 @@ ou si curl n'est pas disponible:
 wget -O- get.pharo.org/30+vmLatest | bash
 ]]]
 
-D'autres scripts de téléchargement sont disponibles à l'adresse http://get.pharo.org. 
+D'autres scripts de téléchargement sont disponibles à l'adresse http://get.pharo.org. L'interface graphique se lance avec la commande ==./pharo-ui Pharo.image==.
 
-Une fois obtenue vous devez charger le package PharoSound en utilisant 
+vous devez ensuite charger le package PharoSound en utilisant 
 - soit le configurationBrowser (comme le montre la Figure *configurationBrowser*) qui se trouve dans le menu Tools. Entrer ==Sound== dans la zone de texte pour sélectionner le package, puis presser le bouton 'Install Stable Version'.
 +Configuration browser: un gestionnaire de packages>file://figures/configurationBrowser.pdf|width=50|label=configurationBrowser+
 - soit Gofer le gestionnaire de packages:
@@ -47,18 +46,22 @@ Si aucun son n'est produit vous pouvez vérifier ces premiers points:
 -Le volume sonore de votre OS n'est pas correctement ajusté ou en mode muet
 -Vérifier que le son est permis dans votre image Pharo. Pour cela ouvrez le Setting Browser depuis le menu Tools, tapez sound dans la barre et cliquez sur le radio bouton. Vous devez obtenir un système proche de l'image montrée par la figure *setting*.
 
--Le plugin sonore n'est pas installé (Linux).
-
-@@todo Indiquer la marche à suivre ou une page internet l'indiquant ?
-@@todo Aussi mais il faut que cela fonctionne je vais ouvrir un bug
+-Le plugin sonore Pulseaudio n'est pas installé (Linux).
 
 #Télécharger la dernière version de *Squeak 4.4>http://ftp.squeak.org/4.4/Squeak-4.4-All-in-One.zip*
 #Décompresser l'archive dans le répertoire de votre choix.
 #Copier le fichier se trouvant dans ==Contents/Linux-i686/lib/squeak/4.4.7-2357/so.vm-sound-pulse== dans ==bin/vm-sound-pulse==.
 #Changer les droits du plugins avec ==chmod +x bin/vm-sound-pulse==.
 
-@@comment est-ce que sous les autres OS le son est actif d'origine ?
-@@todo cela depend de l'image et pas des OS. Maintenant le plugin sound sur linux n'est plus a jour et on va le fixer.
+-Pulseaudio est activé
+
+Par défaut l'archive Linux standard n'embarque pas le plugin pulseaudio seule l'utilisation d'Alsa est possible. Si pulseaudio est activé sur votre distribution voici la marche à suivre, si au contraire ce composant n'est pas disponible ou pas activé vous pouvez continuer en passant cette étape.
+
+# Empêcher la relance automatique du démon pulseaudio en rajoutant dans ==/home/[user]/.pulse/client.conf== le paramètre ==autospawn = no==. Si le fichier n'existe pas vous pouvez le créer. Attention, certaines applications pourraient ne plus fonctionner comme l'icone du volume sonore sous ubuntu.
+# Ouvrir une console puis lancer la commande ==pulseaudio -k== pour tuer les process. Pas besoin d'être root pour cela.
+# Relancer Pharo et le son devrait être fonctionnel.
+
+Pour relancer le serveur sonore une fois sortie de Pharo vous pouvez lancer la commande suivante avec votre utilisateur ==pulseaudio -D==.
 
 -Le processus sonore interne ne fonctionne plus. Il faut l'arrêter puis le relancer en évaluant les expressions suivantes:
 
