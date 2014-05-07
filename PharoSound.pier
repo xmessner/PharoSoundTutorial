@@ -39,31 +39,26 @@ Avant de se familiariser avec les différentes méthodes proposées, nous allons
 FMSound organ1 play.
 ]]]
 
-Si aucun son n'est produit vous pouvez vérifier ces premiers points: 
+Si vous avez du son vous pouvez passer au paragraphe suivant, sinon voici quelques pistes pour obtenir du son.
+
+-Activation du son dans Pharo
+
+Vérifier que le son est activé dans votre image Pharo. Pour cela ouvrez le Setting Browser depuis le menu Tools. Tapez ensuite ==sound== dans la barre et cliquez sur les radios boutons pour obtenir une configuration proche de l'image montrée par la figure *setting*.
 
 +Settings>file://figures/SoundSetting.pdf|width=50|label=setting+
 
--Le volume sonore de votre OS n'est pas correctement ajusté ou en mode muet
--Vérifier que le son est permis dans votre image Pharo. Pour cela ouvrez le Setting Browser depuis le menu Tools, tapez sound dans la barre et cliquez sur le radio bouton. Vous devez obtenir un système proche de l'image montrée par la figure *setting*.
+-Le volume sonore de votre système est trop bas ou en mode muet
+-Pulseaudio est activé (sur pratiquement toutes les distributions actuelles)
 
--Le plugin sonore Pulseaudio n'est pas installé (Linux).
+Par défaut l'archive Linux n'embarque pas de plugin pulseaudio, seule l'utilisation d'Alsa est possible. Nous allons donc désactiver le serveur sonore de manière temporaire. Il ne doit pas être relancer automatiquement lorsqu'il sera arrêté
 
-#Télécharger la dernière version de *Squeak 4.4>http://ftp.squeak.org/4.4/Squeak-4.4-All-in-One.zip*
-#Décompresser l'archive dans le répertoire de votre choix.
-#Copier le fichier se trouvant dans ==Contents/Linux-i686/lib/squeak/4.4.7-2357/so.vm-sound-pulse== dans ==bin/vm-sound-pulse==.
-#Changer les droits du plugins avec ==chmod +x bin/vm-sound-pulse==.
+# Créer le fichier ==/home/[user]/.pulse/client.conf== si il n'existe pas
+# Ajouter le paramètre ==autospawn=no==
+# Supprimer les process en cours avec la commande ==pulseaudio -k== avec votre compte utilisateur. Pour le relancer dès que vous le souhaitez, lancez la commande ==pulseaudio -D==.
 
--Pulseaudio est activé
+Si vous relancez Pharo et que vous refaites le test, du son devrait être produit.
 
-Par défaut l'archive Linux standard n'embarque pas le plugin pulseaudio seule l'utilisation d'Alsa est possible. Si pulseaudio est activé sur votre distribution voici la marche à suivre, si au contraire ce composant n'est pas disponible ou pas activé vous pouvez continuer en passant cette étape.
-
-# Empêcher la relance automatique du démon pulseaudio en rajoutant dans ==/home/[user]/.pulse/client.conf== le paramètre ==autospawn = no==. Si le fichier n'existe pas vous pouvez le créer. Attention, certaines applications pourraient ne plus fonctionner comme l'icone du volume sonore sous ubuntu.
-# Ouvrir une console puis lancer la commande ==pulseaudio -k== pour tuer les process. Pas besoin d'être root pour cela.
-# Relancer Pharo et le son devrait être fonctionnel.
-
-Pour relancer le serveur sonore une fois sortie de Pharo vous pouvez lancer la commande suivante avec votre utilisateur ==pulseaudio -D==.
-
--Le processus sonore interne ne fonctionne plus. Il faut l'arrêter puis le relancer en évaluant les expressions suivantes:
+Il peut également arriver que le process sonore ne fonctionne plus. Vous pouvez utilisez les commandes suivantes pour le réinitialiser
 
 [[[
 SoundPlayer stopPlayerProcess.
