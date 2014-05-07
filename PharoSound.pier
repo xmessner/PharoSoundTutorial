@@ -50,13 +50,13 @@ Vérifier que le son est activé dans votre image Pharo. Pour cela ouvrez le Set
 -Le volume sonore de votre système est trop bas ou en mode muet
 -Pulseaudio est activé (sur pratiquement toutes les distributions actuelles)
 
-Par défaut l'archive Linux n'embarque pas de plugin pulseaudio, seule l'utilisation d'Alsa est possible. Nous allons donc désactiver le serveur sonore de manière temporaire. Il ne doit pas être relancer automatiquement lorsqu'il sera arrêté
+Par défaut l'archive Linux n'embarque pas de plugin pulseaudio, seul l'utilisation du plugin Alsa est possible. Nous allons donc désactiver le serveur sonore de manière temporaire. Il ne doit pas être relancé automatiquement lorsque nous l'arrêterons.
 
 # Créer le fichier ==/home/[user]/.pulse/client.conf== si il n'existe pas
 # Ajouter le paramètre ==autospawn=no==
 # Supprimer les process en cours avec la commande ==pulseaudio -k== avec votre compte utilisateur. Pour le relancer dès que vous le souhaitez, lancez la commande ==pulseaudio -D==.
 
-Si vous relancez Pharo et que vous refaites le test, du son devrait être produit.
+Nous pouvons maintenant relancer Pharo.
 
 Il peut également arriver que le process sonore ne fonctionne plus. Vous pouvez utilisez les commandes suivantes pour le réinitialiser
 
