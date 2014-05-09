@@ -65,6 +65,20 @@ SoundPlayer stopPlayerProcess.
 SoundPlayer startUp
 ]]]
 
+Une petite astuce avant d'aller plus loin concernant le rendu sonore. Par défaut de la réverbération est ajoutée au son joué. Dans certaines conditions peut amener une certaine douceur dans le rendu mais dans notre cas de découverte cela peut aussi fausser ce que nous entendons.
+
+Pour désactiver le rendu avec reverbération lancer la commande
+
+[[[
+SoundPlayer stopReverb
+]]]
+
+Ou pour la relancer si vous préférez avec
+
+[[[
+SoundPlayer startReverb
+]]]
+
 !!Bases de la synthèse FM par l'exemple
 
 Maintenant que nous nous sommes assurés que le son était fonctionnel,  nous allons découvrir comment celui-ci est généré. Prenons le code de la méthode qui définit l'instrument ==organ1==:
@@ -461,8 +475,9 @@ Commençons par définir un nouvel instrument. Afin de ne pas compliquer notre e
 
 Pour définir une méthode nous allons utiliser un navigateur de classe: Pour cela 
 
-- ouvrez le SystemBrowser depuis le menu Tools
-- trouvez la classe ==FMSound== en utilisant l'item Find Class du menu de la liste la plus à gauche (la liste des packages)
+- Ouvrez le SystemBrowser depuis le menu Tools
+- Dans le panneau à gauche faites un click droit puis ==Find Class==
+- Entrez dans la zone de saisie ==FMSound==, sélectionnez là
 
 Vous devez obtenir un navigateur comme celui de la figure *systemBrowser*
 
@@ -471,8 +486,8 @@ Vous devez obtenir un navigateur comme celui de la figure *systemBrowser*
 Comme les méthodes que nous définissons sont des méthodes qui créent des instances de ==FMSound== par opposition à des méthodes qui agissent sur des instances de la classe ==FMSound== nous allons les définir sur le coté classe de la classe ==FMSound==. Pour cela:
 
 - cliquez sur le radio bouton 'Class side'
-- à l'aide du menu de la troisième liste en partant de la gauche (liste des protocoles de méthodes - il s'agit de simple classeurs de rangement), ajoutez un protocole nommé par exemple 'new instruments'.
-- sélectionner le nouveau protocole puis ajouter la méthode ==fm1== suivante. Pour ajouter une méthode, tapez le corps de la méthode puis utiliser l'entrée 'Accept' qui compile la méthode. 
+- à l'aide du menu de la troisième liste en partant de la gauche (liste des protocoles de méthodes - il s'agit de simple classeurs de rangement), ajoutez un protocole (Add protocol) nommé par exemple 'new instruments'.
+- sélectionner le nouveau protocole puis ajouter la méthode ==fm1== suivante. Pour ajouter une méthode, tapez le corps de la méthode dans le panneau prévu à cet effet (en bas à gauche) puis utiliser l'entrée 'Accept' du menu (clic droit) qui compile la méthode ou alors utilisez le raccourcis ==Alt-s==.
 
 [[[
 fm1
@@ -504,10 +519,10 @@ fm2
 	^ snd
 ]]]
 
-Déclarons maintenant, la méthode permettant de mixer l'ensemble des pistes qui vont être créées à l'aide des méthodes ==pacmanV10:== et ==pacmanV20:==.
+Déclarons maintenant de la même manière la méthode ==pacman== permettant de mixer l'ensemble des pistes qui vont être créées à l'aide des méthodes ==pacmanV10:== et ==pacmanV20:==.
 
 [[[
-FMSound class>>pacman
+pacman
 	"comment stating purpose of message"
 
 	^ MixedSound new 
@@ -515,10 +530,12 @@ FMSound class>>pacman
 		add: (self pacmanV2On: self fm2) pan: 0.5.
 ]]]
 
+Lorsque vous allez compiler la méthode, Pharo va vérifier que l'ensemble des méthodes appelées existent. Si elles n'existent pas elles apparaissent en rouge dans le code. Une boîte de dialogue va vous demander de confirmer votre saisie. Il vous suffit de choisir le premier choix de la liste. Répétez cette opération autant de fois qu'il y aura de méthodes inconnues.
+
 Les deux méthodes suivantes contiennent l'ensemble des notes à jouer avec le triplet note, durée et volume.
 
 [[[
-FMSound class>>pacmanV1On: aSound
+pacmanV1On: aSound
 
 	| notes |
 	notes := #(
@@ -537,7 +554,7 @@ FMSound class>>pacmanV1On: aSound
 La méthode ==noteSequenceOn:from:== va générer une séquence de notes (par exemple SequentialSound) à partir d'un tableau de notes pour un instrument donné. Elle va utiliser comme vu précédemment le triplet note, durée, volume.
 
 [[[
-FMSound class>>pacmanV2On: aSound
+pacmanV2On: aSound
 	| notes |
 	notes := #(
         (b1 0.432 500) (b2 0.144 500) (b1 0.432 500) (b2 0.144 500) (c2 0.432 500)
@@ -551,6 +568,8 @@ FMSound class>>pacmanV2On: aSound
 Si votre mélodie utilise des notes à fréquence basse, le volume de celle ci sera difficilement audible. Vous pouvez alors pour y remédier augmenter le volume des notes. Ici nous sommes passé à un volume de 500, contrairement à la précédente mélodie où nous étions resté à 150.
 
 Voila il ne reste plus qu'à exécuter la mélodie: ==FMSound pacman play==.
+
+Si vous souhaitez modifier les mélodies n'oubliez pas de decompiler à chaque fois comme vu précédement.
 
 !!Jouer un sample 
 
