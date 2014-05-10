@@ -213,8 +213,6 @@ points := { 0@0 . 10@1 . 400@0.4 . 500@0}.
 
 La note jouée est à son maximum au début puis repasse progressivement à 0 au bout de 500ms. L'enveloppe étant définie sur une durée égale à la durée de la note la transition se fait plus naturellement et sonne mieux à l'oreille.
 
-@@todo enveloppe qui fait quoi? est ce correct ce que j'ai ecrit et pourquoi 0 pour le premier? Oui ca me paraît correcte. Le zéro correspond au début du son. On est alors au maximum du volume. Par contre je n'ai jamais fais le test de ne pas définir le 0. Peut être est on déjà à 1 ? a creuser.
-
 Voyons ce que donne notre code précédent avec une enveloppe de volume
 
 [[[
@@ -434,10 +432,8 @@ Le morph expose les courbes de l'instrument et nous permet de les modifier en d�
 En abscisse nous avons le temps en millisecondes. L'ordonnée se modifie en fonction de la courbe choisie. Nous avons également 3 délimitations représentées par les axes verticaux de couleur orange. Les deux plus à gauche sont utilisées pour la boucle lorsque la note est tenue, ce sont les paramètres ==loopStart:loopEnd:==. La plus à droite c'est lorsque la note est relâchée. Nous pouvons également les déplacer en fonction de nos besoins en utilisant les triangles orange au dessus de la courbe des abscisses. A noter qu'il n'est pas possible d'avoir sur le morph une boucle d'une durée inférieur à 50ms, comme il n'est pas possible d'avoir une valeur de début de boucle différente de la valeur de fin. Ce qui paraît logique si nous souhaitons obtenir une boucle harmonieuse.
 
 Pour rajouter un point sur une partie de la courbe il suffit de cliquer sur les petits triangles verts pour faire apparaître le point correspondant. Ce point peut être ensuite déplacer pour être positionné à la valeur souhaitée.
-@@todo peut on supprimer un point une fois qu'il a été créé ? en même temps vu que le morph est là uniquement pour tester, est ce vraiment utile ?
 
 Je vous invite à tester toutes ces possibilités et à écouter le résultat obtenu grâce au clavier de piano disponible.
-@@todo Il faudra rajouter dans le morph d'autres timbres ou du moins faire en sorte qu'il n'y ait pas d'erreur si on veut en sélectionner un autre. A essayer de rajouter en correction.
 
 Les enveloppes viennent compléter nos connaissances sur la génération du son. Nous savons donc jouer un son, plusieurs sons les uns après les autres ou encore plusieurs joués en même temps.
 
@@ -588,7 +584,7 @@ Il vous faudra adapter les répertoires de dépôt en fonction de votre environn
 Essayons dans un premier temps de jouer un son à partir d'un fichier au format wav.
 
 [[[
-(SampledSound fromWaveFileNamed: '/home/messner/sound.wav') play
+(SampledSound fromWaveFileNamed: '/home/messner/PharoSound/sound/mouette.wav') play
 ]]]
 
 Le son est joué en tâche de fond sans bloquer le reste de notre environnement. Nous pouvons par exemple utiliser cette méthode pour sonoriser une action ponctuelle ou une alerte.
@@ -596,16 +592,13 @@ Le son est joué en tâche de fond sans bloquer le reste de notre environnement.
 Si notre but était de concevoir un jeu, le chargement du son directement depuis le disque à des moments clés risquerait de ralentir les animations voir de le rendre injouable. Afin d'éviter ces petits désagréments les sons seront chargés en mémoire et joués lorsque ce sera nécessaire pour gagner en temps de réponse.
 
 Pharo met à notre disposition une banque de sons que nous pouvons alimenter suivant nos besoins. Pour rajouter un son à cette librairie nous utiliserons le message ==addLibrarySoundNamed:samples:samplingRate:==. 
-@@todo on devrait ajouter une methode ==addLibrarySoundNamed:== qui appelle addLibrary avec samples et originalSamplingRate
-@@todo à corriger après la revue
-@@todo rajouter un exemple pour lister le contenu de la librairie si on peut ... mais oui on peut :)
 
 Dans un workspace copiez le code suivant et évaluez-le pour rajouter le sample dans la librairie
 
 [[[
 | spl spl2 |
 "Chargement du son a partir d'un fichier"
-spl := SampledSound fromWaveFileNamed: '/home/messner/guitar.wav'.
+spl := SampledSound fromWaveFileNamed: '/home/messner/PharoSound/sound/guitar.wav'.
 
 "Ajout du son dans la librairie pour le jouer plus tard"
 SampledSound addLibrarySoundNamed: 'guitar'
@@ -623,7 +616,7 @@ spl2 duration: 0.1.
 spl2 play.
 ]]]
 
-@@todo estil possible de le jouer a la vitesse ou il a ete enregistre? il me semble que oui avec originalSamplingRate. Il faut que je fasse le test sur un sample plus significatif.
+Nous entendons uniquement les premiers samples uniquement du fichier et à une fréquence très basse. Si nous augmentons ==samplingrate== et ==duration== nous pourrons entendre de plus en plus de samples jusqu'à ce que l'ensemble des données soient jouées.
 
 !!Un dernier petit effort
 
@@ -649,8 +642,6 @@ SampledSound addLibrarySoundNamed: 'bateau'
              samples: spl2 samples
              samplingRate: spl2 originalSamplingRate.
 ]]]
-
-@@todo on doit ameliorer fromWaveFileNamed: pour lui passer un fileSystem FileSystem disc workingDirectory / 'ocean.wav'
 
 Maintenant que tous nos sons sont chargés nous allons les jouer en séquence grâce à la classe ==QueueSound== vue précédemment. Ils sont joués les uns après les autres à la fréquence souhaitée.
 
