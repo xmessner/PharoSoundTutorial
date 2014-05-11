@@ -627,9 +627,9 @@ Dans un premier temps nous allons charger en mémoire les différents samples qu
 [[[
 | spl spl1 spl2 |
 "Chargement des sons"
-spl := SampledSound fromWaveFileNamed: '/home/messner/ocean.wav'.
-spl1 := SampledSound fromWaveFileNamed: '/home/messner/mouette.wav'.
-spl2 := SampledSound fromWaveFileNamed: '/home/messner/bateau.wav'.
+spl := SampledSound fromWaveFileNamed: '/home/messner/PharoSound/sound/ocean.wav'.
+spl1 := SampledSound fromWaveFileNamed: '/home/messner/PharoSound/sound/mouette.wav'.
+spl2 := SampledSound fromWaveFileNamed: '/home/messner/PharoSound/sound/bateau.wav'.
 
 "Ajout des sons dans la librairie pour les jouer plus tard"
 SampledSound addLibrarySoundNamed: 'ocean'
