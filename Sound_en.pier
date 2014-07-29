@@ -115,7 +115,7 @@ First, it creates a new instance of the class ==FMSound== using the message ==ne
 ]]]
 
 
-It then defines a set of points to create a volume envelope. For each point in the first term expresses a given millisecond, a second volume expressed from 0 to 1 (1 being 100% of the volume).
+It then defines a set of points to create a volume envelope. For each point the first data expresses a duration in milliseconds, follows a given volume expressed from 0 to 1 (1 being equal to 100% of volume).
 
 [[[
 sound addEnvelope: (VolumeEnvelope
