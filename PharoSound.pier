@@ -465,7 +465,7 @@ notes := #((a3 200 150) (a4 100 150) (g3 150 150))
 
 Nous allons écrire notre premier morceau avec un air qui devrait rappeler des bons souvenirs à tout ceux qui aiment le début de l'air des jeux vidéos. Nous allons définir la mélodie d'introduction du jeu pacman.
 
-!!!Définissons un nouvel élément
+!!!Définissons un nouvel instrument
 
 Commençons par définir un nouvel instrument. Afin de ne pas compliquer notre exercice, nous allons utiliser la classe ==FMSound== dans laquelle nous allons définir quelques nouvelles méthodes. Notez que pour être plus propre et modulaire, nous devrions définir notre propre package et classes. 
 
