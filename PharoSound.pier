@@ -490,8 +490,8 @@ fm1
 	| snd |
 	snd := self new.
 	snd addEnvelope: (VolumeEnvelope points: { 0@1 . 300@0 }
-					 				 loopStart: 2
-									 loopEnd: 2).
+		loopStart: 2
+		loopEnd: 2).
 	snd modulation: 1 ratio: 2.
 	^ snd
 ]]]
@@ -509,8 +509,8 @@ fm2
 	| snd |
 	snd := self new.
 	snd addEnvelope: (VolumeEnvelope points: { 0@1 . 300@0 }
-					 				 loopStart: 2
-									 loopEnd: 2).
+		loopStart: 2
+		loopEnd: 2).
 	snd modulation: 1 ratio: 2.
 	^ snd
 ]]]
