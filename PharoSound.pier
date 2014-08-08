@@ -616,7 +616,7 @@ spl2 duration: 0.1.
 spl2 play.
 ]]]
 
-Nous entendons uniquement les premiers samples uniquement du fichier et à une fréquence très basse. Si nous augmentons ==samplingrate== et ==duration== nous pourrons entendre de plus en plus de samples jusqu'à ce que l'ensemble des données soient jouées.
+Nous entendons uniquement les premiers samples du fichier et à une fréquence très basse. Si nous augmentons ==samplingrate== et ==duration== nous pourrons entendre de plus en plus de samples jusqu'à ce que l'ensemble des données soient jouées.
 
 !!Un dernier petit effort
 
